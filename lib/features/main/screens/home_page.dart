@@ -1,3 +1,4 @@
+import 'package:bookpals_mobile/core/theme/theme_colors.dart';
 import 'package:bookpals_mobile/features/main/screens/widgets/top_home_shape.dart';
 import 'package:flutter/material.dart';
 
@@ -22,7 +23,7 @@ class _HomePageState extends State<HomePage> {
                   ClipPath(
                     clipper: TopHomeShapeClipper(),
                     child: Container(
-                      color: Colors.blue,
+                      color: ThemeColor.primarySwatch,
                     ),
                   ),
                   Positioned(
@@ -34,7 +35,7 @@ class _HomePageState extends State<HomePage> {
                         textAlign: TextAlign.center,
                         style: TextStyle(
                           color: Colors.white,
-                          fontSize: 20,
+                          fontSize: 28,
                           fontWeight: FontWeight.bold,
                         ),
                       ),
@@ -43,7 +44,6 @@ class _HomePageState extends State<HomePage> {
                 ],
               ),
             ),
-            const Text("Ini list buku nanti..."),
           ],
         ),
       ),
