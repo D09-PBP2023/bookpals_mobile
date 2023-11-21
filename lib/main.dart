@@ -1,10 +1,14 @@
+import 'package:bookpals_mobile/features/authentication/screens/login_page.dart';
+import 'package:bookpals_mobile/features/main/screens/home_page.dart';
+import 'package:bookpals_mobile/services/api.dart';
 import 'package:flutter/material.dart';
-import 'package:pbp_django_auth/pbp_django_auth.dart';
 import 'package:provider/provider.dart';
 
-import 'features/main/screens/home_page.dart';
+import 'features/authentication/providers/auth_provider.dart';
 
-void main() {
+Future<void> main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await APIHelper.init();
   runApp(const MyApp());
 }
 
@@ -13,11 +17,11 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Provider(
-      create: (_) {
-        CookieRequest request = CookieRequest();
-        return request;
-      },
+    return MultiProvider(
+      providers: [
+        // Provider<CookieRequest>(create: (context) => CookieRequest()),
+        ChangeNotifierProvider(create: (_) => AuthProvider()),
+      ],
       child: MaterialApp(
         title: 'BookPals',
         theme: ThemeData(
@@ -25,7 +29,7 @@ class MyApp extends StatelessWidget {
           colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
           useMaterial3: true,
         ),
-        home: const HomePage(),
+        home: (APIHelper.isSignedIn() ? const HomePage() : const SignInPage()),
       ),
     );
   }

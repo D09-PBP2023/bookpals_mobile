@@ -1,6 +1,12 @@
-import 'package:bookpals_mobile/core/theme/theme_colors.dart';
-import 'package:bookpals_mobile/features/main/screens/widgets/top_home_shape.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+
+import '../../../core/bases/widgets/button.dart';
+import '../../../core/bases/widgets/scaffold.dart';
+import '../../../core/theme/color_theme.dart';
+import '../../authentication/providers/auth_provider.dart';
+import '../../authentication/screens/login_page.dart';
+import 'widgets/top_home_shape.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -12,9 +18,13 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    final auth = context.watch<AuthProvider>();
+
+    return BpScaffold(
+      usePadding: false,
       body: SingleChildScrollView(
         child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
           children: [
             SizedBox(
               height: 300,
@@ -23,7 +33,7 @@ class _HomePageState extends State<HomePage> {
                   ClipPath(
                     clipper: TopHomeShapeClipper(),
                     child: Container(
-                      color: ThemeColor.primarySwatch,
+                      color: ColorTheme.primarySwatch,
                     ),
                   ),
                   Positioned(
@@ -44,6 +54,22 @@ class _HomePageState extends State<HomePage> {
                 ],
               ),
             ),
+            SizedBox(
+              height: 60,
+              width: 200,
+              child: BpButton(
+                text: "Logout",
+                onTap: () async {
+                  await auth.logout();
+                  Navigator.pushReplacement(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => const SignInPage(),
+                    ),
+                  );
+                },
+              ),
+            )
           ],
         ),
       ),

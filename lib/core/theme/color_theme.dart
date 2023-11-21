@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-class ThemeColor {
+class ColorTheme {
   static const int _primaryValue = 0xFF4BA3E3;
 
   static const MaterialColor primarySwatch = MaterialColor(
@@ -29,4 +29,9 @@ class ThemeColor {
       500: Color(_accentValue),
     },
   );
+
+  static const Color black = Colors.black;
+  static const Color white = Colors.white;
+  static const Color grey = Colors.grey;
+  static const Color red = Color(0xFFed6a5a);
 }
