@@ -60,3 +60,24 @@ Berikut adalah jenis peran pengguna BookPals beserta penjelasannya:
 ## 2. Admin
 - Mengecek apakah buku yang di-*request* oleh User telah tersedia di list buku atau tidak
 - Menyetujui/Menolak permintaan menambah buku dari User
+
+# [Integration Guide]
+
+1. Persiapkan endpoint yang akan digunakan untuk mengirim atau menerima request.
+2. Beberapa endpoint akan memiliki response yang berupa HttpResponse, jika iya, bikin endpoint baru dengan penambahan `[nama_view/url]-mobile` yang mengembalikan JsonResponse.
+3. Persiapkan frontend pada mobile.
+4. Setiap endpoint yang akan digunakan masukkan sebagai string di file `lib/core/environments/endpoints.dart`.
+5. Lakukan pengiriman/penerimaan request dengan `APIHelper`. Contohnya, 'APIHelper.get(Endpoints.getBooksUrl)'.
+6. Response yang diberikan akan berupa JSON yang sudah menjadi tipe `Map<String, dynamic>`.
+7. Manfaatkan request yang telah diterima untuk dimunculkan di frontend.
+8. Integrasi selesai~.
+
+# [Setup the development]
+
+1. Git clone repository.
+2. Pastikan fitur `formatOnSave` menyala agar tertata rapi.
+3. Untuk jaga-jaga, jalankan `flutter pub get` sebelum memulai development.
+4. Jika kalian menambah package baru saat development, jangan lupa full restart aplikasi!
+5. Fitur-fitur yang dibikin masukkan ke folder `features/`.
+6. Jika bagian tampilan, masukkan ke subfolder `screens/`. Jika bagian provider, masukkan ke subfolder `providers/`. Sedangkan, jika bagian tersebut merupakan komponen widget "kecil", masukkan ke subfolder `widgets/`. Jika lainnya, tanyakan ke teman-teman kelompok!
+7. Push commit Anda ke branch fitur masing-masing, pastikan tidak ada eror.
