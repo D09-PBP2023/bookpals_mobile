@@ -2,11 +2,13 @@ import 'package:bookpals_mobile/core/bases/widgets/button.dart';
 import 'package:bookpals_mobile/core/theme/font_theme.dart';
 import 'package:bookpals_mobile/features/authentication/providers/auth_provider.dart';
 import 'package:bookpals_mobile/features/main/screens/home_page.dart';
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import '../../../core/bases/widgets/scaffold.dart';
 import '../../../core/bases/widgets/text_field.dart';
+import 'register_page.dart';
 
 class SignInPage extends StatefulWidget {
   const SignInPage({super.key});
@@ -18,6 +20,7 @@ class SignInPage extends StatefulWidget {
 class _SignInPageState extends State<SignInPage> {
   final TextEditingController _usernameController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
+  bool isLoading = false;
   late String errorMessage = "";
 
   @override
@@ -78,21 +81,6 @@ class _SignInPageState extends State<SignInPage> {
                 isObscure: true,
               ),
               const SizedBox(height: 32),
-              // RichText(
-              //   text: TextSpan(
-              //     text: 'Belum Memiliki Akun? ',
-              //     style: FontTheme.blackCaption(),
-              //     children: <TextSpan>[
-              //       TextSpan(
-              //         text: ' Buat Akun',
-              //         style: FontTheme.blackCaptionLink(),
-              //         recognizer: TapGestureRecognizer()
-              //           ..onTap = () => nav.pushReplacement(const SignUpPage()),
-              //       ),
-              //     ],
-              //   ),
-              // ),
-              const SizedBox(height: 20),
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
@@ -101,7 +89,7 @@ class _SignInPageState extends State<SignInPage> {
                     width: 200,
                     child: BpButton(
                       text: "Masuk",
-                      // isLoading: ,
+                      isLoading: isLoading,
                       onTap: () async {
                         if (_usernameController.text.isEmpty ||
                             _passwordController.text.isEmpty) {
@@ -112,8 +100,16 @@ class _SignInPageState extends State<SignInPage> {
                           return;
                         }
 
+                        setState(() {
+                          isLoading = true;
+                        });
+
                         final res = await auth.signIn(
                             _usernameController.text, _passwordController.text);
+
+                        setState(() {
+                          isLoading = false;
+                        });
 
                         if (res["status"]) {
                           Navigator.pushReplacement(
@@ -130,6 +126,27 @@ class _SignInPageState extends State<SignInPage> {
                     ),
                   ),
                 ],
+              ),
+              const SizedBox(height: 20),
+              Center(
+                child: RichText(
+                  text: TextSpan(
+                    text: 'Belum Memiliki Akun? ',
+                    style: FontTheme.blackCaption(),
+                    children: <TextSpan>[
+                      TextSpan(
+                        text: ' Buat Akun',
+                        style: FontTheme.blackCaptionBold(),
+                        recognizer: TapGestureRecognizer()
+                          ..onTap = () => Navigator.of(context).pushReplacement(
+                                MaterialPageRoute(
+                                  builder: (context) => const SignUpPage(),
+                                ),
+                              ),
+                      ),
+                    ],
+                  ),
+                ),
               ),
             ],
           ),

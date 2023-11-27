@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 
 class BpScaffold extends StatelessWidget {
   final Widget body;
+  final Widget? navigationBar;
   final bool safeArea;
   final bool usePadding;
   final bool resizeToAvoidBottomInset;
@@ -12,6 +13,7 @@ class BpScaffold extends StatelessWidget {
       this.safeArea = true,
       this.usePadding = true,
       this.resizeToAvoidBottomInset = false,
+      this.navigationBar,
       super.key});
 
   @override
@@ -27,12 +29,14 @@ class BpScaffold extends StatelessWidget {
       );
     }
     if (safeArea) {
-      content = SafeArea(child: content);
+      content = SafeArea(bottom: false, child: content);
     }
 
     return Scaffold(
+      extendBody: true,
       body: content,
       resizeToAvoidBottomInset: resizeToAvoidBottomInset,
+      bottomNavigationBar: navigationBar,
     );
   }
 }

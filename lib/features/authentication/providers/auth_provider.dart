@@ -12,6 +12,15 @@ class AuthProvider with ChangeNotifier {
     });
   }
 
+  Future<dynamic> signUp(
+      String username, String password, String password2) async {
+    return await APIHelper.post(Endpoints.registerUrl, {
+      'username': username,
+      'password1': password,
+      'password2': password2,
+    });
+  }
+
   Future<dynamic> logout() async {
     return await APIHelper.logout(Endpoints.logoutUrl);
   }
