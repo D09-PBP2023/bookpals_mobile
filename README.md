@@ -64,7 +64,78 @@ Berikut adalah jenis peran pengguna BookPals beserta penjelasannya:
 # [Integration Guide]
 
 1. Persiapkan endpoint yang akan digunakan untuk mengirim atau menerima request.
-2. Beberapa endpoint akan memiliki response yang berupa HttpResponse, jika iya, bikin endpoint baru dengan penambahan `[nama_view/url]-mobile` yang mengembalikan JsonResponse.
+2. Beberapa endpoint akan memiliki response yang berupa HttpResponse, jika iya, bikin endpoint baru dengan penambahan `[nama_view/url]-mobile` yang mengembalikan JsonResponse. Contohnya:
+view `login_user` mengembalikan HttpResponse atau Redirection HTML
+```
+# urls.py
+...
+path('login/', login_user, name='login'),
+...
+
+# views.py
+def login_user(request):
+    if request.user.is_authenticated:
+        return HttpResponseRedirect(reverse("main:show_main"))
+    
+    if request.method == 'POST':
+        username = request.POST.get('username')
+        password = request.POST.get('password')
+
+        user = authenticate(request, username=username, password=password)
+
+        if user is not None:
+            login(request, user)
+            response = HttpResponseRedirect(reverse("main:show_main")) 
+            response.set_cookie('last_login', str(datetime.datetime.now()))
+            return response
+        else:
+            messages.error(request, 'Sorry, incorrect username or password. Please try again.')
+    context = {}
+    return render(request, 'login.html', context)
+```
+Bikin view dan url baru di file yang sama:
+```
+# urls.py
+...
+path('login/', login_user, name='login'),
+path('login-mobile/', login_user_mobile, name='login-mobile'),
+...
+
+# views.py
+def login_user(request):
+    ...
+    ...
+
+def login_user_mobile(request):
+    if request.user.is_authenticated:
+        print(request.user)
+        return JsonResponse({
+            "status": False,
+            "message": "You have signed in."
+        }, status=400)
+    
+    if request.method == 'POST':
+        username = request.POST.get('username')
+        password = request.POST.get('password')
+
+        user = authenticate(request, username=username, password=password)
+
+        if user is not None:
+            login(request, user)
+            return JsonResponse({
+                "status": True,
+                "message": "Successfully Logged In!"
+            }, status=200)
+        else:
+            return JsonResponse({
+                "status": True,
+                "message": "Sorry, incorrect username or password. Please try again."
+            }, status=401)
+    return JsonResponse({
+        "status": False,
+        "message": "Method not allowed."
+    }, status=405)
+```
 3. Persiapkan frontend pada mobile.
 4. Setiap endpoint yang akan digunakan masukkan sebagai string di file `lib/core/environments/endpoints.dart`.
 5. Lakukan pengiriman/penerimaan request dengan `APIHelper`. Contohnya, 'APIHelper.get(Endpoints.getBooksUrl)'.
