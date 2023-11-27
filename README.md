@@ -13,6 +13,9 @@
 - [Taniella](https://github.com/eilalleinat) (2206082316)
 - [Tengku Laras Malahayati](https://github.com/rxa15) (2206081641)
 
+# 🔗 Tautan Aplikasi 🔗
+- [Tautan Berita Acara](https://docs.google.com/spreadsheets/d/1dwBu493kp0h4Anzdz9OODnPPbjOiwGEW/edit#gid=122745094)
+
 # ✏️ Latar Belakang Aplikasi ✏️
 Pada Proyek Tengah Semester, BookPals hanya berbentuk aplikasi web. Kini, BookPals hadir kembali dalam bentuk aplikasi mobile!
 
@@ -36,6 +39,7 @@ Berikut adalah daftar modul yang akan diimplementasikan dalam proyek ini beserta
 | Modul | Penjelasan |
 | ------ | -- |
 | **Book Catalog** | Modul ini terdiri dari submodul **list book**, **book view**, **list owner**, dan **bookmark/add to favorites**, yang masing-masing berperan agar pengguna BookPals dapat **melihat list buku-buku yang tersedia**, **menampilkan judul dan informasi terkait suatu buku yang dipilih**, **menampilkan *username* pengguna-pengguna lain yang memiliki buku tersebut**, serta **menambahkan buku yand dipilih ke *bookmark*** - Home page and headers handled by [Arvin](https://github.com/ArvinCS) (2206041562) - Book details page, bookmark handled by [Taniella](https://github.com/eilalleinat) (2206082316) - Book review handled by [Marvel Martin Everthard](https://github.com/marvelm57) (2206081345)|
+| **Profiles and Profile Page for Users** | User akan diberikan **Profile** oleh admin django saat selesai register yang valid dan dapat melihat Profile serta attribute lain seperti **Favorite Book 1-3** dan **Bookmarked Books** pada Profile Page masing - masing - Book entry handled by [Muhammad Radhitya Utomo](https://github.com/MRadhityaUtomo) (2206830744)| 
 | **Book Sharing** | Modul ini terdiri dari submodul **Book Review** dan **Book Swap** yang berperan agar pengguna BookPals dapat mengisi dan menampilkan ulasannya terhadap suatu buku dan menginisiasi pertukaran buku dengan pengguna yang lain - Book Swap handled by [Gilang Fajar Pratama](https://github.com/gilangp03) (2206082631)|
 | **Book Entry & Review for Admin** | Admin BookPals akan mengecek apakah suatu buku yang akan ditambahkan ke list buku telah tersedia di database. Kemudian, admin akan menyetujui/menolak *request* menambah suatu buku dari pengguna BookPals - Book entry handled by [Tengku Laras Malahayati](https://github.com/rxa15) (2206081641)| 
 # 🛜 Sumber Dataset Katalog Buku 🛜
