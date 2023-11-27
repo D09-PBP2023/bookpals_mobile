@@ -13,6 +13,9 @@
 - [Taniella](https://github.com/eilalleinat) (2206082316)
 - [Tengku Laras Malahayati](https://github.com/rxa15) (2206081641)
 
+# 🔗 Tautan Aplikasi 🔗
+- [Tautan Berita Acara](https://docs.google.com/spreadsheets/d/1dwBu493kp0h4Anzdz9OODnPPbjOiwGEW/edit#gid=122745094)
+
 # ✏️ Latar Belakang Aplikasi ✏️
 Pada Proyek Tengah Semester, BookPals hanya berbentuk aplikasi web. Kini, BookPals hadir kembali dalam bentuk aplikasi mobile!
 
