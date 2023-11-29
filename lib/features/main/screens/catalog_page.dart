@@ -19,6 +19,7 @@ class CatalogPage extends StatefulWidget {
 class _CatalogPageState extends State<CatalogPage> {
   bool _isLoading = true;
   List<Book> exploreBooks = [];
+
   @override
   void initState() {
     BookProvider bookProvider = context.read<BookProvider>();
@@ -50,7 +51,8 @@ class _CatalogPageState extends State<CatalogPage> {
   @override
   Widget build(BuildContext context) {
     final bookProvider = context.watch<BookProvider>();
-    List<Book> featuredBooks = bookProvider.getRandomBooks(6);
+    List<Book> featuredBooks = bookProvider.getRandomBooks(20);
+    final bookColumn = ((MediaQuery.of(context).size.width - 100) ~/ 150);
 
     return BpScaffold(
       body: LazyLoadScrollView(
@@ -96,15 +98,16 @@ class _CatalogPageState extends State<CatalogPage> {
               const SizedBox(height: 30),
               ListView.builder(
                 shrinkWrap: true,
-                itemCount: (exploreBooks.length + 1) ~/ 2,
+                itemCount: (exploreBooks.length + bookColumn - 1) ~/ bookColumn,
                 physics: const NeverScrollableScrollPhysics(),
                 itemBuilder: (context, index) {
                   return Row(
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     children: [
-                      BookDisplay(book: exploreBooks[index * 2]),
-                      if (index * 2 + 1 < exploreBooks.length)
-                        BookDisplay(book: exploreBooks[index * 2 + 1]),
+                      for (int i = 0; i < bookColumn; i++)
+                        if (index * bookColumn + i < exploreBooks.length)
+                          BookDisplay(
+                              book: exploreBooks[index * bookColumn + i]),
                     ],
                   );
                 },
