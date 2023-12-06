@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../../../../core/bases/models/Book.dart';
+import '../../../book_details/screens/book_page.dart';
 
 class BookDisplay extends StatelessWidget {
   final Book book;
@@ -8,7 +9,14 @@ class BookDisplay extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return SizedBox(
+    return GestureDetector(
+      onTap: () {
+        Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => BookDetailPage(book)),
+            );
+          }, 
+    child: SizedBox(
       width: 150,
       height: 300,
       child: Column(
@@ -32,8 +40,19 @@ class BookDisplay extends StatelessWidget {
               fontWeight: FontWeight.bold,
             ),
           ),
-        ],
-      ),
+         
+          // child: Text('Go to book detail page'
+        ]
+        ),  
+    ),
     );
   }
 }
+
+// ElevatedButton(
+//           onPressed: () {
+//             Navigator.push(
+//               context,
+//               MaterialPageRoute(builder: (context) => BookDetailPage(book)),
+//             );
+//           }, 
