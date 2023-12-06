@@ -29,46 +29,78 @@ class _BookDetailPageState extends State<BookDetailPage> {
 
 
 
-Widget get BookProfile {
-  return Container(
-    padding: EdgeInsets.all(32.0),
-    decoration: BoxDecoration(
+  Widget get BookProfile {
+    return Container(
+      padding: EdgeInsets.all(32.0),
+      decoration: BoxDecoration(
       color: Colors.white,
-      // borderRadius: BorderRadius.circular(8.0),
-    ),
-    child: Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: <Widget>[
-        ClipRRect(
-          borderRadius: BorderRadius.circular(8.0),
-          child: Image.network(
-            widget.book.fields.coverImage,
-            width: 300,
-            height: 400,
-            fit: BoxFit.cover,
+        // borderRadius: BorderRadius.circular(8.0),
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: <Widget>[
+          Center(
+            child: ClipRRect(
+              borderRadius: BorderRadius.circular(8.0),
+              child: Image.network(
+                widget.book.fields.coverImage,
+                width: 225,
+                height: 300,
+                fit: BoxFit.cover,
+              ),
+            ),
           ),
-        ),
-        Text(
-          widget.book.fields.name,
-          style: TextStyle(fontSize: 32.0, color: Colors.black),
-        ),
-        Row(
-          children: List<Widget>.generate(5, (index) => Icon(Icons.star, color: Colors.yellow)),
-        ),
-        Text(
-          'Published: ${widget.book.fields.yearPublished}\nLanguage: ${widget.book.fields.originalLanguage}\nGenre: ${widget.book.fields.genre}',
-          style: TextStyle(fontSize: 16.0, color: Colors.grey),
-        ),
-        SizedBox(height: 32.0),
-        Text(
-          'Reviews',
-          style: TextStyle(fontSize: 24.0, color: Colors.black),
-        ),
-        // Add your reviews widget here
-      ],
-    ),
-  );
-}
+          Center(
+            child: Text(
+              '${widget.book.fields.name}',
+              textAlign: TextAlign.center,
+              style: TextStyle(fontSize: 32.0, color: Colors.black),
+            ),
+          ),
+          Center (
+            child: Row(
+              mainAxisSize: MainAxisSize.min,
+              children: List<Widget>.generate(5, (index) => Icon(Icons.star, color: Colors.yellow)),
+            ), 
+          ),
+          Center(
+            child: Text(
+              'Published: ${widget.book.fields.yearPublished}',
+              textAlign: TextAlign.center,
+              style: TextStyle(fontSize: 16.0, color: Colors.grey),
+            ),
+          ),
+          Center(
+            child: Text(
+              'Language: ${widget.book.fields.originalLanguage}',
+              textAlign: TextAlign.center,
+              style: TextStyle(fontSize: 16.0, color: Colors.grey),
+            ),
+          ),
+          Center(
+            child: Text(
+              'Genre: ${widget.book.fields.genre}',
+              textAlign: TextAlign.center,
+              style: TextStyle(fontSize: 16.0, color: Colors.grey),
+            ),
+          ),
+          SizedBox(height: 32.0),
+          Center(
+            child: Text(
+              'Reviews',
+              style: TextStyle(fontSize: 24.0, color: Colors.black),
+            ),
+          ),  
+          SizedBox(height: 32.0),
+          Divider(color: Colors.grey), 
+          Text(
+            '© 2023 BookPals, Inc.', 
+            style: TextStyle(fontSize: 14.0, color: Colors.grey),
+          ),
+        ],
+      ),
+    );
+  }
 
 
 
