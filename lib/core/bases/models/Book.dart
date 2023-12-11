@@ -1,6 +1,8 @@
 // ignore: file_names
 import 'dart:convert';
 
+import '../../environments/endpoints.dart';
+
 List<Book> bookFromJson(String str) =>
     List<Book>.from(json.decode(str).map((x) => Book.fromJson(x)));
 
@@ -57,7 +59,7 @@ class Fields {
         yearPublished: json["year_published"],
         sales: json["sales"],
         genre: json["genre"],
-        coverImage: json["cover_image"],
+        coverImage: '${Endpoints.baseUrl}/media/${json["cover_image"]}/',
       );
 
   Map<String, dynamic> toJson() => {

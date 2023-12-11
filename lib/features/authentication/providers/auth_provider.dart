@@ -1,5 +1,5 @@
-import 'package:bookpals_mobile/core/environments/endpoints.dart';
-import 'package:bookpals_mobile/services/api.dart';
+import '../../../core/environments/endpoints.dart';
+import '../../../services/api.dart';
 import 'package:flutter/material.dart';
 
 class AuthProvider with ChangeNotifier {

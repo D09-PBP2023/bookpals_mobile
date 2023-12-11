@@ -107,9 +107,10 @@ class CookieRequest {
 
     http.Response response =
         await _client.get(Uri.parse(url), headers: headers);
+
     await _updateCookie(response);
 
-    return json.decode(response.body);
+    return json.decode(utf8.decode(response.bodyBytes));
   }
 
   Future<dynamic> post(String url, dynamic data) async {
@@ -123,7 +124,7 @@ class CookieRequest {
         await _client.post(Uri.parse(url), body: data, headers: headers);
     await _updateCookie(response);
 
-    return json.decode(response.body);
+    return json.decode(utf8.decode(response.bodyBytes));
   }
 
   Future<dynamic> postJson(String url, dynamic data) async {

@@ -13,6 +13,7 @@ class BookProvider with ChangeNotifier {
     for (var item in response) {
       _listBook.add(Book.fromJson(item));
     }
+    debugPrint(_listBook[0].fields.coverImage);
     notifyListeners();
   }
 
@@ -20,5 +21,11 @@ class BookProvider with ChangeNotifier {
 
   Book getBookById(int id) {
     return _listBook.firstWhere((element) => element.pk == id);
+  }
+
+  List<Book> getRandomBooks(int count) {
+    List<Book> tmp = List.from(_listBook);
+    tmp.shuffle();
+    return tmp.take(count).toList();
   }
 }
