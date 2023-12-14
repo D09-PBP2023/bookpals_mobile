@@ -1,17 +1,17 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
-import 'package:http/http.dart' as http;
-import 'package:bookpals_mobile/features/review/models/review.dart';
-import 'package:bookpals_mobile/core/theme/font_theme.dart';
-import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:intl/intl.dart';
-import '../../../core/bases/models/Book.dart';
+import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 
+import 'package:bookpals_mobile/core/bases/models/Book.dart';
+import 'package:bookpals_mobile/core/theme/font_theme.dart';
+import 'package:bookpals_mobile/features/review/models/review.dart';
+import 'package:bookpals_mobile/services/api.dart';
 
 class ReviewPage extends StatefulWidget {
     final Book book; // Accept Book as a parameter
 
-    const ReviewPage({Key? key, required this.book}) : super(key: key);
+    const ReviewPage(this.book);
 
     @override
     State<ReviewPage> createState() => _ReviewPageState();
@@ -19,26 +19,19 @@ class ReviewPage extends StatefulWidget {
 
 class _ReviewPageState extends State<ReviewPage> {
   Future<List<Review>> fetchReview() async {
-    // TODO: Ganti URL dan jangan lupa tambahkan trailing slash (/) di akhir URL!
-    var url = Uri.parse(
-        'https://bookpals-d09-tk.pbp.cs.ui.ac.id/get_review/${widget.book.pk}/');
-    var response = await http.get(
-        url,
-        headers: {"Content-Type": "application/json"},
+    final response = await APIHelper.get(
+      'http://127.0.0.1:8000/get_review/${widget.book.pk}/',
     );
 
-    // melakukan decode response menjadi bentuk json
-    var data = jsonDecode(utf8.decode(response.bodyBytes));
-
-    // melakukan konversi data json menjadi object Product
     List<Review> list_review = [];
-    for (var d in data) {
+    for (var d in response) {
         if (d != null) {
             list_review.add(Review.fromJson(d));
         }
     }
     return list_review;
   }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -51,16 +44,12 @@ class _ReviewPageState extends State<ReviewPage> {
           if (snapshot.data == null) {
             return const Center(child: CircularProgressIndicator());
           } else {
-            if (!snapshot.hasData) {
-              return const Column(
-                children: [
-                  Text(
-                    "Tidak ada data produk.",
-                    style:
-                      TextStyle(color: Color(0xff59A5D8), fontSize: 20),
-                  ),
-                  SizedBox(height: 8),
-                ],
+            if (!snapshot.hasData || snapshot.data.isEmpty) {
+              return Center(
+                child: Text(
+                  "No reviews yet.",
+                  style: TextStyle(color: Color(0xff59A5D8), fontSize: 20),
+                ),
               );
             } else {
               return ListView.builder(

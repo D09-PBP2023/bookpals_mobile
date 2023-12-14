@@ -1,20 +1,19 @@
-import 'package:bookpals_mobile/core/bases/widgets/button.dart';
-import 'package:bookpals_mobile/core/theme/font_theme.dart';
-import 'package:bookpals_mobile/features/authentication/providers/auth_provider.dart';
-import 'package:bookpals_mobile/features/main/screens/home_page.dart';
-import 'package:flutter/gestures.dart';
+import 'dart:convert';
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
-import '../../../core/bases/models/Book.dart';
 
-import '../../../core/bases/widgets/scaffold.dart';
-import '../../../core/bases/widgets/text_field.dart';
+import 'package:bookpals_mobile/core/bases/models/Book.dart';
+import 'package:bookpals_mobile/core/bases/widgets/button.dart';
+import 'package:bookpals_mobile/core/bases/widgets/scaffold.dart';
+import 'package:bookpals_mobile/core/bases/widgets/text_field.dart';
+import 'package:bookpals_mobile/core/theme/font_theme.dart';
+
+import 'package:bookpals_mobile/services/api.dart';
 
 class ReviewFormPage extends StatefulWidget {
   final Book book; // Accept Book as a parameter
 
-  const ReviewFormPage({Key? key, required this.book}) : super(key: key);
+  const ReviewFormPage(this.book);
 
   @override
   State<ReviewFormPage> createState() => _ReviewFormPageState();
@@ -23,7 +22,6 @@ class ReviewFormPage extends StatefulWidget {
 class _ReviewFormPageState extends State<ReviewFormPage> {
   final TextEditingController _reviewController = TextEditingController();
   double _rating = 0;
-  bool isLoading = false;
   late String errorMessage = "";
 
   @override
@@ -50,7 +48,7 @@ class _ReviewFormPageState extends State<ReviewFormPage> {
                 initialRating: _rating,
                 minRating: 1,
                 direction: Axis.horizontal,
-                allowHalfRating: true,
+                allowHalfRating: false,
                 itemCount: 5,
                 itemSize: 40,
                 itemBuilder: (context, _) => Icon(
@@ -90,7 +88,6 @@ class _ReviewFormPageState extends State<ReviewFormPage> {
                     width: 200,
                     child: BpButton(
                       text: "Submit",
-                      // isLoading: isLoading,
                       onTap: () async {
                         if (_rating == 0) {
                           setState(() {
@@ -98,37 +95,27 @@ class _ReviewFormPageState extends State<ReviewFormPage> {
                           });
                           return;
                         }
-                        // if (_usernameController.text.isEmpty ||
-                        //     _passwordController.text.isEmpty) {
-                        //   setState(() {
-                        //     errorMessage =
-                        //         "Username dan password harus di-isi!";
-                        //   });
-                        //   return;
-                        // }
-
-                        // setState(() {
-                        //   isLoading = true;
-                        // });
-
-                        // final res = await auth.signIn(
-                        //     _usernameController.text, _passwordController.text);
-
-                        // setState(() {
-                        //   isLoading = false;
-                        // });
-
-                        // if (res["status"]) {
-                        //   Navigator.pushReplacement(
-                        //     context,
-                        //     MaterialPageRoute(
-                        //         builder: (context) => const HomePage()),
-                        //   );
-                        // } else {
-                        //   setState(() {
-                        //     errorMessage = res["message"];
-                        //   });
-                        // }
+                        final response = await APIHelper.post(
+                          "http://127.0.0.1:8000/create-flutter/",
+                          jsonEncode(<String, String>{
+                            'review': _reviewController.text,
+                            'rating': _rating.toString(),
+                            'book_id': widget.book.pk.toString(),
+                          })
+                        );
+                        if (response['status'] == 'success') {
+                            ScaffoldMessenger.of(context)
+                                .showSnackBar(const SnackBar(
+                            content: Text("Thank you for the review"),
+                            ));
+                            Navigator.pop(context);
+                        } else {
+                            ScaffoldMessenger.of(context)
+                                .showSnackBar(const SnackBar(
+                                content:
+                                    Text("Terdapat kesalahan, silakan coba lagi."),
+                            ));
+                        }
                       },
                     ),
                   ),
