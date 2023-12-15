@@ -1,27 +1,27 @@
 // To parse this JSON data, do
 //
-//     final item = itemFromJson(jsonString);
+//     final userProfile = userProfileFromJson(jsonString);
 
 import 'dart:convert';
 
-List<Item> itemFromJson(String str) =>
-    List<Item>.from(json.decode(str).map((x) => Item.fromJson(x)));
+List<UserProfile> userProfileFromJson(String str) => List<UserProfile>.from(
+    json.decode(str).map((x) => UserProfile.fromJson(x)));
 
-String itemToJson(List<Item> data) =>
+String userProfileToJson(List<UserProfile> data) =>
     json.encode(List<dynamic>.from(data.map((x) => x.toJson())));
 
-class Item {
+class UserProfile {
   String model;
   int pk;
   Fields fields;
 
-  Item({
+  UserProfile({
     required this.model,
     required this.pk,
     required this.fields,
   });
 
-  factory Item.fromJson(Map<String, dynamic> json) => Item(
+  factory UserProfile.fromJson(Map<String, dynamic> json) => UserProfile(
         model: json["model"],
         pk: json["pk"],
         fields: Fields.fromJson(json["fields"]),
