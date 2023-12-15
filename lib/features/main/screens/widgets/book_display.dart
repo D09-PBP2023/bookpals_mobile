@@ -9,7 +9,7 @@ class BookDisplay extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-      width: 150,
+      width: 130,
       height: 300,
       child: Column(
         children: [
@@ -17,8 +17,8 @@ class BookDisplay extends StatelessWidget {
             borderRadius: BorderRadius.circular(8.0),
             child: Image.network(
               book.fields.coverImage,
-              width: 150,
-              height: 200,
+              width: 130,
+              height: 130 / 9 * 14,
               fit: BoxFit.cover,
             ),
           ),

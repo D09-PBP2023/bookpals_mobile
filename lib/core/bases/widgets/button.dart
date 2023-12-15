@@ -1,5 +1,5 @@
-import 'package:bookpals_mobile/core/bases/enum/button_type.dart';
-import 'package:bookpals_mobile/core/theme/color_theme.dart';
+import '../enum/button_type.dart';
+import '../../theme/color_theme.dart';
 import 'package:flutter/material.dart';
 
 class BpButton extends StatelessWidget {

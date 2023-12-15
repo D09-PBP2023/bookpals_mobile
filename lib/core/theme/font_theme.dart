@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'color_theme.dart';
 
 class FontTheme {
-  static const fontFamily = 'Poppins';
+  static const fontFamily = 'PlusJakartaSans';
 
   static const white = TextStyle(color: ColorTheme.white);
 
