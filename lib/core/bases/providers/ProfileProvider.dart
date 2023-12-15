@@ -4,12 +4,17 @@ import '../../../services/api.dart';
 import '../../environments/endpoints.dart';
 import '../models/Profile.dart';
 
-class ProfileProvider with ChangeNotifier {
-  final String _name = "joey";
-  Future<UserProfile> getProfile() async {
-    final response = await APIHelper.get(Endpoints.getProfile);
-    return response;
-  }
+import 'package:flutter/material.dart';
 
-  String get name => _name;
+class ProfileProvider with ChangeNotifier {
+  Map<String, dynamic> _userProfile = {};
+
+  Map<String, dynamic> get userProfile => _userProfile;
+
+  Future<void> setUserProfile() async {
+    final response = await APIHelper.get(Endpoints.getProfile);
+    _userProfile = response[0];
+    print(_userProfile);
+    notifyListeners();
+  }
 }

@@ -21,34 +21,32 @@ class _ProfilePageState extends State<ProfilePage> {
   @override
   void initState() {
     ProfileProvider profileProvider = context.read<ProfileProvider>();
-    profileProvider.getProfile();
+    profileProvider.setUserProfile();
+    print("fuck you${profileProvider.userProfile.values}");
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
-    return Card(
-      elevation: 5.0,
-      margin: EdgeInsets.all(20.0),
-      child: Padding(
-        padding: EdgeInsets.all(20.0),
-        child: Provider<ProfileProvider>(
-          create: (_) => ProfileProvider(),
-          builder: (context, _) {
-            final profileProvider = context.watch<ProfileProvider>();
-            return Column(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                _buildProfilePicture(),
-                SizedBox(height: 20.0),
-                _buildName(profileProvider),
-                SizedBox(height: 10.0),
-                _buildEmail(),
-                SizedBox(height: 10.0),
-                _buildBio(),
-              ],
-            );
-          },
+    final profileProvider = context.watch<ProfileProvider>();
+    return Center(
+      child: Card(
+        elevation: 5.0,
+        margin: EdgeInsets.all(20.0),
+        child: Padding(
+          padding: EdgeInsets.all(20.0),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              _buildProfilePicture(),
+              SizedBox(height: 20.0),
+              _buildName(profileProvider),
+              SizedBox(height: 10.0),
+              _buildEmail(profileProvider),
+              SizedBox(height: 10.0),
+              _buildBio(profileProvider),
+            ],
+          ),
         ),
       ),
     );
@@ -58,11 +56,11 @@ class _ProfilePageState extends State<ProfilePage> {
     return Container(
       width: 100.0,
       height: 100.0,
-      decoration: BoxDecoration(
+      decoration: const BoxDecoration(
         shape: BoxShape.circle,
         color: Colors.blue, // Set your desired color
       ),
-      child: Icon(
+      child: const Icon(
         Icons.person,
         size: 50.0,
         color: Colors.white,
@@ -72,26 +70,26 @@ class _ProfilePageState extends State<ProfilePage> {
 
   Widget _buildName(ProfileProvider profileProvider) {
     return Text(
-      profileProvider.name,
-      style: TextStyle(
+      profileProvider.userProfile['fields']['nickname'],
+      style: const TextStyle(
         fontWeight: FontWeight.bold,
         fontSize: 18.0,
       ),
     );
   }
 
-  Widget _buildEmail() {
+  Widget _buildEmail(ProfileProvider profileProvider) {
     return Text(
-      'john.doe@example.com',
-      style: TextStyle(
+      profileProvider.userProfile['fields']['email'],
+      style: const TextStyle(
         color: Colors.grey,
       ),
     );
   }
 
-  Widget _buildBio() {
+  Widget _buildBio(ProfileProvider profileProvider) {
     return Text(
-      'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.',
+      profileProvider.userProfile['fields']['bio'],
       textAlign: TextAlign.center,
     );
   }

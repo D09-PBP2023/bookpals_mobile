@@ -18,7 +18,7 @@ class _HomePageState extends State<HomePage> {
   final pages = [
     const CatalogPage(),
     const CatalogPage(),
-    ProfilePage(),
+    const ProfilePage(),
   ];
 
   @override
