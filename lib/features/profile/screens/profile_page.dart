@@ -22,7 +22,7 @@ class _ProfilePageState extends State<ProfilePage> {
   void initState() {
     ProfileProvider profileProvider = context.read<ProfileProvider>();
     profileProvider.setUserProfile();
-    print(profileProvider.userProfile.values);
+    print(profileProvider.userProfile);
     super.initState();
   }
 
@@ -70,7 +70,8 @@ class _ProfilePageState extends State<ProfilePage> {
 
   Widget _buildName(ProfileProvider profileProvider) {
     return Text(
-      profileProvider.userProfile['fields']['nickname'],
+      // profileProvider.userProfile['fields']['nickname']
+      profileProvider.userProfile.fields.nickname,
       style: const TextStyle(
         fontWeight: FontWeight.bold,
         fontSize: 18.0,
@@ -80,7 +81,7 @@ class _ProfilePageState extends State<ProfilePage> {
 
   Widget _buildEmail(ProfileProvider profileProvider) {
     return Text(
-      profileProvider.userProfile['fields']['email'],
+      profileProvider.userProfile.fields.email,
       style: const TextStyle(
         color: Colors.grey,
       ),
@@ -89,7 +90,7 @@ class _ProfilePageState extends State<ProfilePage> {
 
   Widget _buildBio(ProfileProvider profileProvider) {
     return Text(
-      profileProvider.userProfile['fields']['bio'],
+      profileProvider.userProfile.fields.bio,
       textAlign: TextAlign.center,
     );
   }

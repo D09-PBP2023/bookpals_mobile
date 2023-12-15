@@ -59,18 +59,21 @@ class Fields {
     required this.bookmarkedbooks,
   });
 
-  factory Fields.fromJson(Map<String, dynamic> json) => Fields(
-        user: json["user"],
-        nickname: json["nickname"],
-        email: json["email"],
-        profilePicture: json["profile_picture"],
-        bio: json["bio"],
-        timesSwapped: json["times_swapped"],
-        favoriteBook1: json["favoriteBook1"],
-        favoriteBook2: json["favoriteBook2"],
-        favoriteBook3: json["favoriteBook3"],
-        bookmarkedbooks: List<int>.from(json["bookmarkedbooks"].map((x) => x)),
-      );
+  factory Fields.fromJson(Map<String, dynamic> json) {
+    return Fields(
+      user:
+          json["user"] ?? 0, // Use a default value (e.g., 0) if "user" is null
+      nickname: json["nickname"] ?? "",
+      email: json["email"] ?? "",
+      profilePicture: json["profile_picture"] ?? "",
+      bio: json["bio"] ?? "",
+      timesSwapped: json["times_swapped"] ?? 0,
+      favoriteBook1: json["favoriteBook1"] ?? 0,
+      favoriteBook2: json["favoriteBook2"] ?? 0,
+      favoriteBook3: json["favoriteBook3"] ?? 0,
+      bookmarkedbooks: List<int>.from(json["bookmarkedbooks"] ?? []),
+    );
+  }
 
   Map<String, dynamic> toJson() => {
         "user": user,
