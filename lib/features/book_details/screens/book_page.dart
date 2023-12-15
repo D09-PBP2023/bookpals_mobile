@@ -7,34 +7,24 @@ import '../../../core/bases/models/Book.dart';
 class BookDetailPage extends StatefulWidget {
   final Book book;
 
-  BookDetailPage(this.book);
+  const BookDetailPage(this.book, {super.key});
 
   @override
   _BookDetailPageState createState() => _BookDetailPageState();
 }
 
 class _BookDetailPageState extends State<BookDetailPage> {
-  // Arbitrary size choice for styles
-  final double bookAvatarSize = 150.0;
-
-  // Widget get bookImage {
-  //   return Center(
-  //     child: Hero(
-  //       tag: widget.book.fields.name,
-  //       child: Image.network("${widget.book.fields.coverImage}"),
-  //     ),
-  //   );
-  // }
-
-
-
+  Color _bookmarkColor = Color(0xFF0148A4);
+  Color _textColor = Colors.white;
 
   Widget get BookProfile {
+
     return Container(
       padding: EdgeInsets.all(32.0),
+      
       decoration: BoxDecoration(
-      color: Colors.white,
-        // borderRadius: BorderRadius.circular(8.0),
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(8.0),
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -50,6 +40,7 @@ class _BookDetailPageState extends State<BookDetailPage> {
               ),
             ),
           ),
+          Padding(padding: EdgeInsets.all(10.0)),
           Center(
             child: Text(
               '${widget.book.fields.name}',
@@ -84,6 +75,67 @@ class _BookDetailPageState extends State<BookDetailPage> {
               style: TextStyle(fontSize: 16.0, color: Colors.grey),
             ),
           ),
+          // Adding buttons
+          
+          // ElevatedButton(
+          //   child: Text('Bookmark'),
+          //   onPressed: () {
+          //   print('Hello');
+          //   },
+          // ),
+          Padding(padding: EdgeInsets.all(10.0)),
+          Center(
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: <Widget>[
+                Material(
+                  elevation: 15.0,
+                  borderRadius: BorderRadius.circular(5.0),
+                  color: Color(0xFF0148A4),
+                  child: SizedBox(
+                    width: 100.0, // specify the width
+                    height: 50.0, // specify the height
+                    child: MaterialButton(
+                      textColor: Colors.white,
+                      onPressed: () {
+                        /*...*/
+                      },
+                      child: Text(
+                        'Review',
+                        style: TextStyle(fontSize: 16.0),
+                      ),
+                    ),
+                  ),
+                ),
+                Padding(padding: EdgeInsets.all(7.0)),
+                Material(
+                  elevation: 0.0,
+                  borderRadius: BorderRadius.circular(5.0),
+                  // color: _bookmarkColor,
+                  child: SizedBox(
+                    width: 50.0, // specify the width
+                    height: 50.0, // specify the height
+                    child: MaterialButton(
+                      textColor: _textColor,
+                      onPressed: () {
+                        setState(() {
+                          _bookmarkColor = _bookmarkColor == Color(0xFF0148A4) ? Colors.blueAccent: Color(0xFF0148A4);
+                          _textColor = _textColor == Colors.white ? Colors.black : Colors.white;
+                        });
+                      },
+                      child: Icon(Icons.bookmark, color: _bookmarkColor, weight:50.0),
+                      // Text(
+                      //   'Bookmark',
+                      //   style: TextStyle(fontSize: 16.0),
+                      // ),
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          ),
+
+          // end button
           SizedBox(height: 32.0),
           Center(
             child: Text(

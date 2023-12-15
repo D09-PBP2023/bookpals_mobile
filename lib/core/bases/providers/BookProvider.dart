@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import '../../../services/api.dart';
 import '../../environments/endpoints.dart';
 import '../models/Book.dart';
+import '../../../features/profile/models/user_profile.dart';
 
 class BookProvider with ChangeNotifier {
   List<Book> _listBook = [];
@@ -28,4 +29,12 @@ class BookProvider with ChangeNotifier {
     tmp.shuffle();
     return tmp.take(count).toList();
   }
+
+  // List<Book> getBookmarkedBooks() {
+  //   // User user = Item.user;
+  //   List<int> bookmarkedBooks.add();
+  //   List<Book> tmp = List.from(_listBook);
+  //   // tmp.shuffle();
+  //   return tmp ;
+  // }
 }
