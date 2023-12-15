@@ -60,6 +60,9 @@ flutter:
   assets:
     - assets/
   fonts:
+    - family: CustomIcon
+      fonts:
+        - asset: assets/icons/CustomIcon.ttf
     - family: Poppins
       fonts:
         - asset: assets/fonts/poppins/Poppins-ExtraLight.ttf
@@ -78,6 +81,21 @@ flutter:
           weight: 800
         - asset: assets/fonts/poppins/Poppins-Black.ttf
           weight: 900
+    - family: PlusJakartaSans
+      fonts:
+        - asset: assets/fonts/jakarta/PlusJakartaSans-ExtraLight.ttf
+        - asset: assets/fonts/jakarta/PlusJakartaSans-ExtraLightItalic.ttf
+        - asset: assets/fonts/jakarta/PlusJakartaSans-Light.ttf
+        - asset: assets/fonts/jakarta/PlusJakartaSans-LightItalic.ttf
+        - asset: assets/fonts/jakarta/PlusJakartaSans-Regular.ttf
+        - asset: assets/fonts/jakarta/PlusJakartaSans-Medium.ttf
+        - asset: assets/fonts/jakarta/PlusJakartaSans-MediumItalic.ttf
+        - asset: assets/fonts/jakarta/PlusJakartaSans-SemiBold.ttf
+        - asset: assets/fonts/jakarta/PlusJakartaSans-SemiBoldItalic.ttf
+        - asset: assets/fonts/jakarta/PlusJakartaSans-Bold.ttf
+        - asset: assets/fonts/jakarta/PlusJakartaSans-BoldItalic.ttf
+        - asset: assets/fonts/jakarta/PlusJakartaSans-ExtraBold.ttf
+        - asset: assets/fonts/jakarta/PlusJakartaSans-ExtraBoldItalic.ttf
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware
 
