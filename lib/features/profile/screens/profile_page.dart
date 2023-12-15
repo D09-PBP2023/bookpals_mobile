@@ -22,7 +22,7 @@ class _ProfilePageState extends State<ProfilePage> {
   void initState() {
     ProfileProvider profileProvider = context.read<ProfileProvider>();
     profileProvider.setUserProfile();
-    print("fuck you${profileProvider.userProfile.values}");
+    print(profileProvider.userProfile.values);
     super.initState();
   }
 
