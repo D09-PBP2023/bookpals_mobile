@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 import '../../../core/bases/widgets/scaffold.dart';
 import '../../../core/theme/color_theme.dart';
+import '../../book-swap/screens/book_swap.dart';
 import '../../profile/screens/profile_page.dart';
 import 'catalog_page.dart';
 
@@ -21,7 +22,7 @@ class _HomePageState extends State<HomePage> {
       usePadding: false,
       body: const [
         CatalogPage(), // index 0
-        CatalogPage(),
+        BookSwap(),
         ProfilePage(),
       ][_selectedIndex],
       navigationBar: Container(
@@ -51,7 +52,7 @@ class _HomePageState extends State<HomePage> {
               ),
               NavigationDestination(
                 icon: Icon(Icons.bookmark),
-                label: 'Bookmark',
+                label: 'Book Swap',
               ),
               NavigationDestination(
                 icon: Icon(Icons.person),
