@@ -1,8 +1,11 @@
 // Book_detail_page.dart
 
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 import '../../../core/bases/models/Book.dart';
+import '../../../core/bases/providers/BookProvider.dart';
+import '../../../core/bases/providers/ProfileProvider.dart';
 
 class BookDetailPage extends StatefulWidget {
   final Book book;
@@ -16,6 +19,18 @@ class BookDetailPage extends StatefulWidget {
 class _BookDetailPageState extends State<BookDetailPage> {
   Color _bookmarkColor = Color(0xFF0148A4);
   Color _textColor = Colors.white;
+
+  @override
+  void initState() {
+
+    ProfileProvider profileProvider = context.read<ProfileProvider>();
+    profileProvider.setUserProfile();
+    BookProvider bookProvider = context.read<BookProvider>();
+    bookProvider.fetchAllBook();
+    List<Book> allBook = bookProvider.listBook;
+    profileProvider.getBookmarkedBooks(allBook);
+    super.initState();
+  }
 
   Widget get BookProfile {
 
@@ -98,7 +113,7 @@ class _BookDetailPageState extends State<BookDetailPage> {
                     child: MaterialButton(
                       textColor: Colors.white,
                       onPressed: () {
-                        /*...*/
+                        
                       },
                       child: Text(
                         'Review',
@@ -117,7 +132,13 @@ class _BookDetailPageState extends State<BookDetailPage> {
                     height: 50.0, // specify the height
                     child: MaterialButton(
                       textColor: _textColor,
-                      onPressed: () {
+                      onPressed: () async {
+                        var apiHelper = Provider.of<ProfileProvider>(context, listen: false);
+                        await apiHelper.bookmark(widget.book.pk);
+                        BookProvider bookProvider = context.read<BookProvider>();
+                        bookProvider.fetchAllBook();
+                        List<Book> allBook = bookProvider.listBook;
+                        apiHelper.getBookmarkedBooks(allBook);
                         setState(() {
                           _bookmarkColor = _bookmarkColor == Color(0xFF0148A4) ? Colors.blueAccent: Color(0xFF0148A4);
                           _textColor = _textColor == Colors.white ? Colors.black : Colors.white;

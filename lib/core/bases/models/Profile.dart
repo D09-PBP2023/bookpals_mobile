@@ -13,7 +13,7 @@ String userProfileToJson(List<UserProfile> data) =>
 class UserProfile {
   String model;
   int pk;
-  Fields fields;
+  FieldsProfile fields;
 
   UserProfile({
     required this.model,
@@ -24,7 +24,7 @@ class UserProfile {
   factory UserProfile.fromJson(Map<String, dynamic> json) => UserProfile(
         model: json["model"],
         pk: json["pk"],
-        fields: Fields.fromJson(json["fields"]),
+        fields: FieldsProfile.fromJson(json["fields"]),
       );
 
   Map<String, dynamic> toJson() => {
@@ -34,7 +34,7 @@ class UserProfile {
       };
 }
 
-class Fields {
+class FieldsProfile {
   int user;
   String nickname;
   String email;
@@ -46,7 +46,7 @@ class Fields {
   int favoriteBook3;
   List<int> bookmarkedbooks;
 
-  Fields({
+  FieldsProfile({
     required this.user,
     required this.nickname,
     required this.email,
@@ -59,8 +59,8 @@ class Fields {
     required this.bookmarkedbooks,
   });
 
-  factory Fields.fromJson(Map<String, dynamic> json) {
-    return Fields(
+  factory FieldsProfile.fromJson(Map<String, dynamic> json) {
+    return FieldsProfile(
       user:
           json["user"] ?? 0, // Use a default value (e.g., 0) if "user" is null
       nickname: json["nickname"] ?? "",
