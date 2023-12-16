@@ -15,7 +15,7 @@ class ProfileProvider with ChangeNotifier {
         nickname: "",
         email: "youremail@email.com",
         profilePicture: "",
-        bio: "This cleint has yet to make a signature.",
+        bio: "This client has yet to make a signature.",
         timesSwapped: 0,
         favoriteBook1: 0,
         favoriteBook2: 0,
