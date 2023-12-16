@@ -18,22 +18,28 @@ class BookDetailPage extends StatefulWidget {
 
 class _BookDetailPageState extends State<BookDetailPage> {
   Color _bookmarkColor = Color(0xFF0148A4);
-  Color _textColor = Colors.white;
+  IconData _icon = Icons.bookmark_outline;
 
-  @override
-  void initState() {
-
-    ProfileProvider profileProvider = context.read<ProfileProvider>();
-    profileProvider.setUserProfile();
-    BookProvider bookProvider = context.read<BookProvider>();
-    bookProvider.fetchAllBook();
-    List<Book> allBook = bookProvider.listBook;
-    profileProvider.getBookmarkedBooks(allBook);
-    super.initState();
-  }
 
   Widget get BookProfile {
-
+      @override
+      void initState() {
+        print(widget.book.fields.name);
+        print(widget.book.pk);
+        ProfileProvider profileProvider = context.read<ProfileProvider>();
+        profileProvider.setUserProfile();
+        BookProvider bookProvider = context.read<BookProvider>();
+        bookProvider.fetchAllBook();
+        List<Book> allBook = bookProvider.listBook;
+        profileProvider.getBookmarkedBooks(allBook);
+        if (profileProvider.bookmarked.contains(widget.book)) {
+          _icon = Icons.bookmark;
+        } 
+        else {
+          _icon = Icons.bookmark_outline;
+        }
+        super.initState();
+      }
     return Container(
       padding: EdgeInsets.all(32.0),
       
@@ -92,12 +98,6 @@ class _BookDetailPageState extends State<BookDetailPage> {
           ),
           // Adding buttons
           
-          // ElevatedButton(
-          //   child: Text('Bookmark'),
-          //   onPressed: () {
-          //   print('Hello');
-          //   },
-          // ),
           Padding(padding: EdgeInsets.all(10.0)),
           Center(
             child: Row(
@@ -131,24 +131,24 @@ class _BookDetailPageState extends State<BookDetailPage> {
                     width: 50.0, // specify the width
                     height: 50.0, // specify the height
                     child: MaterialButton(
-                      textColor: _textColor,
                       onPressed: () async {
-                        var apiHelper = Provider.of<ProfileProvider>(context, listen: false);
-                        await apiHelper.bookmark(widget.book.pk);
+                        var profileProvider = Provider.of<ProfileProvider>(context, listen: false);
+                        await profileProvider.bookmark(widget.book.pk);
                         BookProvider bookProvider = context.read<BookProvider>();
                         bookProvider.fetchAllBook();
                         List<Book> allBook = bookProvider.listBook;
-                        apiHelper.getBookmarkedBooks(allBook);
+                        profileProvider.getBookmarkedBooks(allBook);
+
                         setState(() {
-                          _bookmarkColor = _bookmarkColor == Color(0xFF0148A4) ? Colors.blueAccent: Color(0xFF0148A4);
-                          _textColor = _textColor == Colors.white ? Colors.black : Colors.white;
-                        });
+                          if (_icon == Icons.bookmark_outline) {
+                            _icon = Icons.bookmark;
+                          } 
+                          else _icon = Icons.bookmark_outline;
+
+                          }
+                        );
                       },
-                      child: Icon(Icons.bookmark, color: _bookmarkColor, weight:50.0),
-                      // Text(
-                      //   'Bookmark',
-                      //   style: TextStyle(fontSize: 16.0),
-                      // ),
+                      child: Icon(_icon, color: _bookmarkColor, weight:50.0),
                     ),
                   ),
                 ),

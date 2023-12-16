@@ -53,8 +53,8 @@ class ProfileProvider with ChangeNotifier {
     final response = await APIHelper.get(Endpoints.getProfile);
     bookmarked = [];
     _userProfile = UserProfile.fromJson(response[0]);
-    for (int i in _userProfile.fields.bookmarkedbooks  ) {
-      bookmarked.add(allBook[i]);
+    for (Book i in allBook ) {
+      if (_userProfile.fields.bookmarkedbooks.contains(i.pk)) bookmarked.add(i);
     }
     debugPrint(bookmarked[0].fields.name);
     notifyListeners();
