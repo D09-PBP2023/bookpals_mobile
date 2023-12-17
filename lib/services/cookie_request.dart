@@ -3,6 +3,7 @@ library pbp_django_auth;
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'package:flutter/foundation.dart' show kIsWeb;
+import 'package:http/http.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class Cookie {
@@ -82,7 +83,7 @@ class CookieRequest {
     http.Response response =
         await _client.post(Uri.parse(url), body: data, headers: headers);
 
-    await _updateCookie(response);
+    await _updateCookie(response.headers);
 
     if (response.statusCode == 200) {
       loggedIn = true;
@@ -108,7 +109,7 @@ class CookieRequest {
     http.Response response =
         await _client.get(Uri.parse(url), headers: headers);
 
-    await _updateCookie(response);
+    await _updateCookie(response.headers);
 
     return json.decode(utf8.decode(response.bodyBytes));
   }
@@ -122,9 +123,28 @@ class CookieRequest {
 
     http.Response response =
         await _client.post(Uri.parse(url), body: data, headers: headers);
-    await _updateCookie(response);
+    await _updateCookie(response.headers);
 
     return json.decode(utf8.decode(response.bodyBytes));
+  }
+
+  Future<dynamic> postWithImage(
+      String url, dynamic data, List<MultipartFile> files) async {
+    await init();
+    if (kIsWeb) {
+      dynamic c = _client;
+      c.withCredentials = true;
+    }
+
+    var request = http.MultipartRequest('POST', Uri.parse(url));
+    request.headers.addAll(headers);
+    request.fields.addAll(data);
+    request.files.addAll(files);
+
+    var response = await request.send();
+    await _updateCookie(response.headers);
+
+    return json.decode(utf8.decode(await response.stream.toBytes()));
   }
 
   Future<dynamic> postJson(String url, dynamic data) async {
@@ -141,15 +161,15 @@ class CookieRequest {
 
     // Remove used additional header
     headers.remove('Content-Type');
-    await _updateCookie(response);
+    await _updateCookie(response.headers);
 
     return json.decode(response.body);
   }
 
-  Future _updateCookie(http.Response response) async {
+  Future _updateCookie(Map<String, dynamic> headers) async {
     await init();
 
-    String? allSetCookie = response.headers['set-cookie'];
+    String? allSetCookie = headers['set-cookie'];
 
     if (allSetCookie != null) {
       // Hacky way to simply ignore expires
@@ -165,6 +185,7 @@ class CookieRequest {
 
       headers['cookie'] = _generateCookieHeader();
       String cookieObject = (const JsonEncoder()).convert(cookies);
+
       persist(cookieObject);
     }
   }
