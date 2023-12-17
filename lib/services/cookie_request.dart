@@ -1,8 +1,10 @@
 library pbp_django_auth;
 
+import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'package:flutter/foundation.dart' show kIsWeb;
+import 'package:http/http.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class Cookie {
@@ -36,9 +38,12 @@ class CookieRequest {
   bool initialized = false;
 
   Future init() async {
+    debugPrint(initialized.toString());
     if (!initialized) {
       local = await SharedPreferences.getInstance();
+      // debugPrint("${local.getString("cookies")} ---");
       cookies = _loadSharedPrefs();
+      // debugPrint(cookies.toString());
       if (cookies['sessionid'] != null) {
         loggedIn = true;
         headers['cookie'] = _generateCookieHeader();
@@ -127,6 +132,25 @@ class CookieRequest {
     return json.decode(utf8.decode(response.bodyBytes));
   }
 
+  Future<dynamic> postWithImage(
+      String url, dynamic data, List<MultipartFile> files) async {
+    await init();
+    if (kIsWeb) {
+      dynamic c = _client;
+      c.withCredentials = true;
+    }
+
+    var request = http.MultipartRequest('POST', Uri.parse(url));
+    request.headers.addAll(headers);
+    request.fields.addAll(data);
+    request.files.addAll(files);
+
+    var response = await request.send();
+    // await _updateCookie(response.headers);
+
+    return json.decode(utf8.decode(await response.stream.toBytes()));
+  }
+
   Future<dynamic> postJson(String url, dynamic data) async {
     await init();
     if (kIsWeb) {
@@ -165,6 +189,7 @@ class CookieRequest {
 
       headers['cookie'] = _generateCookieHeader();
       String cookieObject = (const JsonEncoder()).convert(cookies);
+
       persist(cookieObject);
     }
   }

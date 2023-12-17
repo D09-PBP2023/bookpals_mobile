@@ -6,4 +6,5 @@ class Endpoints {
   static const logoutUrl = '$baseUrl/logout-mobile/';
   static const getBooksUrl = '$baseUrl/get_books/';
   static const getProfile = '$baseUrl/profileflutter/';
+  static const editProfile = '$baseUrl/editprofile-mobile/';
 }

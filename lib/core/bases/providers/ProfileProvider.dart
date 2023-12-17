@@ -4,8 +4,6 @@ import '../../../services/api.dart';
 import '../../environments/endpoints.dart';
 import '../models/Profile.dart';
 
-import 'package:flutter/material.dart';
-
 class ProfileProvider with ChangeNotifier {
   UserProfile _userProfile = UserProfile(
       model: "",
@@ -27,10 +25,18 @@ class ProfileProvider with ChangeNotifier {
 
   Future<void> setUserProfile() async {
     final response = await APIHelper.get(Endpoints.getProfile);
-    print(response);
-    print(_userProfile);
+    print(response[0]);
     _userProfile = UserProfile.fromJson(response[0]);
-    print(_userProfile);
+    print(_userProfile.fields);
     notifyListeners();
+  }
+
+  Future<dynamic> edit_userprofile(
+      String nickname, String email, String bio) async {
+    return await APIHelper.post(Endpoints.editProfile, {
+      'nickname': nickname,
+      'email': email,
+      'bio': bio,
+    });
   }
 }

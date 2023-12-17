@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:email_validator/email_validator.dart';
 
 import '../../../core/bases/models/Book.dart';
 import '../../../core/bases/providers/BookProvider.dart';
@@ -11,8 +12,8 @@ import '../../authentication/providers/auth_provider.dart';
 import 'package:flutter/material.dart';
 
 import '../../authentication/screens/login_page.dart';
+import 'edit_profilepage.dart';
 
-// masih rusak
 class ProfilePage extends StatefulWidget {
   const ProfilePage({super.key});
 
@@ -25,7 +26,6 @@ class _ProfilePageState extends State<ProfilePage> {
   void initState() {
     ProfileProvider profileProvider = context.read<ProfileProvider>();
     profileProvider.setUserProfile();
-    print(profileProvider.userProfile);
     super.initState();
   }
 
@@ -45,7 +45,29 @@ class _ProfilePageState extends State<ProfilePage> {
             mainAxisSize: MainAxisSize.min,
             children: [
               _buildComplete(profileProvider),
-              SizedBox(height: 10.0),
+              Align(
+                alignment: Alignment.centerLeft,
+                child: SizedBox(
+                  width: 100,
+                  height: 20,
+                  child: ElevatedButton(
+                    onPressed: () async {
+                      await auth.logout();
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => EditProfile(
+                            profileProvider: profileProvider,
+                          ),
+                        ),
+                      );
+                    },
+                    child: Text("hey"),
+                  ),
+                ),
+              ),
+              SizedBox(height: 10),
+
               // Add some extra space
               Expanded(
                 child: Container(
