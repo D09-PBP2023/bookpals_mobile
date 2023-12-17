@@ -4,7 +4,7 @@ class Endpoints {
   static const loginUrl = '$baseUrl/login-mobile/';
   static const registerUrl = '$baseUrl/register-mobile/';
   static const logoutUrl = '$baseUrl/logout-mobile/';
-  static const getBooksUrl = '$baseUrl/get_books/';
+  static const getBooksUrl = '$baseUrl/get-books/';
   static const getProfile = '$baseUrl/profileflutter/';
   // static bookmarkUrl = '$baseUrl/bookmarkflutter/';
   static String bookmarkUrl(int id) => '$baseUrl/bookmarkflutter/$id';
