@@ -12,6 +12,7 @@ import '../../authentication/providers/auth_provider.dart';
 import 'package:flutter/material.dart';
 
 import '../../authentication/screens/login_page.dart';
+import 'bookmarkedit.dart';
 import 'edit_profilepage.dart';
 
 class ProfilePage extends StatefulWidget {
@@ -26,11 +27,16 @@ class _ProfilePageState extends State<ProfilePage> {
   void initState() {
     ProfileProvider profileProvider = context.read<ProfileProvider>();
     profileProvider.setUserProfile();
+    BookProvider bookProvider = context.read<BookProvider>();
+    bookProvider.fetchAllBook();
+    print(bookProvider.listBook);
+
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
+    final bookProvider = context.watch<BookProvider>();
     final profileProvider = context.watch<ProfileProvider>();
     final auth = context.watch<AuthProvider>();
 
@@ -52,7 +58,6 @@ class _ProfilePageState extends State<ProfilePage> {
                   height: 20,
                   child: ElevatedButton(
                     onPressed: () async {
-                      await auth.logout();
                       Navigator.push(
                         context,
                         MaterialPageRoute(
@@ -62,7 +67,7 @@ class _ProfilePageState extends State<ProfilePage> {
                         ),
                       );
                     },
-                    child: Text("hey"),
+                    child: Text("Edit"),
                   ),
                 ),
               ),
@@ -96,9 +101,9 @@ class _ProfilePageState extends State<ProfilePage> {
                             ),
                             child: Row(
                               children: [
-                                _bookCover(),
-                                _bookCover(),
-                                _bookCover(),
+                                _bookCover1(bookProvider, profileProvider),
+                                _bookCover2(bookProvider, profileProvider),
+                                _bookCover3(bookProvider, profileProvider),
                               ],
                             )),
                       ),
@@ -126,7 +131,8 @@ class _ProfilePageState extends State<ProfilePage> {
     );
   }
 
-  Widget _bookCover() {
+  Widget _bookCover1(
+      BookProvider bookProvider, ProfileProvider profileProvider) {
     return Expanded(
       child: Container(
         height: double.infinity, // Take up the entire height of the parent Row
@@ -138,7 +144,99 @@ class _ProfilePageState extends State<ProfilePage> {
             style: BorderStyle.solid, // Set border style to dotted
           ),
         ),
-        margin: EdgeInsets.all(15.0), // Add some margin between rectangles
+        margin: EdgeInsets.all(15.0),
+        // Add some margin between rectangles
+        child: InkWell(
+          onTap: () {
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => const BookmarkEdit(),
+              ),
+            );
+          },
+          child: ClipRRect(
+            borderRadius: BorderRadius.circular(12),
+            child: Image.network(
+              bookProvider
+                  .listBook[profileProvider.userProfile.fields.favoriteBook1]
+                  .fields
+                  .coverImage, // Replace with the actual URL of your image
+              fit: BoxFit
+                  .cover, // You can adjust the fit based on your requirements
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget _bookCover2(
+      BookProvider bookProvider, ProfileProvider profileProvider) {
+    return Expanded(
+      child: Container(
+        height: double.infinity, // Take up the entire height of the parent Row
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(12),
+          border: Border.all(
+            color: const Color.fromARGB(255, 255, 255, 255), // Set border color
+            width: 1.0, // Set border width
+            style: BorderStyle.solid, // Set border style to dotted
+          ),
+        ),
+        margin: EdgeInsets.all(15.0),
+        // Add some margin between rectangles
+        child: InkWell(
+          onTap: () {
+            print("balls");
+          },
+          child: ClipRRect(
+            borderRadius: BorderRadius.circular(12),
+            child: Image.network(
+              bookProvider
+                  .listBook[profileProvider.userProfile.fields.favoriteBook2]
+                  .fields
+                  .coverImage, // Replace with the actual URL of your image
+              fit: BoxFit
+                  .cover, // You can adjust the fit based on your requirements
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget _bookCover3(
+      BookProvider bookProvider, ProfileProvider profileProvider) {
+    return Expanded(
+      child: Container(
+        height: double.infinity, // Take up the entire height of the parent Row
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(12),
+          border: Border.all(
+            color: const Color.fromARGB(255, 255, 255, 255), // Set border color
+            width: 1.0, // Set border width
+            style: BorderStyle.solid, // Set border style to dotted
+          ),
+        ),
+        margin: EdgeInsets.all(15.0),
+        // Add some margin between rectangles
+        child: InkWell(
+          onTap: () {
+            print("balls");
+          },
+          child: ClipRRect(
+            borderRadius: BorderRadius.circular(12),
+            child: Image.network(
+              bookProvider
+                  .listBook[profileProvider.userProfile.fields.favoriteBook3]
+                  .fields
+                  .coverImage, // Replace with the actual URL of your image
+              fit: BoxFit
+                  .cover, // You can adjust the fit based on your requirements
+            ),
+          ),
+        ),
       ),
     );
   }
@@ -202,7 +300,8 @@ class _ProfilePageState extends State<ProfilePage> {
 
   Widget _buildBio(ProfileProvider profileProvider) {
     return Container(
-      width: 300.0, // Adjust the width as needed
+      width: MediaQuery.of(context).size.width *
+          (0.55), // Adjust the width as needed
       height: 150.0,
       decoration: BoxDecoration(
         color: Colors.grey[200], // Light gray background

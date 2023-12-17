@@ -9,6 +9,7 @@ import 'package:pbp_django_auth/pbp_django_auth.dart';
 import '../../../core/bases/models/Profile.dart';
 import '../../../core/bases/providers/ProfileProvider.dart';
 import '../../authentication/providers/auth_provider.dart';
+import '../../main/screens/home_page.dart';
 import 'profile_page.dart';
 // TODO: Impor drawer yang sudah dibuat sebelumnya
 
@@ -115,10 +116,11 @@ class _EditProfileState extends State<EditProfile> {
                 padding: const EdgeInsets.all(8.0),
                 child: ElevatedButton(
                   onPressed: () async {
+                    profileProvider.edit_userprofile(_name, _email, _bio);
                     Navigator.pushReplacement(
                       context,
                       MaterialPageRoute(
-                        builder: (context) => const ProfilePage(),
+                        builder: (context) => const HomePage(),
                       ),
                     );
                   },
