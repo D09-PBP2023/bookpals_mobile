@@ -1,40 +1,51 @@
 // Book_detail_page.dart
 
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 import '../../../core/bases/models/Book.dart';
+import '../../../core/bases/providers/BookProvider.dart';
+import '../../../core/bases/providers/ProfileProvider.dart';
 
 class BookDetailPage extends StatefulWidget {
   final Book book;
 
-  BookDetailPage(this.book);
+  const BookDetailPage(this.book, {super.key});
 
   @override
   _BookDetailPageState createState() => _BookDetailPageState();
 }
 
 class _BookDetailPageState extends State<BookDetailPage> {
-  // Arbitrary size choice for styles
-  final double bookAvatarSize = 150.0;
-
-  // Widget get bookImage {
-  //   return Center(
-  //     child: Hero(
-  //       tag: widget.book.fields.name,
-  //       child: Image.network("${widget.book.fields.coverImage}"),
-  //     ),
-  //   );
-  // }
-
-
+  Color _bookmarkColor = Color(0xFF0148A4);
+  IconData _icon = Icons.bookmark_outline;
 
 
   Widget get BookProfile {
+      @override
+      void initState() {
+        print(widget.book.fields.name);
+        print(widget.book.pk);
+        ProfileProvider profileProvider = context.read<ProfileProvider>();
+        profileProvider.setUserProfile();
+        BookProvider bookProvider = context.read<BookProvider>();
+        bookProvider.fetchAllBook();
+        List<Book> allBook = bookProvider.listBook;
+        profileProvider.getBookmarkedBooks(allBook);
+        if (profileProvider.bookmarked.contains(widget.book)) {
+          _icon = Icons.bookmark;
+        } 
+        else {
+          _icon = Icons.bookmark_outline;
+        }
+        super.initState();
+      }
     return Container(
       padding: EdgeInsets.all(32.0),
+      
       decoration: BoxDecoration(
-      color: Colors.white,
-        // borderRadius: BorderRadius.circular(8.0),
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(8.0),
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -50,6 +61,7 @@ class _BookDetailPageState extends State<BookDetailPage> {
               ),
             ),
           ),
+          Padding(padding: EdgeInsets.all(10.0)),
           Center(
             child: Text(
               '${widget.book.fields.name}',
@@ -84,6 +96,67 @@ class _BookDetailPageState extends State<BookDetailPage> {
               style: TextStyle(fontSize: 16.0, color: Colors.grey),
             ),
           ),
+          // Adding buttons
+          
+          Padding(padding: EdgeInsets.all(10.0)),
+          Center(
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: <Widget>[
+                Material(
+                  elevation: 15.0,
+                  borderRadius: BorderRadius.circular(5.0),
+                  color: Color(0xFF0148A4),
+                  child: SizedBox(
+                    width: 100.0, // specify the width
+                    height: 50.0, // specify the height
+                    child: MaterialButton(
+                      textColor: Colors.white,
+                      onPressed: () {
+                        
+                      },
+                      child: Text(
+                        'Review',
+                        style: TextStyle(fontSize: 16.0),
+                      ),
+                    ),
+                  ),
+                ),
+                Padding(padding: EdgeInsets.all(7.0)),
+                Material(
+                  elevation: 0.0,
+                  borderRadius: BorderRadius.circular(5.0),
+                  // color: _bookmarkColor,
+                  child: SizedBox(
+                    width: 50.0, // specify the width
+                    height: 50.0, // specify the height
+                    child: MaterialButton(
+                      onPressed: () async {
+                        var profileProvider = Provider.of<ProfileProvider>(context, listen: false);
+                        await profileProvider.bookmark(widget.book.pk);
+                        BookProvider bookProvider = context.read<BookProvider>();
+                        bookProvider.fetchAllBook();
+                        List<Book> allBook = bookProvider.listBook;
+                        profileProvider.getBookmarkedBooks(allBook);
+
+                        setState(() {
+                          if (_icon == Icons.bookmark_outline) {
+                            _icon = Icons.bookmark;
+                          } 
+                          else _icon = Icons.bookmark_outline;
+
+                          }
+                        );
+                      },
+                      child: Icon(_icon, color: _bookmarkColor, weight:50.0),
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          ),
+
+          // end button
           SizedBox(height: 32.0),
           Center(
             child: Text(

@@ -28,4 +28,12 @@ class BookProvider with ChangeNotifier {
     tmp.shuffle();
     return tmp.take(count).toList();
   }
+
+  // List<Book> getBookmarkedBooks() {
+  //   // User user = Item.user;
+  //   List<int> bookmarkedBooks.add();
+  //   List<Book> tmp = List.from(_listBook);
+  //   // tmp.shuffle();
+  //   return tmp ;
+  // }
 }
