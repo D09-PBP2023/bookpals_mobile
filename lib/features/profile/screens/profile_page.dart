@@ -133,6 +133,56 @@ class _ProfilePageState extends State<ProfilePage> {
 
   Widget _bookCover1(
       BookProvider bookProvider, ProfileProvider profileProvider) {
+    int x = profileProvider.userProfile.fields.favoriteBook1;
+    if (x != 0) {
+      x--;
+    }
+    return Expanded(
+      child: Container(
+        height: double.infinity, // Take up the entire height of the parent Row
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(12),
+          border: Border.all(
+            color: const Color.fromARGB(255, 255, 255, 255), // Set border color
+            width: 1.0, // Set border width
+            style: BorderStyle.solid, // Set border style to dotted
+          ),
+        ),
+        margin: EdgeInsets.all(15.0),
+        // Add some margin between rectangles
+
+        child: InkWell(
+          onTap: () {
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => BookmarkEdit(
+                  profileProvider: profileProvider,
+                  x: 1,
+                ),
+              ),
+            );
+          },
+          child: ClipRRect(
+            borderRadius: BorderRadius.circular(12),
+            child: Image.network(
+              bookProvider.listBook[x].fields
+                  .coverImage, // Replace with the actual URL of your image
+              fit: BoxFit
+                  .cover, // You can adjust the fit based on your requirements
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget _bookCover2(
+      BookProvider bookProvider, ProfileProvider profileProvider) {
+    int x = profileProvider.userProfile.fields.favoriteBook2;
+    if (x != 0) {
+      x--;
+    }
     return Expanded(
       child: Container(
         height: double.infinity, // Take up the entire height of the parent Row
@@ -151,51 +201,17 @@ class _ProfilePageState extends State<ProfilePage> {
             Navigator.push(
               context,
               MaterialPageRoute(
-                builder: (context) => const BookmarkEdit(),
+                builder: (context) => BookmarkEdit(
+                  profileProvider: profileProvider,
+                  x: 2,
+                ),
               ),
             );
           },
           child: ClipRRect(
             borderRadius: BorderRadius.circular(12),
             child: Image.network(
-              bookProvider
-                  .listBook[profileProvider.userProfile.fields.favoriteBook1]
-                  .fields
-                  .coverImage, // Replace with the actual URL of your image
-              fit: BoxFit
-                  .cover, // You can adjust the fit based on your requirements
-            ),
-          ),
-        ),
-      ),
-    );
-  }
-
-  Widget _bookCover2(
-      BookProvider bookProvider, ProfileProvider profileProvider) {
-    return Expanded(
-      child: Container(
-        height: double.infinity, // Take up the entire height of the parent Row
-        decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(12),
-          border: Border.all(
-            color: const Color.fromARGB(255, 255, 255, 255), // Set border color
-            width: 1.0, // Set border width
-            style: BorderStyle.solid, // Set border style to dotted
-          ),
-        ),
-        margin: EdgeInsets.all(15.0),
-        // Add some margin between rectangles
-        child: InkWell(
-          onTap: () {
-            print("balls");
-          },
-          child: ClipRRect(
-            borderRadius: BorderRadius.circular(12),
-            child: Image.network(
-              bookProvider
-                  .listBook[profileProvider.userProfile.fields.favoriteBook2]
-                  .fields
+              bookProvider.listBook[x].fields
                   .coverImage, // Replace with the actual URL of your image
               fit: BoxFit
                   .cover, // You can adjust the fit based on your requirements
@@ -208,6 +224,10 @@ class _ProfilePageState extends State<ProfilePage> {
 
   Widget _bookCover3(
       BookProvider bookProvider, ProfileProvider profileProvider) {
+    int x = profileProvider.userProfile.fields.favoriteBook3;
+    if (x != 0) {
+      x--;
+    }
     return Expanded(
       child: Container(
         height: double.infinity, // Take up the entire height of the parent Row
@@ -223,14 +243,20 @@ class _ProfilePageState extends State<ProfilePage> {
         // Add some margin between rectangles
         child: InkWell(
           onTap: () {
-            print("balls");
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => BookmarkEdit(
+                  profileProvider: profileProvider,
+                  x: 3,
+                ),
+              ),
+            );
           },
           child: ClipRRect(
             borderRadius: BorderRadius.circular(12),
             child: Image.network(
-              bookProvider
-                  .listBook[profileProvider.userProfile.fields.favoriteBook3]
-                  .fields
+              bookProvider.listBook[x].fields
                   .coverImage, // Replace with the actual URL of your image
               fit: BoxFit
                   .cover, // You can adjust the fit based on your requirements
@@ -331,7 +357,7 @@ class _ProfilePageState extends State<ProfilePage> {
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           _buildProfilePicture(),
-          SizedBox(
+          const SizedBox(
               width: 10.0), // Adjust the space between profile picture and name
           _buildNameEmailBio(profileProvider),
         ],

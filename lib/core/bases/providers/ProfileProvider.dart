@@ -67,11 +67,30 @@ class ProfileProvider with ChangeNotifier {
     });
   }
 
-  // Future<dynamic> bookmark(int id) async {
-  //   return await APIHelper.post(Endpoints.bookmarkUrl, {
-  //     'book': id,
-  //   });
-  // }
+  Future<dynamic> edit_fav(int favid, int x) async {
+    String favoriteBookid = favid.toString();
+    if (x == 1) {
+      return await APIHelper.post(Endpoints.editFav(x), {
+        'fav1': favoriteBookid,
+      });
+    }
+    if (x == 2) {
+      return await APIHelper.post(Endpoints.editFav(x), {
+        'fav2': favoriteBookid,
+      });
+    }
+    if (x == 3) {
+      return await APIHelper.post(Endpoints.editFav(x), {
+        'fav3': favoriteBookid,
+      });
+    }
+
+    // Future<dynamic> bookmark(int id) async {
+    //   return await APIHelper.post(Endpoints.bookmarkUrl, {
+    //     'book': id,
+    //   });
+    // }
+  }
 
   Future<void> bookmark(int id) async {
     await APIHelper.get(Endpoints.bookmarkUrl(id));
