@@ -12,21 +12,20 @@ class BookDisplay extends StatelessWidget {
     return GestureDetector(
       onTap: () {
         Navigator.push(
-              context,
-              MaterialPageRoute(builder: (context) => BookDetailPage(book)),
-            );
-          }, 
-    child: SizedBox(
-      width: 150,
-      height: 300,
-      child: Column(
-        children: [
+          context,
+          MaterialPageRoute(builder: (context) => BookDetailPage(book)),
+        );
+      },
+      child: SizedBox(
+        width: 150,
+        height: 300,
+        child: Column(children: [
           ClipRRect(
             borderRadius: BorderRadius.circular(8.0),
             child: Image.network(
               book.fields.coverImage,
-              width: 150,
-              height: 200,
+              width: 130,
+              height: 130 / 9 * 14,
               fit: BoxFit.cover,
             ),
           ),
@@ -40,11 +39,10 @@ class BookDisplay extends StatelessWidget {
               fontWeight: FontWeight.bold,
             ),
           ),
-         
+
           // child: Text('Go to book detail page'
-        ]
-        ),  
-    ),
+        ]),
+      ),
     );
   }
 }

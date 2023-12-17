@@ -1,9 +1,11 @@
-import 'package:bookpals_mobile/features/authentication/screens/login_page.dart';
-import 'package:bookpals_mobile/features/main/screens/home_page.dart';
-import 'package:bookpals_mobile/services/api.dart';
+import 'core/theme/color_theme.dart';
+import 'features/authentication/screens/login_page.dart';
+import 'features/main/screens/home_page.dart';
+import 'services/api.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
+import 'core/bases/providers/book_provider.dart';
 import 'core/bases/providers/BookProvider.dart';
 import 'core/bases/providers/ProfileProvider.dart';
 import 'features/authentication/providers/auth_provider.dart';
@@ -30,8 +32,8 @@ class MyApp extends StatelessWidget {
         title: 'BookPals',
         theme: ThemeData(
           canvasColor: Colors.transparent,
-          fontFamily: 'Poppins',
-          colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
+          fontFamily: 'PlusJakartaSans',
+          colorScheme: ColorScheme.fromSeed(seedColor: ColorTheme.almondDust),
           useMaterial3: true,
         ),
         home: (APIHelper.isSignedIn() ? const HomePage() : const SignInPage()),
