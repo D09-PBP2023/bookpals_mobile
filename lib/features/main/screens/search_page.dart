@@ -5,7 +5,7 @@ import 'package:lazy_load_scrollview/lazy_load_scrollview.dart';
 import 'package:provider/provider.dart';
 
 import '../../../core/bases/models/Book.dart';
-import '../../../core/bases/providers/book_provider.dart';
+import '../../../core/bases/providers/BookProvider.dart';
 import '../../../core/bases/widgets/scaffold.dart';
 import '../../../core/bases/widgets/search_field.dart';
 import '../../../core/theme/color_theme.dart';

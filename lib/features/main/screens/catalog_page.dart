@@ -6,7 +6,7 @@ import 'package:lazy_load_scrollview/lazy_load_scrollview.dart';
 import 'package:provider/provider.dart';
 
 import '../../../core/bases/models/Book.dart';
-import '../../../core/bases/providers/book_provider.dart';
+import '../../../core/bases/providers/BookProvider.dart';
 import '../../../core/bases/widgets/custom_icon_icons.dart';
 import '../../../core/bases/widgets/scaffold.dart';
 import 'widgets/book_display.dart';

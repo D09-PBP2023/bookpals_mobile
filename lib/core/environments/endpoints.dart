@@ -9,7 +9,6 @@ class Endpoints {
   // static bookmarkUrl = '$baseUrl/bookmarkflutter/';
   static String bookmarkUrl(int id) => '$baseUrl/bookmarkflutter/$id';
   static const editProfile = '$baseUrl/editprofile-mobile/';
-  static const getBooksUrl = '$baseUrl/get-books/';
   static String searchBooksUrl(String name) =>
       '$baseUrl/get-books-by-name/$name';
   static String searchBookByGenresUrl(String genre) =>

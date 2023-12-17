@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import '../../../core/bases/models/Book.dart';
-import '../../../core/bases/providers/book_provider.dart';
+import '../../../core/bases/providers/BookProvider.dart';
 import '../../../core/bases/widgets/scaffold.dart';
 import '../../../core/theme/color_theme.dart';
 import 'widgets/book_display.dart';
