@@ -1,7 +1,7 @@
-import 'package:bookpals_mobile/core/bases/widgets/button.dart';
-import 'package:bookpals_mobile/core/theme/font_theme.dart';
-import 'package:bookpals_mobile/features/authentication/providers/auth_provider.dart';
-import 'package:bookpals_mobile/features/main/screens/home_page.dart';
+import '../../../core/bases/widgets/button.dart';
+import '../../../core/theme/font_theme.dart';
+import '../providers/auth_provider.dart';
+import '../../main/screens/home_page.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';

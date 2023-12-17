@@ -8,11 +8,13 @@ class BpScaffold extends StatelessWidget {
   final bool safeArea;
   final bool usePadding;
   final bool resizeToAvoidBottomInset;
+  final Color backgroundColor;
   const BpScaffold(
       {required this.body,
       this.safeArea = true,
       this.usePadding = true,
       this.resizeToAvoidBottomInset = false,
+      this.backgroundColor = const Color(0xFFF8F8F8),
       this.navigationBar,
       super.key});
 
@@ -37,6 +39,7 @@ class BpScaffold extends StatelessWidget {
       body: content,
       resizeToAvoidBottomInset: resizeToAvoidBottomInset,
       bottomNavigationBar: navigationBar,
+      backgroundColor: backgroundColor,
     );
   }
 }
