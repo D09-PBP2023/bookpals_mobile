@@ -38,12 +38,9 @@ class CookieRequest {
   bool initialized = false;
 
   Future init() async {
-    debugPrint(initialized.toString());
     if (!initialized) {
       local = await SharedPreferences.getInstance();
-      // debugPrint("${local.getString("cookies")} ---");
       cookies = _loadSharedPrefs();
-      // debugPrint(cookies.toString());
       if (cookies['sessionid'] != null) {
         loggedIn = true;
         headers['cookie'] = _generateCookieHeader();

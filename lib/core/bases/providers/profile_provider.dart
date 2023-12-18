@@ -26,10 +26,7 @@ class ProfileProvider with ChangeNotifier {
 
   Future<void> setUserProfile() async {
     final response = await APIHelper.get(Endpoints.getProfile);
-    print("ini respon");
-    print(response[0]);
     _userProfile = UserProfile.fromJson(response[0]);
-    // print(_userProfile.fields);
     notifyListeners();
   }
 
