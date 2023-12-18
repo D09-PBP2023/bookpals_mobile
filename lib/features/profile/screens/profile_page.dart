@@ -139,7 +139,6 @@ class _ProfilePageState extends State<ProfilePage> {
     }
 
     if (x > 0) {
-      print(x);
       x--;
     }
 
@@ -193,7 +192,7 @@ class _ProfilePageState extends State<ProfilePage> {
 
   Widget _buildNameEmailBio(ProfileProvider profileProvider) {
     return Padding(
-      padding: const EdgeInsets.only(top: 35.0),
+      padding: const EdgeInsets.only(top: 35.0, left: 10.0),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -213,7 +212,7 @@ class _ProfilePageState extends State<ProfilePage> {
   Widget _buildProfilePicture() {
     return Padding(
       padding: const EdgeInsets.only(
-          bottom: 60.0), // Adjust the top padding as needed
+          bottom: 50.0, top: 20.0), // Adjust the top padding as needed
       child: Container(
         width: MediaQuery.of(context).size.width * (0.3),
         height: MediaQuery.of(context).size.width * (0.3),
@@ -224,6 +223,7 @@ class _ProfilePageState extends State<ProfilePage> {
         child: const Icon(
           Icons.person,
           color: Colors.white,
+          size: 80.0, // Adjust the size as needed
         ),
       ),
     );
