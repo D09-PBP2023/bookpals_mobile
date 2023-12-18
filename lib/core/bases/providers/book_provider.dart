@@ -17,6 +17,31 @@ class BookProvider with ChangeNotifier {
     notifyListeners();
   }
 
+  Future<List<Book>> searchBook(String query) async {
+    List<Book> result = [];
+    if (query.isEmpty || query == "") return result;
+
+    final response = await APIHelper.get(Endpoints.searchBooksUrl(query));
+    for (var item in response) {
+      result.add(Book.fromJson(item));
+    }
+    return result;
+  }
+
+  Future<List<Book>> searchBookByGenre(List<String> queries) async {
+    List<Book> result = [];
+    if (queries.isEmpty) return result;
+
+    for (String query in queries) {
+      final response =
+          await APIHelper.get(Endpoints.searchBookByGenresUrl(query));
+      for (var item in response) {
+        result.add(Book.fromJson(item));
+      }
+    }
+    return result.toSet().toList();
+  }
+
   List<Book> get listBook => _listBook;
 
   Book getBookById(int id) {

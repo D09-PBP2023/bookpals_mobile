@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 class ColorTheme {
-  static const int _primaryValue = 0xFF4BA3E3;
+  static const int _primaryValue = 0xFFBBAEA8;
 
   static const MaterialColor primarySwatch = MaterialColor(
     _primaryValue,
@@ -30,6 +30,12 @@ class ColorTheme {
     },
   );
 
+  static const Color morningDew = Color(0xFFF0EFE6);
+  static const Color overcast = Color(0xFFEAEAEA);
+  static const Color earlyDusk = Color(0xFFC6C9D2);
+  static const Color tanParchment = Color(0xFFDCCFC1);
+  static const Color almondDust = Color(0xFFB8AEA8);
+  static const Color coffeeGrounds = Color(0xFF393831);
   static const Color black = Colors.black;
   static const Color white = Colors.white;
   static const Color grey = Colors.grey;
