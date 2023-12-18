@@ -15,6 +15,11 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   int _selectedIndex = 0;
+  final pages = [
+    const CatalogPage(),
+    const BookmarkPage(),
+    const ProfilePage(),
+  ];
 
   @override
   Widget build(BuildContext context) {

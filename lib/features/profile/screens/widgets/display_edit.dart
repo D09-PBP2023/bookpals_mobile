@@ -19,6 +19,7 @@ class DisplayEdit extends StatelessWidget {
     return GestureDetector(
       onTap: () async {
         await profileProvider.editFavourite(book.pk, x);
+        await profileProvider.setUserProfile();
         Navigator.pop(context);
       },
       child: SizedBox(

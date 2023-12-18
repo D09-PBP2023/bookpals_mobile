@@ -18,15 +18,12 @@ class BookmarkPage extends StatefulWidget {
   State<BookmarkPage> createState() => _BookmarkPageState();
 }
 
-
-
 class _BookmarkPageState extends State<BookmarkPage> {
   bool _isLoading = true;
   List<Book> exploreBooks = [];
-  
+
   @override
   void initState() {
-    
     BookProvider bookProvider = context.read<BookProvider>();
     bookProvider.fetchAllBook().then((value) {
       setState(() {
@@ -37,7 +34,6 @@ class _BookmarkPageState extends State<BookmarkPage> {
     super.initState();
   }
 
-  
   Future<void> loadMoreBooks() async {
     BookProvider bookProvider = context.read<BookProvider>();
     setState(() {
@@ -114,7 +110,6 @@ class _BookmarkPageState extends State<BookmarkPage> {
                 ),
               ),
               const SizedBox(height: 10),
-              
               SizedBox(
                 height: 300,
                 child: ListView.builder(
@@ -130,18 +125,17 @@ class _BookmarkPageState extends State<BookmarkPage> {
                 ),
               ),
               Align(
-                  alignment: Alignment.centerLeft,
-                  child: Text(
-                    "Bookmarked: $sumBookmarked",
-                    style: const TextStyle(
-                      fontWeight: FontWeight.w800,
-                      fontSize: 20,
-                    ),
+                alignment: Alignment.centerLeft,
+                child: Text(
+                  "Bookmarked: $sumBookmarked",
+                  style: const TextStyle(
+                    fontWeight: FontWeight.w800,
+                    fontSize: 20,
                   ),
                 ),
-              const Padding(padding: EdgeInsets.all(8.0) ),
-
-              if (profileProvider.bookmarked.isEmpty) 
+              ),
+              const Padding(padding: EdgeInsets.all(8.0)),
+              if (profileProvider.bookmarked.isEmpty)
                 const Align(
                   alignment: Alignment.center,
                   child: Text(
@@ -152,24 +146,26 @@ class _BookmarkPageState extends State<BookmarkPage> {
                     ),
                   ),
                 )
-              else  
+              else
                 ListView.builder(
-                  shrinkWrap: true,
-                  itemCount: (profileProvider.bookmarked.length + bookColumn - 1) ~/ bookColumn,
-                  physics: const NeverScrollableScrollPhysics(),
-                  itemBuilder: (context, index) {
-                    return Row( mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                        children: [                      
-                            for (int i = 0; i < bookColumn; i++)
-                              if (index * bookColumn + i < profileProvider.bookmarked.length)
-                                BookDisplay(
-                                    book: profileProvider.bookmarked[index * bookColumn + i]), 
-                                
-                          ],
+                    shrinkWrap: true,
+                    itemCount:
+                        (profileProvider.bookmarked.length + bookColumn - 1) ~/
+                            bookColumn,
+                    physics: const NeverScrollableScrollPhysics(),
+                    itemBuilder: (context, index) {
+                      return Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                        children: [
+                          for (int i = 0; i < bookColumn; i++)
+                            if (index * bookColumn + i <
+                                profileProvider.bookmarked.length)
+                              BookDisplay(
+                                  book: profileProvider
+                                      .bookmarked[index * bookColumn + i]),
+                        ],
                       );
-                    }
-                  
-                ),
+                    }),
               Offstage(
                 offstage: !_isLoading,
                 child: const Center(child: CircularProgressIndicator()),
@@ -179,6 +175,5 @@ class _BookmarkPageState extends State<BookmarkPage> {
         ),
       ),
     );
-  
   }
 }
