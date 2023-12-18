@@ -1,3 +1,4 @@
+import 'core/bases/providers/ProfileProvider.dart';
 import 'core/theme/color_theme.dart';
 import 'features/authentication/screens/login_page.dart';
 import 'features/main/screens/home_page.dart';

@@ -4,8 +4,10 @@ import '../../../services/api.dart';
 import '../../environments/endpoints.dart';
 import '../models/Book.dart';
 import '../models/Profile.dart';
-import 'BookProvider.dart';
+
 import 'package:flutter/material.dart';
+
+import 'book_provider.dart';
 
 class ProfileProvider with ChangeNotifier {
   UserProfile _userProfile = UserProfile(
@@ -39,14 +41,6 @@ class ProfileProvider with ChangeNotifier {
 
   List<Book> allBook = BookProvider().listBook;
 
-  // Future<List<Book>> getBookmarkedBooks(List<Book> allBook) async {
-  //   List<Book> tmp = [];
-  //   for (int i in _userProfile.fields.bookmarkedbooks) {
-  //     tmp.add(allBook[i]);
-  //   }
-  //   return tmp;
-  // }
-
   List<Book> bookmarked = [];
 
   Future<void> getBookmarkedBooks(List<Book> allBook) async {
@@ -60,14 +54,9 @@ class ProfileProvider with ChangeNotifier {
     notifyListeners();
   }
 
-  // Future<dynamic> bookmark(int id) async {
-  //   return await APIHelper.post(Endpoints.bookmarkUrl, {
-  //     'book': id,
-  //   });
-  // }
-
   Future<void> bookmark(int id) async {
     await APIHelper.get(Endpoints.bookmarkUrl(id));
+    this.getBookmarkedBooks(allBook);
   }
 
 }

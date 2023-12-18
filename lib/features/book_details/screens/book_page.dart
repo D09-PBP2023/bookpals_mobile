@@ -4,8 +4,10 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import '../../../core/bases/models/Book.dart';
-import '../../../core/bases/providers/BookProvider.dart';
+
 import '../../../core/bases/providers/ProfileProvider.dart';
+import '../../../core/bases/providers/book_provider.dart';
+import '../../../core/theme/color_theme.dart';
 
 class BookDetailPage extends StatefulWidget {
   final Book book;
@@ -17,13 +19,12 @@ class BookDetailPage extends StatefulWidget {
 }
 
 class _BookDetailPageState extends State<BookDetailPage> {
-  Color _bookmarkColor = Color(0xFF0148A4);
-  IconData _icon = Icons.bookmark_outline;
-
-
-  Widget get BookProfile {
-      @override
-      void initState() {
+  Color _bookmarkColor = ColorTheme.coffeeGrounds;
+  // IconData _icon = Icons.bookmark_outline;
+  List<IconData> icons = [ Icons.bookmark, Icons.bookmark_outline];
+  int _icon = 1;
+    @override
+    void initState() {
         print(widget.book.fields.name);
         print(widget.book.pk);
         ProfileProvider profileProvider = context.read<ProfileProvider>();
@@ -32,14 +33,19 @@ class _BookDetailPageState extends State<BookDetailPage> {
         bookProvider.fetchAllBook();
         List<Book> allBook = bookProvider.listBook;
         profileProvider.getBookmarkedBooks(allBook);
-        if (profileProvider.bookmarked.contains(widget.book)) {
-          _icon = Icons.bookmark;
+        if (profileProvider.bookmarked
+        .indexWhere((element) => element.pk == widget.book.pk) != -1 ) {
+          _icon = 0;
         } 
         else {
-          _icon = Icons.bookmark_outline;
+          _icon = 1;
         }
         super.initState();
       }
+
+
+  Widget get BookProfile {
+
     return Container(
       padding: EdgeInsets.all(32.0),
       
@@ -106,7 +112,7 @@ class _BookDetailPageState extends State<BookDetailPage> {
                 Material(
                   elevation: 15.0,
                   borderRadius: BorderRadius.circular(5.0),
-                  color: Color(0xFF0148A4),
+                  color: ColorTheme.coffeeGrounds,
                   child: SizedBox(
                     width: 100.0, // specify the width
                     height: 50.0, // specify the height
@@ -131,24 +137,29 @@ class _BookDetailPageState extends State<BookDetailPage> {
                     width: 50.0, // specify the width
                     height: 50.0, // specify the height
                     child: MaterialButton(
+                      child: Icon(icons[_icon], color: _bookmarkColor, weight:50.0, size: 35,),
                       onPressed: () async {
                         var profileProvider = Provider.of<ProfileProvider>(context, listen: false);
                         await profileProvider.bookmark(widget.book.pk);
                         BookProvider bookProvider = context.read<BookProvider>();
                         bookProvider.fetchAllBook();
-                        List<Book> allBook = bookProvider.listBook;
-                        profileProvider.getBookmarkedBooks(allBook);
-
+                        profileProvider.getBookmarkedBooks(bookProvider.listBook);
+                        // initState();
                         setState(() {
-                          if (_icon == Icons.bookmark_outline) {
-                            _icon = Icons.bookmark;
+                          if (_icon == 1) {
+                            _icon = 0;
+                            print("nah");
                           } 
-                          else _icon = Icons.bookmark_outline;
-
+                          else {
+                            _icon = 1;
+                            print("hai");
                           }
-                        );
+
+                        });
+                        // initState();
+
                       },
-                      child: Icon(_icon, color: _bookmarkColor, weight:50.0),
+                      
                     ),
                   ),
                 ),
@@ -175,23 +186,16 @@ class _BookDetailPageState extends State<BookDetailPage> {
     );
   }
 
-
-
-  //Finally, the build method:
-  //
-  // Aside:
-  // It's often much easier to build UI if you break up your widgets the way I
-  // have in this file rather than trying to have one massive build method
   @override
   Widget build(BuildContext context) {
     // This is a new page, so you need a new Scaffold!
     return Scaffold(
       resizeToAvoidBottomInset: false, // set it to false
-      backgroundColor: Colors.black87,
+      backgroundColor: Colors.white,
       appBar: AppBar(
-        backgroundColor: Colors.blueGrey,
-        title: Text('Read ${widget.book.fields.name}!'), 
-        titleTextStyle: TextStyle(color: Colors.black87),
+        backgroundColor: ColorTheme.almondDust,
+        title: Text('Bookpals'), 
+        titleTextStyle: TextStyle(color: ColorTheme.black, fontWeight: FontWeight.w700, fontSize: 24),
       ),
       body: 
       // Center(

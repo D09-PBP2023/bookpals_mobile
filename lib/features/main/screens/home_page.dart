@@ -22,7 +22,7 @@ class _HomePageState extends State<HomePage> {
       usePadding: false,
       body: const [
         CatalogPage(), // index 0
-        CatalogPage(),
+        BookmarkPage(),
         ProfilePage(),
       ][_selectedIndex],
       navigationBar: Container(

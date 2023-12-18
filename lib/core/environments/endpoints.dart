@@ -6,10 +6,9 @@ class Endpoints {
   static const logoutUrl = '$baseUrl/logout-mobile/';
 
   static const getProfile = '$baseUrl/profileflutter/';
-
+  // static bookmarkUrl = '$baseUrl/bookmarkflutter/';
   static String bookmarkUrl(int id) =>
       '$baseUrl/bookmarkflutter/$id';
-      
   static const getBooksUrl = '$baseUrl/get-books/';
   static String searchBooksUrl(String name) =>
       '$baseUrl/get-books-by-name/$name';

@@ -16,36 +16,36 @@ class BookDisplay extends StatelessWidget {
               MaterialPageRoute(builder: (context) => BookDetailPage(book)),
             );
           }, 
-    child: SizedBox(
-      width: 150,
-      height: 300,
-      child: Column(
-        children: [
-          ClipRRect(
-            borderRadius: BorderRadius.circular(8.0),
-            child: Image.network(
-              book.fields.coverImage,
-              width: 150,
-              height: 200,
-              fit: BoxFit.cover,
+      child: SizedBox(
+        width: 130,
+        height: 300,
+        child: Column(
+          children: [
+            ClipRRect(
+              borderRadius: BorderRadius.circular(8.0),
+              child: Image.network(
+                book.fields.coverImage,
+                width: 130,
+                height: 130 / 9 * 14,
+                fit: BoxFit.cover,
+              ),
             ),
-          ),
-          Text(
-            book.fields.name,
-            textAlign: TextAlign.center,
-            maxLines: 3,
-            overflow: TextOverflow.ellipsis,
-            style: const TextStyle(
-              fontSize: 16,
-              fontWeight: FontWeight.bold,
+            Text(
+              book.fields.name,
+              textAlign: TextAlign.center,
+              maxLines: 3,
+              overflow: TextOverflow.ellipsis,
+              style: const TextStyle(
+                fontSize: 16,
+                fontWeight: FontWeight.bold,
+              ),
             ),
-          ),
-         
-          // child: Text('Go to book detail page'
-        ]
-        ),  
-    ),
-    );
+          
+            // child: Text('Go to book detail page'
+          ]
+          ),  
+        ),
+      );
   }
 }
 

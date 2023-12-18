@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import '../../../core/bases/models/Book.dart';
-import '../../../core/bases/providers/BookProvider.dart';
 import '../../../core/bases/providers/ProfileProvider.dart';
 import '../../../core/bases/widgets/scaffold.dart';
 import '../../../core/bases/models/Profile.dart';

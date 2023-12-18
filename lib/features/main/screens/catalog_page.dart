@@ -6,6 +6,7 @@ import 'package:lazy_load_scrollview/lazy_load_scrollview.dart';
 import 'package:provider/provider.dart';
 
 import '../../../core/bases/models/Book.dart';
+import '../../../core/bases/providers/ProfileProvider.dart';
 import '../../../core/bases/providers/book_provider.dart';
 import '../../../core/bases/widgets/custom_icon_icons.dart';
 import '../../../core/bases/widgets/scaffold.dart';
@@ -121,6 +122,9 @@ class _CatalogPageState extends State<CatalogPage> {
     final bookProvider = context.watch<BookProvider>();
     List<Book> featuredBooks = bookProvider.getRandomBooks(20);
     final bookColumn = ((MediaQuery.of(context).size.width - 100) ~/ 130);
+
+    final profileProvider = context.read<ProfileProvider>();
+    profileProvider.getBookmarkedBooks(bookProvider.listBook);
 
     return BpScaffold(
       body: LazyLoadScrollView(
