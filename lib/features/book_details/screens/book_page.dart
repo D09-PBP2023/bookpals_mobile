@@ -188,9 +188,14 @@ class _BookDetailPageState extends State<BookDetailPage> {
       backgroundColor: Colors.white,
       appBar: AppBar(
         backgroundColor: ColorTheme.almondDust,
-        title: Text('Bookpals'),
-        titleTextStyle: TextStyle(
-            color: ColorTheme.black, fontWeight: FontWeight.w700, fontSize: 24),
+        title: const Text('Book Details'),
+        titleTextStyle: const TextStyle(
+            color: ColorTheme.black, fontWeight: FontWeight.w400, fontSize: 24),
+        centerTitle: true,
+        leading: IconButton(
+          icon: const Icon(Icons.arrow_back_ios),
+          onPressed: () => Navigator.pop(context),
+        ),
       ),
       body: SingleChildScrollView(child: BookProfile),
     );

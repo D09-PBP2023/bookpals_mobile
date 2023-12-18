@@ -24,11 +24,7 @@ class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     return BpScaffold(
-      body: const [
-        CatalogPage(), // index 0
-        BookmarkPage(),
-        ProfilePage(),
-      ][_selectedIndex],
+      body: pages[_selectedIndex],
       navigationBar: Container(
         decoration: const BoxDecoration(
           borderRadius: BorderRadius.only(
