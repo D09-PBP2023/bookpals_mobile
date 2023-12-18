@@ -51,7 +51,7 @@ class _ProfilePageState extends State<ProfilePage> {
                 height: 40,
                 child: ElevatedButton(
                   onPressed: () async {
-                    Navigator.push(
+                    await Navigator.push(
                       context,
                       MaterialPageRoute(
                         builder: (context) => EditProfile(
@@ -59,6 +59,9 @@ class _ProfilePageState extends State<ProfilePage> {
                         ),
                       ),
                     );
+                    setState(() {
+                      profileProvider.setUserProfile();
+                    });
                   },
                   child: const Text("Edit"),
                 ),

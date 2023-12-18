@@ -115,6 +115,7 @@ class _EditProfileState extends State<EditProfile> {
                   child: ElevatedButton(
                     onPressed: () async {
                       profileProvider.editUserProfile(_name, _email, _bio);
+                      profileProvider.setUserProfile();
                       Navigator.pop(context);
                     },
                     child: const Text("Submit"),
