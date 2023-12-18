@@ -1,15 +1,15 @@
 import 'dart:math';
 
-import 'package:bookpals_mobile/features/main/screens/search_page.dart';
 import 'package:flutter/material.dart';
 import 'package:lazy_load_scrollview/lazy_load_scrollview.dart';
 import 'package:provider/provider.dart';
 
-import '../../../core/bases/models/Book.dart';
-import '../../../core/bases/providers/ProfileProvider.dart';
+import '../../../core/bases/models/book.dart';
 import '../../../core/bases/providers/book_provider.dart';
+import '../../../core/bases/providers/profile_provider.dart';
 import '../../../core/bases/widgets/custom_icon_icons.dart';
 import '../../../core/bases/widgets/scaffold.dart';
+import 'search_page.dart';
 import 'widgets/book_display.dart';
 import 'widgets/category_display.dart';
 
@@ -127,6 +127,7 @@ class _CatalogPageState extends State<CatalogPage> {
     profileProvider.getBookmarkedBooks(bookProvider.listBook);
 
     return BpScaffold(
+      padding: const EdgeInsets.only(left: 24, right: 24, top: 20),
       body: LazyLoadScrollView(
         onEndOfPage: loadMoreBooks,
         child: SingleChildScrollView(

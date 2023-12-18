@@ -2,12 +2,10 @@
 
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-
-import '../../../core/bases/models/Book.dart';
-
-import '../../../core/bases/providers/ProfileProvider.dart';
 import '../../../core/bases/providers/book_provider.dart';
 import '../../../core/theme/color_theme.dart';
+import '../../../core/bases/models/book.dart';
+import '../../../core/bases/providers/profile_provider.dart';
 
 class BookDetailPage extends StatefulWidget {
   final Book book;
@@ -19,8 +17,7 @@ class BookDetailPage extends StatefulWidget {
 }
 
 class _BookDetailPageState extends State<BookDetailPage> {
-  Color _bookmarkColor = ColorTheme.coffeeGrounds;
-  // IconData _icon = Icons.bookmark_outline;
+  final Color _bookmarkColor = ColorTheme.coffeeGrounds;
   List<IconData> icons = [ Icons.bookmark, Icons.bookmark_outline];
   int _icon = 1;
     @override
@@ -47,8 +44,7 @@ class _BookDetailPageState extends State<BookDetailPage> {
   Widget get BookProfile {
 
     return Container(
-      padding: EdgeInsets.all(32.0),
-      
+      padding: const EdgeInsets.all(32.0),
       decoration: BoxDecoration(
         color: Colors.white,
         borderRadius: BorderRadius.circular(8.0),
@@ -67,44 +63,45 @@ class _BookDetailPageState extends State<BookDetailPage> {
               ),
             ),
           ),
-          Padding(padding: EdgeInsets.all(10.0)),
+          const Padding(padding: EdgeInsets.all(10.0)),
           Center(
             child: Text(
               '${widget.book.fields.name}',
               textAlign: TextAlign.center,
-              style: TextStyle(fontSize: 32.0, color: Colors.black),
+              style: const TextStyle(fontSize: 32.0, color: Colors.black),
             ),
           ),
-          Center (
+          Center(
             child: Row(
               mainAxisSize: MainAxisSize.min,
-              children: List<Widget>.generate(5, (index) => Icon(Icons.star, color: Colors.yellow)),
-            ), 
+              children: List<Widget>.generate(
+                  5, (index) => const Icon(Icons.star, color: Colors.yellow)),
+            ),
           ),
           Center(
             child: Text(
               'Published: ${widget.book.fields.yearPublished}',
               textAlign: TextAlign.center,
-              style: TextStyle(fontSize: 16.0, color: Colors.grey),
+              style: const TextStyle(fontSize: 16.0, color: Colors.grey),
             ),
           ),
           Center(
             child: Text(
               'Language: ${widget.book.fields.originalLanguage}',
               textAlign: TextAlign.center,
-              style: TextStyle(fontSize: 16.0, color: Colors.grey),
+              style: const TextStyle(fontSize: 16.0, color: Colors.grey),
             ),
           ),
           Center(
             child: Text(
               'Genre: ${widget.book.fields.genre}',
               textAlign: TextAlign.center,
-              style: TextStyle(fontSize: 16.0, color: Colors.grey),
+              style: const TextStyle(fontSize: 16.0, color: Colors.grey),
             ),
           ),
           // Adding buttons
-          
-          Padding(padding: EdgeInsets.all(10.0)),
+
+          const Padding(padding: EdgeInsets.all(10.0)),
           Center(
             child: Row(
               mainAxisAlignment: MainAxisAlignment.center,
@@ -118,17 +115,15 @@ class _BookDetailPageState extends State<BookDetailPage> {
                     height: 50.0, // specify the height
                     child: MaterialButton(
                       textColor: Colors.white,
-                      onPressed: () {
-                        
-                      },
-                      child: Text(
+                      onPressed: () {},
+                      child: const Text(
                         'Review',
                         style: TextStyle(fontSize: 16.0),
                       ),
                     ),
                   ),
                 ),
-                Padding(padding: EdgeInsets.all(7.0)),
+                const Padding(padding: EdgeInsets.all(7.0)),
                 Material(
                   elevation: 0.0,
                   borderRadius: BorderRadius.circular(5.0),
@@ -139,9 +134,12 @@ class _BookDetailPageState extends State<BookDetailPage> {
                     child: MaterialButton(
                       child: Icon(icons[_icon], color: _bookmarkColor, weight:50.0, size: 35,),
                       onPressed: () async {
-                        var profileProvider = Provider.of<ProfileProvider>(context, listen: false);
+                        var profileProvider = Provider.of<ProfileProvider>(
+                            context,
+                            listen: false);
                         await profileProvider.bookmark(widget.book.pk);
-                        BookProvider bookProvider = context.read<BookProvider>();
+                        BookProvider bookProvider =
+                            context.read<BookProvider>();
                         bookProvider.fetchAllBook();
                         profileProvider.getBookmarkedBooks(bookProvider.listBook);
                         setState(() {
@@ -163,17 +161,17 @@ class _BookDetailPageState extends State<BookDetailPage> {
           ),
 
           // end button
-          SizedBox(height: 32.0),
-          Center(
+          const SizedBox(height: 32.0),
+          const Center(
             child: Text(
               'Reviews',
               style: TextStyle(fontSize: 24.0, color: Colors.black),
             ),
-          ),  
-          SizedBox(height: 32.0),
-          Divider(color: Colors.grey), 
-          Text(
-            '© 2023 BookPals, Inc.', 
+          ),
+          const SizedBox(height: 32.0),
+          const Divider(color: Colors.grey),
+          const Text(
+            '© 2023 BookPals, Inc.',
             style: TextStyle(fontSize: 14.0, color: Colors.grey),
           ),
         ],
@@ -192,12 +190,8 @@ class _BookDetailPageState extends State<BookDetailPage> {
         title: Text('Bookpals'), 
         titleTextStyle: TextStyle(color: ColorTheme.black, fontWeight: FontWeight.w700, fontSize: 24),
       ),
-      body: 
-      // Center(
-        SingleChildScrollView(child: BookProfile),
-
-      // ),
+      body:
+          SingleChildScrollView(child: BookProfile),
     );
-    
   }
 }

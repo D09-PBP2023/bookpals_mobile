@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:lazy_load_scrollview/lazy_load_scrollview.dart';
 import 'package:provider/provider.dart';
 
-import '../../../core/bases/models/Book.dart';
+import '../../../core/bases/models/book.dart';
 import '../../../core/bases/providers/book_provider.dart';
 import '../../../core/bases/widgets/scaffold.dart';
 import '../../../core/bases/widgets/search_field.dart';
@@ -77,14 +77,13 @@ class _SearchPageState extends State<SearchPage> {
   Widget build(BuildContext context) {
     final bookColumn = ((MediaQuery.of(context).size.width - 100) ~/ 130);
     return BpScaffold(
-      usePadding: false,
       body: SafeArea(
         child: LazyLoadScrollView(
           onEndOfPage: loadMoreBooks,
           child: SingleChildScrollView(
             child: Column(
               children: [
-                Container(
+                SizedBox(
                   height: 240,
                   child: Stack(
                     children: [

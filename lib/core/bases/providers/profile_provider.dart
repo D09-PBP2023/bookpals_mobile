@@ -1,11 +1,8 @@
 import 'package:flutter/material.dart';
-
 import '../../../services/api.dart';
 import '../../environments/endpoints.dart';
-import '../models/Book.dart';
-import '../models/Profile.dart';
-
-import 'package:flutter/material.dart';
+import '../models/book.dart';
+import '../models/profile.dart';
 
 import 'book_provider.dart';
 
@@ -20,22 +17,17 @@ class ProfileProvider with ChangeNotifier {
         profilePicture: "",
         bio: "This client has yet to make a signature.",
         timesSwapped: 0,
-        favoriteBook1: 0,
-        favoriteBook2: 0,
-        favoriteBook3: 0,
+        favoriteBook1: -1,
+        favoriteBook2: -1,
+        favoriteBook3: -1,
         bookmarkedbooks: [],
-      )
-    );
+      ));
 
   UserProfile get userProfile => _userProfile;
 
   Future<void> setUserProfile() async {
     final response = await APIHelper.get(Endpoints.getProfile);
-    print("ini respon");
-    print(response);
-    print(_userProfile);
     _userProfile = UserProfile.fromJson(response[0]);
-    // print(_userProfile);
     notifyListeners();
   }
 
@@ -47,16 +39,47 @@ class ProfileProvider with ChangeNotifier {
     final response = await APIHelper.get(Endpoints.getProfile);
     bookmarked = [];
     _userProfile = UserProfile.fromJson(response[0]);
-    for (Book i in allBook ) {
+    for (Book i in allBook) {
       if (_userProfile.fields.bookmarkedbooks.contains(i.pk)) bookmarked.add(i);
     }
-    debugPrint(bookmarked[0].fields.name);
     notifyListeners();
+  }
+
+  Future<dynamic> editUserProfile(
+      String nickname, String email, String bio) async {
+    return await APIHelper.post(Endpoints.editProfile, {
+      'nickname': nickname,
+      'email': email,
+      'bio': bio,
+    });
+  }
+
+  Future<dynamic> editFavourite(int favouriteId, int x) async {
+    String favoriteBookid = favouriteId.toString();
+    if (x == 1) {
+      return await APIHelper.post(Endpoints.editFav(x), {
+        'fav1': favoriteBookid,
+      });
+    }
+    if (x == 2) {
+      return await APIHelper.post(Endpoints.editFav(x), {
+        'fav2': favoriteBookid,
+      });
+    }
+    if (x == 3) {
+      return await APIHelper.post(Endpoints.editFav(x), {
+        'fav3': favoriteBookid,
+      });
+    }
+
+    // Future<dynamic> bookmark(int id) async {
+    //   return await APIHelper.post(Endpoints.bookmarkUrl, {
+    //     'book': id,
+    //   });
+    // }
   }
 
   Future<void> bookmark(int id) async {
     await APIHelper.get(Endpoints.bookmarkUrl(id));
-    this.getBookmarkedBooks(allBook);
   }
-
 }

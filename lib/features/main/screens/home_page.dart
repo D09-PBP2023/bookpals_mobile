@@ -19,7 +19,6 @@ class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     return BpScaffold(
-      usePadding: false,
       body: const [
         CatalogPage(), // index 0
         BookmarkPage(),

@@ -6,27 +6,26 @@ class BpScaffold extends StatelessWidget {
   final Widget body;
   final Widget? navigationBar;
   final bool safeArea;
-  final bool usePadding;
+  final EdgeInsetsGeometry? padding;
   final bool resizeToAvoidBottomInset;
   final Color backgroundColor;
+  final PreferredSizeWidget? appBar;
   const BpScaffold(
       {required this.body,
       this.safeArea = true,
-      this.usePadding = true,
       this.resizeToAvoidBottomInset = false,
       this.backgroundColor = const Color(0xFFF8F8F8),
+      this.padding,
       this.navigationBar,
+      this.appBar,
       super.key});
 
   @override
   Widget build(BuildContext context) {
     var content = body;
-    if (usePadding) {
+    if (padding != null) {
       content = Padding(
-        padding: const EdgeInsets.symmetric(
-          vertical: 20,
-          horizontal: 24,
-        ),
+        padding: padding!,
         child: body,
       );
     }
@@ -35,7 +34,7 @@ class BpScaffold extends StatelessWidget {
     }
 
     return Scaffold(
-      extendBody: true,
+      appBar: appBar,
       body: content,
       resizeToAvoidBottomInset: resizeToAvoidBottomInset,
       bottomNavigationBar: navigationBar,

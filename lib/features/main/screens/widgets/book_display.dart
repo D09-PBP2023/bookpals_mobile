@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '../../../../core/bases/models/Book.dart';
+import '../../../../core/bases/models/book.dart';
 import '../../../book_details/screens/book_page.dart';
 
 class BookDisplay extends StatelessWidget {
@@ -16,6 +16,7 @@ class BookDisplay extends StatelessWidget {
               MaterialPageRoute(builder: (context) => BookDetailPage(book)),
             );
           }, 
+        
       child: SizedBox(
         width: 130,
         height: 300,
@@ -40,12 +41,11 @@ class BookDisplay extends StatelessWidget {
                 fontWeight: FontWeight.bold,
               ),
             ),
-          
-            // child: Text('Go to book detail page'
-          ]
-          ),  
-        ),
-      );
+
+          // child: Text('Go to book detail page'
+        ]),
+      ));
+    
   }
 }
 
