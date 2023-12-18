@@ -1,4 +1,7 @@
 # Bookpals 📚 (mobile version)
+[![Build status](https://build.appcenter.ms/v0.1/apps/737df927-6f75-4971-a0ce-90654d8b3b7a/branches/main/badge)](https://appcenter.ms)
+
+Tautan APK: https://install.appcenter.ms/orgs/d09-pbp2023/apps/bookpals-mobile/distribution_groups/public
 
 "Rajin Membaca, Cerewet di BookPals"
 > Sebuah karya dari kami, kelompok D09 untuk Indonesia.
