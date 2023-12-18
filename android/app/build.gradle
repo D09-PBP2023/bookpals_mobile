@@ -56,7 +56,7 @@ android {
 
     signingConfigs {
         release {
-                storeFile file("../../pbp-release-keystore.jks")
+                storeFile file("../../release-keystore.jks")
                 storePassword = "$System.env.KEY_PASSWORD"
                 keyAlias = "release"
                 keyPassword = "$System.env.KEY_PASSWORD"
