@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import 'core/bases/providers/book_provider.dart';
+import 'core/bases/providers/profile_provider.dart';
 import 'features/authentication/providers/auth_provider.dart';
 
 Future<void> main() async {
@@ -24,6 +25,7 @@ class MyApp extends StatelessWidget {
         // Provider<CookieRequest>(create: (context) => CookieRequest()),
         ChangeNotifierProvider(create: (_) => AuthProvider()),
         ChangeNotifierProvider(create: (_) => BookProvider()),
+        ChangeNotifierProvider(create: (_) => ProfileProvider()),
       ],
       child: MaterialApp(
         title: 'BookPals',

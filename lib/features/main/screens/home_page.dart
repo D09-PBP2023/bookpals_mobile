@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 import '../../../core/bases/widgets/scaffold.dart';
 import '../../../core/theme/color_theme.dart';
+import '../../book_details/screens/bookmark_page.dart';
 import '../../profile/screens/profile_page.dart';
 import 'catalog_page.dart';
 
@@ -14,14 +15,18 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   int _selectedIndex = 0;
+  final pages = [
+    const CatalogPage(),
+    const BookmarkPage(),
+    const ProfilePage(),
+  ];
 
   @override
   Widget build(BuildContext context) {
     return BpScaffold(
-      usePadding: false,
       body: const [
         CatalogPage(), // index 0
-        CatalogPage(),
+        BookmarkPage(),
         ProfilePage(),
       ][_selectedIndex],
       navigationBar: Container(

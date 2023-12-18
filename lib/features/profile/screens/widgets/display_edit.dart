@@ -1,20 +1,26 @@
 import 'package:flutter/material.dart';
 
 import '../../../../core/bases/models/book.dart';
-import '../../../book_details/screens/book_page.dart';
 
-class BookDisplay extends StatelessWidget {
+import '../../../../core/bases/providers/profile_provider.dart';
+
+class DisplayEdit extends StatelessWidget {
+  final int x;
   final Book book;
-  const BookDisplay({super.key, required this.book});
+  final ProfileProvider profileProvider;
+  const DisplayEdit(
+      {super.key,
+      required this.book,
+      required this.profileProvider,
+      required this.x});
 
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: () {
-        Navigator.push(
-          context,
-          MaterialPageRoute(builder: (context) => BookDetailPage(book)),
-        );
+      onTap: () async {
+        await profileProvider.editFavourite(book.pk, x);
+        await profileProvider.setUserProfile();
+        Navigator.pop(context);
       },
       child: SizedBox(
         width: 150,
