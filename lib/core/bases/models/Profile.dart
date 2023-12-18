@@ -70,9 +70,9 @@ class FieldsProfile {
       profilePicture: json["profile_picture"] ?? "",
       bio: json["bio"] ?? "",
       timesSwapped: json["times_swapped"] ?? 0,
-      favoriteBook1: json["favoriteBook1"] ?? 0,
-      favoriteBook2: json["favoriteBook2"] ?? 0,
-      favoriteBook3: json["favoriteBook3"] ?? 0,
+      favoriteBook1: json["favoriteBook1"] ?? -1,
+      favoriteBook2: json["favoriteBook2"] ?? -1,
+      favoriteBook3: json["favoriteBook3"] ?? -1,
       bookmarkedbooks: List<int>.from(json["bookmarkedbooks"] ?? []),
     );
   }

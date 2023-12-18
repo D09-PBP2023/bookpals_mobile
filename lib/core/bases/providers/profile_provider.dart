@@ -16,9 +16,9 @@ class ProfileProvider with ChangeNotifier {
         profilePicture: "",
         bio: "This client has yet to make a signature.",
         timesSwapped: 0,
-        favoriteBook1: 0,
-        favoriteBook2: 0,
-        favoriteBook3: 0,
+        favoriteBook1: -1,
+        favoriteBook2: -1,
+        favoriteBook3: -1,
         bookmarkedbooks: [],
       ));
 

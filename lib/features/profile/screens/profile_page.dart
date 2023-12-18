@@ -138,7 +138,8 @@ class _ProfilePageState extends State<ProfilePage> {
         break;
     }
 
-    if (x != 0) {
+    if (x > 0) {
+      print(x);
       x--;
     }
 
@@ -171,12 +172,19 @@ class _ProfilePageState extends State<ProfilePage> {
           },
           child: ClipRRect(
             borderRadius: BorderRadius.circular(12),
-            child: Image.network(
-              bookProvider.listBook[x].fields
-                  .coverImage, // Replace with the actual URL of your image
-              fit: BoxFit
-                  .cover, // You can adjust the fit based on your requirements
-            ),
+            child: (x >= 0 && x < bookProvider.listBook.length)
+                ? Image.network(
+                    bookProvider.listBook[x].fields.coverImage,
+                    fit: BoxFit.cover,
+                  )
+                : Container(
+                    color: Color.fromARGB(
+                      255,
+                      206,
+                      181,
+                      159,
+                    ), // Set the color to white
+                  ),
           ),
         ),
       ),
@@ -242,7 +250,8 @@ class _ProfilePageState extends State<ProfilePage> {
       child: Text(
         profileProvider.userProfile.fields.email,
         style: const TextStyle(
-            color: Colors.grey, backgroundColor: Colors.amberAccent),
+            color: Color.fromARGB(255, 84, 84, 84),
+            backgroundColor: Color.fromARGB(255, 131, 197, 0)),
         overflow: TextOverflow.ellipsis,
         maxLines: 2,
       ),
