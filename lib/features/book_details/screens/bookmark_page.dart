@@ -56,6 +56,7 @@ class _BookmarkPageState extends State<BookmarkPage> {
   Widget build(BuildContext context) {
     final profileProvider = context.watch<ProfileProvider>();
     final bookProvider = context.watch<BookProvider>();
+    int sumBookmarked = profileProvider.bookmarked.length;
     // profileProvider.getBookmarkedBooks(bookProvider.listBook);
 
     List<Book> featuredBooks = bookProvider.getRandomBooks(10);
@@ -131,42 +132,42 @@ class _BookmarkPageState extends State<BookmarkPage> {
                   },
                 ),
               ),
-              
+              Align(
+                  alignment: Alignment.centerLeft,
+                  child: Text(
+                    "Bookmarked: $sumBookmarked",
+                    style: const TextStyle(
+                      fontWeight: FontWeight.w800,
+                      fontSize: 20,
+                    ),
+                  ),
+                ),
+              const Padding(padding: EdgeInsets.all(8.0) ),
+
               if (profileProvider.bookmarked.isEmpty) 
-                const Padding(padding: EdgeInsets.all(8.0) ),
                 const Align(
                   alignment: Alignment.center,
                   child: Text(
-                    "Let's Find More Books!",
+                    "No Books Here Yet...\nLet's Find More Books!",
                     style: TextStyle(
-                      fontWeight: FontWeight.w800,
-                      fontSize: 20,
+                      fontWeight: FontWeight.w400,
+                      fontSize: 18,
                     ),
                   ),
-                ),
-              if (profileProvider.bookmarked.isNotEmpty)
-                const Align(
-                  alignment: Alignment.centerLeft,
-                  child: Text(
-                    "Bookmarked",
-                    style: TextStyle(
-                      fontWeight: FontWeight.w800,
-                      fontSize: 20,
-                    ),
-                  ),
-                ),
+                )
+              else  
                 ListView.builder(
                   shrinkWrap: true,
                   itemCount: (profileProvider.bookmarked.length + bookColumn - 1) ~/ bookColumn,
                   physics: const NeverScrollableScrollPhysics(),
                   itemBuilder: (context, index) {
                     return Row( mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                        children: [
-                          if (profileProvider.bookmarked.isNotEmpty)
+                        children: [                      
                             for (int i = 0; i < bookColumn; i++)
                               if (index * bookColumn + i < profileProvider.bookmarked.length)
                                 BookDisplay(
-                                    book: profileProvider.bookmarked[index * bookColumn + i]),  
+                                    book: profileProvider.bookmarked[index * bookColumn + i]), 
+                                
                           ],
                       );
                     }

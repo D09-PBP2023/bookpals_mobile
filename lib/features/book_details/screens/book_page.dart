@@ -144,20 +144,15 @@ class _BookDetailPageState extends State<BookDetailPage> {
                         BookProvider bookProvider = context.read<BookProvider>();
                         bookProvider.fetchAllBook();
                         profileProvider.getBookmarkedBooks(bookProvider.listBook);
-                        // initState();
                         setState(() {
                           if (_icon == 1) {
                             _icon = 0;
-                            print("nah");
                           } 
                           else {
                             _icon = 1;
-                            print("hai");
                           }
 
                         });
-                        // initState();
-
                       },
                       
                     ),
