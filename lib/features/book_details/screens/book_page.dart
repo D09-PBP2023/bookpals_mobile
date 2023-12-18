@@ -22,8 +22,6 @@ class _BookDetailPageState extends State<BookDetailPage> {
   int _icon = 1;
   @override
   void initState() {
-    print(widget.book.fields.name);
-    print(widget.book.pk);
     ProfileProvider profileProvider = context.read<ProfileProvider>();
     profileProvider.setUserProfile();
     BookProvider bookProvider = context.read<BookProvider>();
