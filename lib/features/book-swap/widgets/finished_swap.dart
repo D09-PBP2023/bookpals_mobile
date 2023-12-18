@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 
-import '../../../core/bases/widgets/button.dart';
 import '../../../core/bases/widgets/scaffold.dart';
 import '../../../core/bases/widgets/search_field.dart';
 import '../../main/screens/home_page.dart';
@@ -9,15 +8,15 @@ import 'package:provider/provider.dart';
 import '../models/swap.dart';
 import '../screens/book_swap.dart';
 
-class AcceptedSwapWidget extends StatefulWidget {
+class FinishedSwapWidget extends StatefulWidget {
   //Override Key
-  const AcceptedSwapWidget({super.key});
+  const FinishedSwapWidget({super.key});
 
   @override
-  State<AcceptedSwapWidget> createState() => _AcceptedSwapWidgetState();
+  State<FinishedSwapWidget> createState() => _FinishedSwapWidgetState();
 }
 
-class _AcceptedSwapWidgetState extends State<AcceptedSwapWidget> {
+class _FinishedSwapWidgetState extends State<FinishedSwapWidget> {
   @override
   List<Swap> _listSwaps = [];
   String _searchController = "";
@@ -25,8 +24,8 @@ class _AcceptedSwapWidgetState extends State<AcceptedSwapWidget> {
   void initState() {
     super.initState();
     SwapProvider swapProvider = context.read<SwapProvider>();
-    swapProvider.fetchAcceptedSwap();
-    _listSwaps = swapProvider.getAcceptedSwap();
+    swapProvider.fetchFinishedSwap();
+    _listSwaps = swapProvider.getFinishedSwap();
   }
 
   @override
@@ -43,7 +42,6 @@ class _AcceptedSwapWidgetState extends State<AcceptedSwapWidget> {
                   onPressed: () {
                     // Pop to Home Page
                     Navigator.pop(context);
-                    setState(() {});
                   },
                   icon: const Icon(Icons.arrow_back),
                 ),
@@ -77,7 +75,7 @@ class _AcceptedSwapWidgetState extends State<AcceptedSwapWidget> {
               const Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  const Text("Tidak ada Buku yang Ditukar"),
+                  const Text("Tidak ada buku yang diterima"),
                 ],
               )
             else // If _listSwaps is not empty, show the data
@@ -93,27 +91,8 @@ class _AcceptedSwapWidgetState extends State<AcceptedSwapWidget> {
                           subtitle: Text(_listSwaps[index].fields.haveBook),
                           trailing: Text(_listSwaps[index].fields.fromUser),
                         ),
-                        // Delete Button
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.end,
-                          children: [
-                            TextButton(
-                              onPressed: () {
-                                swapProvider
-                                    .swapFinished(
-                                        _listSwaps[index].pk.toString())
-                                    .whenComplete(() {
-                                  setState(() {
-                                    _listSwaps.removeAt(index);
-                                  });
-                                }).whenComplete(() => setState(() {
-                                          swapProvider.fetchAcceptedSwap();
-                                        }));
-                              },
-                              child: const Text("Selesaikan"),
-                            ),
-                          ],
-                        ),
+                        // Finished Text
+                        const Text("Finished"),
                       ],
                     ),
                   );

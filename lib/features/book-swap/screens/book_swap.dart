@@ -2,10 +2,14 @@ import 'package:flutter/material.dart';
 
 import '../../../core/bases/widgets/button.dart';
 import '../../../core/bases/widgets/scaffold.dart';
-import '../widgets/processed_swap.dart';
 import '../widgets/accepted_swap.dart';
+import '../widgets/processed_swap.dart';
 import '../widgets/waiting_swap.dart';
+import '../widgets/finished_swap.dart';
 import 'book_swap_request.dart';
+import '../../book-swap/providers/swap_provider.dart';
+import 'package:provider/provider.dart';
+import '../../book-swap/models/swap.dart';
 
 class BookSwap extends StatefulWidget {
   const BookSwap({super.key});
@@ -15,26 +19,10 @@ class BookSwap extends StatefulWidget {
 }
 
 class _BookSwapState extends State<BookSwap> {
-  int _selectedIndex = 0;
-  int categoriesIndex = 0;
-
-  void onItemTapped(int index) {
-    setState(() {
-      _selectedIndex = index;
-    });
+  @override
+  void initState() {
+    super.initState();
   }
-
-  final List<String> categories = <String>[
-    'Processed',
-    'Waiting',
-    'Accept',
-  ];
-
-  final List<Widget> categoriesWidget = <Widget>[
-    ProcessedSwap(),
-    WaitingSwap(),
-    AcceptedSwap(),
-  ];
 
   @override
   Widget build(BuildContext context) {
@@ -66,43 +54,70 @@ class _BookSwapState extends State<BookSwap> {
             ),
           ),
           const SizedBox(height: 20),
-          Center(
-            child: Container(
-              child: SizedBox(
-                height: 40,
-                child: ListView.separated(
-                  scrollDirection: Axis.horizontal,
-                  separatorBuilder: (BuildContext context, int index) {
-                    return const SizedBox(
-                      width: 10,
-                    );
-                  },
-                  itemCount: categories.length,
-                  itemBuilder: (BuildContext ctxt, int index) {
-                    return ElevatedButton(
-                        style: ElevatedButton.styleFrom(
-                          primary: categoriesIndex == index
-                              ? Colors.brown[300]
-                              : Colors.grey[300],
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(10),
-                          ),
-                        ),
-                        onPressed: () {
-                          setState(() {
-                            categoriesIndex = index;
-                          });
-                        },
-                        child: Text(categories[index]));
-                  },
-                ),
+          const Align(
+            alignment: Alignment.centerLeft,
+            child: Text(
+              "My Swap",
+              style: TextStyle(
+                fontWeight: FontWeight.w800,
+                fontSize: 20,
               ),
             ),
           ),
-          const SizedBox(
-            height: 20,
+          const SizedBox(height: 20),
+          Align(
+            alignment: Alignment.centerLeft,
+            child: BpButton(
+              text: 'Processed Swap List',
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => ProcessedSwapWidget()),
+                );
+              },
+            ),
           ),
-          categoriesWidget[categoriesIndex],
+          const SizedBox(height: 20),
+          Align(
+            alignment: Alignment.centerLeft,
+            child: BpButton(
+              text: 'Waiting Swap List',
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => const WaitingSwapWidget()),
+                );
+              },
+            ),
+          ),
+          const SizedBox(height: 20),
+          Align(
+            alignment: Alignment.centerLeft,
+            child: BpButton(
+              text: 'Accepted Swap List',
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => const AcceptedSwapWidget()),
+                );
+              },
+            ),
+          ),
+          const SizedBox(height: 20),
+          Align(
+            alignment: Alignment.centerLeft,
+            child: BpButton(
+              text: 'Finished Swap List',
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => const FinishedSwapWidget()),
+                );
+              },
+            ),
+          ),
         ],
       ),
     ));

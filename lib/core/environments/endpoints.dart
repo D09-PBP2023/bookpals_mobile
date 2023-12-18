@@ -7,7 +7,7 @@ class Endpoints {
   static const getBooksUrl = '$baseUrl/get_books/';
   static const requestSwap = '$baseUrl/create_swap_mobile/';
   static const acceptSwap = '$baseUrl/accept_swap_mobile/';
-  static const completeSwap = '$baseUrl/complete_swap_mobile/';
+  static const finishedSwap = '$baseUrl/finish_swap_mobile/';
   static const cancelSwap = '$baseUrl/cancel_swap_mobile/';
   static const getProcessedSwap = '$baseUrl/get_processed_book_json/';
   static const getWaitingSwap = '$baseUrl/get_waiting_accept_book_json/';

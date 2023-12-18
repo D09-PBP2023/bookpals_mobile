@@ -1,15 +1,14 @@
-import 'dart:convert';
-
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-import 'book_swap.dart';
+import '../../main/screens/home_page.dart';
 import '../../../core/bases/widgets/button.dart';
 import '../../../core/bases/widgets/scaffold.dart';
 import '../../../core/bases/providers/book_provider.dart';
-import 'package:bookpals_mobile/core/bases/models/Book.dart';
+import '../../../core/bases/models/Book.dart';
 
-import 'package:bookpals_mobile/features/book-swap/providers/swap_provider.dart';
+import '../../../features/book-swap/providers/swap_provider.dart';
+import 'book_swap.dart';
 
 class RequestSwap extends StatefulWidget {
   const RequestSwap({super.key});
@@ -29,7 +28,6 @@ class _RequestSwapState extends State<RequestSwap> {
   @override
   void initState() {
     super.initState();
-
     BookProvider bookProvider = context.read<BookProvider>();
     setState(() {
       _books = bookProvider.getAllBooks();
@@ -46,7 +44,7 @@ class _RequestSwapState extends State<RequestSwap> {
         Align(
           alignment: Alignment.topLeft,
           child: IconButton(
-            icon: Icon(Icons.arrow_back),
+            icon: const Icon(Icons.arrow_back),
             onPressed: () => Navigator.pop(context),
           ),
         ),
@@ -84,12 +82,12 @@ class _RequestSwapState extends State<RequestSwap> {
                   }
                   return null;
                 },
-                style: TextStyle(
+                style: const TextStyle(
                   color: Colors.black,
                   fontSize: 20,
                 ),
                 isExpanded: true,
-                hint: Text("Select Book"),
+                hint: const Text("Select Book"),
                 value: selectedBook,
                 onChanged: (value) {
                   setState(() {
@@ -111,7 +109,7 @@ class _RequestSwapState extends State<RequestSwap> {
                 }).toList(),
               ),
             ),
-            SizedBox(
+            const SizedBox(
               width: 10,
             ),
             // Add Search Button
@@ -163,7 +161,7 @@ class _RequestSwapState extends State<RequestSwap> {
                     }
                     return null;
                   },
-                  style: TextStyle(
+                  style: const TextStyle(
                     color: Colors.black,
                     fontSize: 20,
                   ),
@@ -198,46 +196,40 @@ class _RequestSwapState extends State<RequestSwap> {
             // Send Data to API
             onTap: () async {
               if (checkedValue) {
-                final response = await swapProvider.swapRequest(
-                  selectedBook!.fields.name,
-                  selectedBook2!.fields.name,
-                  _fromMessage,
-                );
-
-                if (response["status"]) {
-                  Navigator.pushReplacement(
-                    context,
-                    MaterialPageRoute(builder: (context) => const BookSwap()),
-                  );
-                  ScaffoldMessenger.of(context)
-                    ..hideCurrentSnackBar()
-                    ..showSnackBar(
-                        SnackBar(content: Text(response['message'])));
-                } else {
-                  setState(() {
-                    print(response['message']);
-                  });
-                }
+                final response = await swapProvider
+                    .swapRequest(
+                      selectedBook!.fields.name,
+                      selectedBook2!.fields.name,
+                      _fromMessage,
+                    )
+                    .whenComplete(() => setState(
+                          () {
+                            swapProvider.fetchProcessedSwap();
+                          },
+                        ))
+                    .whenComplete(() {
+                  setState(() {});
+                  // Back to SwapPage
+                  Navigator.pop(context);
+                });
+                // Navigate to SwapPage
               } else {
-                final response = await swapProvider.swapRequest(
-                  selectedBook!.fields.name,
-                  selectedBook2!.fields.name,
-                  _fromMessage,
-                );
-                if (response["status"]) {
-                  Navigator.pushReplacement(
-                    context,
-                    MaterialPageRoute(builder: (context) => const BookSwap()),
-                  );
-                  ScaffoldMessenger.of(context)
-                    ..hideCurrentSnackBar()
-                    ..showSnackBar(
-                        SnackBar(content: Text(response['message'])));
-                } else {
-                  setState(() {
-                    print(response['message']);
-                  });
-                }
+                final response = await swapProvider
+                    .swapRequest(
+                      selectedBook!.fields.name,
+                      "",
+                      _fromMessage,
+                    )
+                    .whenComplete(() => setState(
+                          () {
+                            swapProvider.fetchProcessedSwap();
+                          },
+                        ))
+                    .whenComplete(() {
+                  setState(() {});
+                  Navigator.pop(context);
+                });
+                // Navigate to SwapPage
               }
             }),
         const SizedBox(height: 20)

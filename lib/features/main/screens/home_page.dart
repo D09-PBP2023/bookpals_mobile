@@ -51,7 +51,7 @@ class _HomePageState extends State<HomePage> {
                 label: 'Home',
               ),
               NavigationDestination(
-                icon: Icon(Icons.bookmark),
+                icon: Icon(Icons.swap_horiz),
                 label: 'Book Swap',
               ),
               NavigationDestination(
