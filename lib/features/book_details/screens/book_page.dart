@@ -3,9 +3,9 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-import '../../../core/bases/models/Book.dart';
-import '../../../core/bases/providers/BookProvider.dart';
-import '../../../core/bases/providers/ProfileProvider.dart';
+import '../../../core/bases/models/book.dart';
+import '../../../core/bases/providers/book_provider.dart';
+import '../../../core/bases/providers/profile_provider.dart';
 
 class BookDetailPage extends StatefulWidget {
   final Book book;
@@ -17,32 +17,30 @@ class BookDetailPage extends StatefulWidget {
 }
 
 class _BookDetailPageState extends State<BookDetailPage> {
-  Color _bookmarkColor = Color(0xFF0148A4);
+  final Color _bookmarkColor = const Color(0xFF0148A4);
   IconData _icon = Icons.bookmark_outline;
 
-
-  Widget get BookProfile {
-      @override
-      void initState() {
-        print(widget.book.fields.name);
-        print(widget.book.pk);
-        ProfileProvider profileProvider = context.read<ProfileProvider>();
-        profileProvider.setUserProfile();
-        BookProvider bookProvider = context.read<BookProvider>();
-        bookProvider.fetchAllBook();
-        List<Book> allBook = bookProvider.listBook;
-        profileProvider.getBookmarkedBooks(allBook);
-        if (profileProvider.bookmarked.contains(widget.book)) {
-          _icon = Icons.bookmark;
-        } 
-        else {
-          _icon = Icons.bookmark_outline;
-        }
-        super.initState();
+  Widget get bookProfile {
+    @override
+    void initState() {
+      print(widget.book.fields.name);
+      print(widget.book.pk);
+      ProfileProvider profileProvider = context.read<ProfileProvider>();
+      profileProvider.setUserProfile();
+      BookProvider bookProvider = context.read<BookProvider>();
+      bookProvider.fetchAllBook();
+      List<Book> allBook = bookProvider.listBook;
+      profileProvider.getBookmarkedBooks(allBook);
+      if (profileProvider.bookmarked.contains(widget.book)) {
+        _icon = Icons.bookmark;
+      } else {
+        _icon = Icons.bookmark_outline;
       }
+      super.initState();
+    }
+
     return Container(
-      padding: EdgeInsets.all(32.0),
-      
+      padding: const EdgeInsets.all(32.0),
       decoration: BoxDecoration(
         color: Colors.white,
         borderRadius: BorderRadius.circular(8.0),
@@ -61,44 +59,45 @@ class _BookDetailPageState extends State<BookDetailPage> {
               ),
             ),
           ),
-          Padding(padding: EdgeInsets.all(10.0)),
+          const Padding(padding: EdgeInsets.all(10.0)),
           Center(
             child: Text(
               '${widget.book.fields.name}',
               textAlign: TextAlign.center,
-              style: TextStyle(fontSize: 32.0, color: Colors.black),
+              style: const TextStyle(fontSize: 32.0, color: Colors.black),
             ),
           ),
-          Center (
+          Center(
             child: Row(
               mainAxisSize: MainAxisSize.min,
-              children: List<Widget>.generate(5, (index) => Icon(Icons.star, color: Colors.yellow)),
-            ), 
+              children: List<Widget>.generate(
+                  5, (index) => const Icon(Icons.star, color: Colors.yellow)),
+            ),
           ),
           Center(
             child: Text(
               'Published: ${widget.book.fields.yearPublished}',
               textAlign: TextAlign.center,
-              style: TextStyle(fontSize: 16.0, color: Colors.grey),
+              style: const TextStyle(fontSize: 16.0, color: Colors.grey),
             ),
           ),
           Center(
             child: Text(
               'Language: ${widget.book.fields.originalLanguage}',
               textAlign: TextAlign.center,
-              style: TextStyle(fontSize: 16.0, color: Colors.grey),
+              style: const TextStyle(fontSize: 16.0, color: Colors.grey),
             ),
           ),
           Center(
             child: Text(
               'Genre: ${widget.book.fields.genre}',
               textAlign: TextAlign.center,
-              style: TextStyle(fontSize: 16.0, color: Colors.grey),
+              style: const TextStyle(fontSize: 16.0, color: Colors.grey),
             ),
           ),
           // Adding buttons
-          
-          Padding(padding: EdgeInsets.all(10.0)),
+
+          const Padding(padding: EdgeInsets.all(10.0)),
           Center(
             child: Row(
               mainAxisAlignment: MainAxisAlignment.center,
@@ -106,23 +105,21 @@ class _BookDetailPageState extends State<BookDetailPage> {
                 Material(
                   elevation: 15.0,
                   borderRadius: BorderRadius.circular(5.0),
-                  color: Color(0xFF0148A4),
+                  color: const Color(0xFF0148A4),
                   child: SizedBox(
                     width: 100.0, // specify the width
                     height: 50.0, // specify the height
                     child: MaterialButton(
                       textColor: Colors.white,
-                      onPressed: () {
-                        
-                      },
-                      child: Text(
+                      onPressed: () {},
+                      child: const Text(
                         'Review',
                         style: TextStyle(fontSize: 16.0),
                       ),
                     ),
                   ),
                 ),
-                Padding(padding: EdgeInsets.all(7.0)),
+                const Padding(padding: EdgeInsets.all(7.0)),
                 Material(
                   elevation: 0.0,
                   borderRadius: BorderRadius.circular(5.0),
@@ -132,9 +129,12 @@ class _BookDetailPageState extends State<BookDetailPage> {
                     height: 50.0, // specify the height
                     child: MaterialButton(
                       onPressed: () async {
-                        var profileProvider = Provider.of<ProfileProvider>(context, listen: false);
+                        var profileProvider = Provider.of<ProfileProvider>(
+                            context,
+                            listen: false);
                         await profileProvider.bookmark(widget.book.pk);
-                        BookProvider bookProvider = context.read<BookProvider>();
+                        BookProvider bookProvider =
+                            context.read<BookProvider>();
                         bookProvider.fetchAllBook();
                         List<Book> allBook = bookProvider.listBook;
                         profileProvider.getBookmarkedBooks(allBook);
@@ -142,13 +142,11 @@ class _BookDetailPageState extends State<BookDetailPage> {
                         setState(() {
                           if (_icon == Icons.bookmark_outline) {
                             _icon = Icons.bookmark;
-                          } 
-                          else _icon = Icons.bookmark_outline;
-
-                          }
-                        );
+                          } else
+                            _icon = Icons.bookmark_outline;
+                        });
                       },
-                      child: Icon(_icon, color: _bookmarkColor, weight:50.0),
+                      child: Icon(_icon, color: _bookmarkColor, weight: 50.0),
                     ),
                   ),
                 ),
@@ -157,25 +155,23 @@ class _BookDetailPageState extends State<BookDetailPage> {
           ),
 
           // end button
-          SizedBox(height: 32.0),
-          Center(
+          const SizedBox(height: 32.0),
+          const Center(
             child: Text(
               'Reviews',
               style: TextStyle(fontSize: 24.0, color: Colors.black),
             ),
-          ),  
-          SizedBox(height: 32.0),
-          Divider(color: Colors.grey), 
-          Text(
-            '© 2023 BookPals, Inc.', 
+          ),
+          const SizedBox(height: 32.0),
+          const Divider(color: Colors.grey),
+          const Text(
+            '© 2023 BookPals, Inc.',
             style: TextStyle(fontSize: 14.0, color: Colors.grey),
           ),
         ],
       ),
     );
   }
-
-
 
   //Finally, the build method:
   //
@@ -190,15 +186,14 @@ class _BookDetailPageState extends State<BookDetailPage> {
       backgroundColor: Colors.black87,
       appBar: AppBar(
         backgroundColor: Colors.blueGrey,
-        title: Text('Read ${widget.book.fields.name}!'), 
-        titleTextStyle: TextStyle(color: Colors.black87),
+        title: Text('Read ${widget.book.fields.name}!'),
+        titleTextStyle: const TextStyle(color: Colors.black87),
       ),
-      body: 
-      // Center(
-        SingleChildScrollView(child: BookProfile),
+      body:
+          // Center(
+          SingleChildScrollView(child: bookProfile),
 
       // ),
     );
-    
   }
 }

@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-import '../../../core/bases/models/Book.dart';
-import '../../../core/bases/providers/BookProvider.dart';
-import '../../../core/bases/providers/ProfileProvider.dart';
-import '../../../core/bases/widgets/scaffold.dart';
-import '../../main/screens/widgets/book_display.dart';
-import 'displayEdit.dart';
+import '../../../../core/bases/models/book.dart';
+import '../../../../core/bases/providers/book_provider.dart';
+import '../../../../core/bases/providers/profile_provider.dart';
+import '../../../../core/bases/widgets/scaffold.dart';
+import '../../../main/screens/widgets/book_display.dart';
+import 'display_edit.dart';
 
 class BookmarkEdit extends StatefulWidget {
   final ProfileProvider profileProvider;
@@ -88,7 +88,7 @@ class _BookmarkEditState extends State<BookmarkEdit> {
                     for (int i = 0; i < bookColumn; i++)
                       if (index * bookColumn + i <
                           profileProvider.bookmarked.length)
-                        displayEdit(
+                        DisplayEdit(
                           book: profileProvider
                               .bookmarked[index * bookColumn + i],
                           profileProvider: profileProvider,

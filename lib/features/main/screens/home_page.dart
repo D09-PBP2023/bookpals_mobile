@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 
-import '../../../core/bases/models/Book.dart';
 import '../../../core/bases/widgets/scaffold.dart';
 import '../../../core/theme/color_theme.dart';
 import '../../book_details/screens/bookmark_page.dart';
@@ -25,7 +24,6 @@ class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     return BpScaffold(
-      usePadding: false,
       body: const [
         CatalogPage(), // index 0
         BookmarkPage(),

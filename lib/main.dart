@@ -5,9 +5,8 @@ import 'services/api.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-import 'core/bases/providers/BookProvider.dart';
-import 'core/bases/providers/BookProvider.dart';
-import 'core/bases/providers/ProfileProvider.dart';
+import 'core/bases/providers/book_provider.dart';
+import 'core/bases/providers/profile_provider.dart';
 import 'features/authentication/providers/auth_provider.dart';
 
 Future<void> main() async {

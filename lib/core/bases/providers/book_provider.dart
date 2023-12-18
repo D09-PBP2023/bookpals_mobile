@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 
 import '../../../services/api.dart';
 import '../../environments/endpoints.dart';
-import '../models/Book.dart';
+import '../models/book.dart';
 
 class BookProvider with ChangeNotifier {
   List<Book> _listBook = [];

@@ -1,17 +1,9 @@
-// ignore_for_file: prefer_const_constructors
-
-import 'dart:convert';
-
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:pbp_django_auth/pbp_django_auth.dart';
 
-import '../../../core/bases/models/Profile.dart';
-import '../../../core/bases/providers/ProfileProvider.dart';
-import '../../authentication/providers/auth_provider.dart';
-import '../../main/screens/home_page.dart';
-import 'profile_page.dart';
-// TODO: Impor drawer yang sudah dibuat sebelumnya
+import '../../../core/bases/providers/profile_provider.dart';
+import '../../../core/bases/widgets/scaffold.dart';
+import '../../../core/theme/color_theme.dart';
 
 class EditProfile extends StatefulWidget {
   final ProfileProvider profileProvider;
@@ -29,15 +21,18 @@ class _EditProfileState extends State<EditProfile> {
   @override
   Widget build(BuildContext context) {
     final profileProvider = context.watch<ProfileProvider>();
-    return Scaffold(
+    return BpScaffold(
       appBar: AppBar(
-        title: const Center(
-          child: Text(
-            'Form Tambah ',
-          ),
+        title: const Text(
+          'Edit Profile',
         ),
-        backgroundColor: Colors.indigo,
-        foregroundColor: Colors.white,
+        backgroundColor: ColorTheme.tanParchment,
+        foregroundColor: Colors.black,
+        centerTitle: true,
+        leading: IconButton(
+          icon: const Icon(Icons.arrow_back_ios),
+          onPressed: () => Navigator.pop(context),
+        ),
       ),
       // TODO: Tambahkan drawer yang sudah dibuat di sini
       body: Form(
@@ -49,8 +44,8 @@ class _EditProfileState extends State<EditProfile> {
               padding: const EdgeInsets.all(8.0),
               child: TextFormField(
                 decoration: InputDecoration(
-                  hintText: "Nama ",
-                  labelText: "Nama ",
+                  hintText: "Nama",
+                  labelText: "Nama",
                   border: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(5.0),
                   ),
@@ -93,8 +88,8 @@ class _EditProfileState extends State<EditProfile> {
               padding: const EdgeInsets.all(8.0),
               child: TextFormField(
                 decoration: InputDecoration(
-                  hintText: "bio",
-                  labelText: "bio",
+                  hintText: "Bio",
+                  labelText: "Bio",
                   border: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(5.0),
                   ),
@@ -112,19 +107,18 @@ class _EditProfileState extends State<EditProfile> {
             ),
             Align(
               alignment: Alignment.bottomCenter,
-              child: Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: ElevatedButton(
-                  onPressed: () async {
-                    profileProvider.edit_userprofile(_name, _email, _bio);
-                    Navigator.pushReplacement(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => const HomePage(),
-                      ),
-                    );
-                  },
-                  child: Text("submit"),
+              child: SizedBox(
+                height: 60,
+                width: 120,
+                child: Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: ElevatedButton(
+                    onPressed: () async {
+                      profileProvider.editUserProfile(_name, _email, _bio);
+                      Navigator.pop(context);
+                    },
+                    child: const Text("Submit"),
+                  ),
                 ),
               ),
             ),

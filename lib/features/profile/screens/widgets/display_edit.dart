@@ -1,16 +1,14 @@
 import 'package:flutter/material.dart';
 
-import '../../../../core/bases/models/Book.dart';
+import '../../../../core/bases/models/book.dart';
 
-import '../../../core/bases/providers/ProfileProvider.dart';
-import '../../book_details/screens/book_page.dart';
-import '../../main/screens/home_page.dart';
+import '../../../../core/bases/providers/profile_provider.dart';
 
-class displayEdit extends StatelessWidget {
+class DisplayEdit extends StatelessWidget {
   final int x;
   final Book book;
   final ProfileProvider profileProvider;
-  const displayEdit(
+  const DisplayEdit(
       {super.key,
       required this.book,
       required this.profileProvider,
@@ -20,13 +18,8 @@ class displayEdit extends StatelessWidget {
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () {
-        profileProvider.edit_fav(book.pk, x);
-        Navigator.pushReplacement(
-          context,
-          MaterialPageRoute(
-            builder: (context) => const HomePage(),
-          ),
-        );
+        profileProvider.editFavourite(book.pk, x);
+        Navigator.pop(context);
       },
       child: SizedBox(
         width: 150,

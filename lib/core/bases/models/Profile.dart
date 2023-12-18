@@ -2,6 +2,8 @@
 //
 //     final userProfile = userProfileFromJson(jsonString);
 
+// ignore_for_file: file_names
+
 import 'dart:convert';
 
 List<UserProfile> userProfileFromJson(String str) => List<UserProfile>.from(

@@ -84,7 +84,8 @@ class _BpSearchFieldState extends State<BookpalsSearchField> {
                                     : Icons.visibility),
                               )
                             : null,
-                        prefixIcon: Icon(Icons.search, color: Colors.black),
+                        prefixIcon:
+                            const Icon(Icons.search, color: Colors.black),
                       ),
                       maxLines: widget.infiniteLines ? null : 1,
                       onEditingComplete: widget.onComplete,

@@ -2,10 +2,8 @@ import 'package:flutter/material.dart';
 
 import '../../../services/api.dart';
 import '../../environments/endpoints.dart';
-import '../models/Book.dart';
-import '../models/Profile.dart';
-import 'BookProvider.dart';
-import 'package:flutter/material.dart';
+import '../models/book.dart';
+import '../models/profile.dart';
 
 class ProfileProvider with ChangeNotifier {
   UserProfile _userProfile = UserProfile(
@@ -35,8 +33,6 @@ class ProfileProvider with ChangeNotifier {
     notifyListeners();
   }
 
-  List<Book> allBook = BookProvider().listBook;
-
   // Future<List<Book>> getBookmarkedBooks(List<Book> allBook) async {
   //   List<Book> tmp = [];
   //   for (int i in _userProfile.fields.bookmarkedbooks) {
@@ -54,11 +50,10 @@ class ProfileProvider with ChangeNotifier {
     for (Book i in allBook) {
       if (_userProfile.fields.bookmarkedbooks.contains(i.pk)) bookmarked.add(i);
     }
-    debugPrint(bookmarked[0].fields.name);
     notifyListeners();
   }
 
-  Future<dynamic> edit_userprofile(
+  Future<dynamic> editUserProfile(
       String nickname, String email, String bio) async {
     return await APIHelper.post(Endpoints.editProfile, {
       'nickname': nickname,
@@ -67,8 +62,8 @@ class ProfileProvider with ChangeNotifier {
     });
   }
 
-  Future<dynamic> edit_fav(int favid, int x) async {
-    String favoriteBookid = favid.toString();
+  Future<dynamic> editFavourite(int favouriteId, int x) async {
+    String favoriteBookid = favouriteId.toString();
     if (x == 1) {
       return await APIHelper.post(Endpoints.editFav(x), {
         'fav1': favoriteBookid,
