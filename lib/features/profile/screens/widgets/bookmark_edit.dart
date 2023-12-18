@@ -5,7 +5,7 @@ import '../../../../core/bases/models/book.dart';
 import '../../../../core/bases/providers/book_provider.dart';
 import '../../../../core/bases/providers/profile_provider.dart';
 import '../../../../core/bases/widgets/scaffold.dart';
-import '../../../main/screens/widgets/book_display.dart';
+import '../../../../core/theme/color_theme.dart';
 import 'display_edit.dart';
 
 class BookmarkEdit extends StatefulWidget {
@@ -33,39 +33,24 @@ class _BookmarkEditState extends State<BookmarkEdit> {
   @override
   Widget build(BuildContext context) {
     final profileProvider = context.watch<ProfileProvider>();
-    final bookProvider = context.watch<BookProvider>();
-    List<Book> featuredBooks = bookProvider.getRandomBooks(10);
     final bookColumn = ((MediaQuery.of(context).size.width - 100) ~/ 150);
 
     return BpScaffold(
+      appBar: AppBar(
+        title: const Text(
+          'Edit Favourite',
+        ),
+        backgroundColor: ColorTheme.tanParchment,
+        foregroundColor: Colors.black,
+        centerTitle: true,
+        leading: IconButton(
+          icon: const Icon(Icons.arrow_back_ios),
+          onPressed: () => Navigator.pop(context),
+        ),
+      ),
       body: SingleChildScrollView(
         child: Column(
           children: [
-            const Align(
-              alignment: Alignment.centerLeft,
-              child: Text(
-                "Find More Books!",
-                style: TextStyle(
-                  fontWeight: FontWeight.bold,
-                  fontSize: 28,
-                ),
-              ),
-            ),
-            const SizedBox(height: 30),
-            SizedBox(
-              height: 300,
-              child: ListView.builder(
-                shrinkWrap: true,
-                itemCount: featuredBooks.length,
-                scrollDirection: Axis.horizontal,
-                itemBuilder: (context, index) {
-                  return Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: BookDisplay(book: featuredBooks[index]),
-                  );
-                },
-              ),
-            ),
             const Align(
               alignment: Alignment.centerLeft,
               child: Text(
