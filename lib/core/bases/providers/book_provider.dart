@@ -13,7 +13,6 @@ class BookProvider with ChangeNotifier {
     for (var item in response) {
       _listBook.add(Book.fromJson(item));
     }
-    debugPrint(_listBook[0].fields.coverImage);
     notifyListeners();
   }
 
