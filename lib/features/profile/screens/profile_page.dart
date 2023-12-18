@@ -59,9 +59,6 @@ class _ProfilePageState extends State<ProfilePage> {
                         ),
                       ),
                     );
-                    setState(() {
-                      profileProvider.setUserProfile();
-                    });
                   },
                   child: const Text("Edit"),
                 ),
@@ -167,7 +164,6 @@ class _ProfilePageState extends State<ProfilePage> {
                 ),
               ),
             );
-            await profileProvider.setUserProfile();
           },
           child: ClipRRect(
             borderRadius: BorderRadius.circular(12),
@@ -177,7 +173,7 @@ class _ProfilePageState extends State<ProfilePage> {
                     fit: BoxFit.cover,
                   )
                 : Container(
-                    color: Color.fromARGB(
+                    color: const Color.fromARGB(
                       255,
                       206,
                       181,
