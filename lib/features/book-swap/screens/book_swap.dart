@@ -66,34 +66,36 @@ class _BookSwapState extends State<BookSwap> {
             ),
           ),
           const SizedBox(height: 20),
-          Container(
-            child: SizedBox(
-              height: 40,
-              child: ListView.separated(
-                scrollDirection: Axis.horizontal,
-                separatorBuilder: (BuildContext context, int index) {
-                  return const SizedBox(
-                    width: 10,
-                  );
-                },
-                itemCount: categories.length,
-                itemBuilder: (BuildContext ctxt, int index) {
-                  return ElevatedButton(
-                      style: ElevatedButton.styleFrom(
-                        primary: categoriesIndex == index
-                            ? Colors.brown[300]
-                            : Colors.grey[300],
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(10),
+          Center(
+            child: Container(
+              child: SizedBox(
+                height: 40,
+                child: ListView.separated(
+                  scrollDirection: Axis.horizontal,
+                  separatorBuilder: (BuildContext context, int index) {
+                    return const SizedBox(
+                      width: 10,
+                    );
+                  },
+                  itemCount: categories.length,
+                  itemBuilder: (BuildContext ctxt, int index) {
+                    return ElevatedButton(
+                        style: ElevatedButton.styleFrom(
+                          primary: categoriesIndex == index
+                              ? Colors.brown[300]
+                              : Colors.grey[300],
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(10),
+                          ),
                         ),
-                      ),
-                      onPressed: () {
-                        setState(() {
-                          categoriesIndex = index;
-                        });
-                      },
-                      child: Text(categories[index]));
-                },
+                        onPressed: () {
+                          setState(() {
+                            categoriesIndex = index;
+                          });
+                        },
+                        child: Text(categories[index]));
+                  },
+                ),
               ),
             ),
           ),

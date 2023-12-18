@@ -53,4 +53,8 @@ class BookProvider with ChangeNotifier {
     tmp.shuffle();
     return tmp.take(count).toList();
   }
+
+  List<Book> getAllBooks() {
+    return _listBook;
+  }
 }

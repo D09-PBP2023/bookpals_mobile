@@ -7,6 +7,7 @@ import 'package:provider/provider.dart';
 
 import 'core/bases/providers/book_provider.dart';
 import 'features/authentication/providers/auth_provider.dart';
+import 'features/book-swap/providers/swap_provider.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -24,6 +25,7 @@ class MyApp extends StatelessWidget {
         // Provider<CookieRequest>(create: (context) => CookieRequest()),
         ChangeNotifierProvider(create: (_) => AuthProvider()),
         ChangeNotifierProvider(create: (_) => BookProvider()),
+        ChangeNotifierProvider(create: (_) => SwapProvider()),
       ],
       child: MaterialApp(
         title: 'BookPals',

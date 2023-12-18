@@ -1,11 +1,14 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 import '../../../core/bases/widgets/button.dart';
 import '../../../core/bases/widgets/scaffold.dart';
+import '../../../core/bases/providers/book_provider.dart';
 import 'package:bookpals_mobile/core/bases/models/Book.dart';
-import 'package:http/http.dart' as http;
-import 'dart:convert';
-import 'package:bookpals_mobile/core/environments/endpoints.dart';
+
+import 'package:bookpals_mobile/features/book-swap/providers/swap_provider.dart';
 
 class RequestSwap extends StatefulWidget {
   const RequestSwap({super.key});
@@ -15,37 +18,29 @@ class RequestSwap extends StatefulWidget {
 }
 
 class _RequestSwapState extends State<RequestSwap> {
-  List<Book> books = [];
+  List<Book> _books = <Book>[];
   String _fromMessage = "";
   String dropdownValueWant = "";
   String dropdownValueHave = "";
   bool checkedValue = false;
-
-  Future<void> fetchBooks() async {
-    final response = await http.get(Uri.parse(Endpoints.getBooksUrl));
-
-    if (response.statusCode == 200) {
-      String body = utf8.decode(response.bodyBytes);
-      setState(() {
-        books = (jsonDecode(body) as List)
-            .map((data) => Book.fromJson(data))
-            .toList();
-        dropdownValueWant = books[0].fields.name;
-      });
-    } else {
-      throw Exception('Failed to load books');
-    }
-  }
-
-  final int maxLength = 20;
+  Book? selectedBook;
+  Book? selectedBook2;
   @override
   void initState() {
     super.initState();
-    fetchBooks();
+
+    BookProvider bookProvider = context.read<BookProvider>();
+    setState(() {
+      _books = bookProvider.getAllBooks();
+      dropdownValueWant = _books.first.fields.name;
+    });
   }
 
   @override
   Widget build(BuildContext context) {
+    BookProvider bookProvider = context.watch<BookProvider>();
+    final TextEditingController _bookController = TextEditingController();
+
     return BpScaffold(
         body: Column(
       children: [
@@ -66,24 +61,62 @@ class _RequestSwapState extends State<RequestSwap> {
             ),
           ),
         ),
-
-        const SizedBox(height: 20),
-        DropdownMenu<Book>(
-          initialSelection: books.first,
-          onSelected: (Book? value) {
-            setState(() {
-              if (value != null) {
-                dropdownValueWant = value.fields.name;
-              }
-            });
-          },
-          label: const Text("Want Book"),
-          dropdownMenuEntries: books.map<DropdownMenuEntry<Book>>((Book value) {
-            return DropdownMenuEntry<Book>(
-              value: value,
-              label: value.fields.name,
-            );
-          }).toList(),
+        const SizedBox(height: 10),
+        const Align(
+          alignment: Alignment.topLeft,
+          child: Text(
+            "Select a book you want to swap",
+            style: TextStyle(
+              fontWeight: FontWeight.w400,
+              fontSize: 15,
+            ),
+          ),
+        ),
+        const SizedBox(height: 10),
+        // DropdownButton Wanted Book
+        Row(
+          children: [
+            Container(
+              width: MediaQuery.of(context).size.width * 0.7,
+              child: DropdownButtonFormField<Book>(
+                validator: (value) {
+                  if (value == null) {
+                    return 'Please select a book';
+                  }
+                  return null;
+                },
+                style: TextStyle(
+                  color: Colors.black,
+                  fontSize: 20,
+                ),
+                isExpanded: true,
+                hint: Text("Select Book"),
+                value: selectedBook,
+                onChanged: (value) {
+                  setState(() {
+                    if (value != null) {
+                      selectedBook = value;
+                    }
+                  });
+                },
+                items: _books.map<DropdownMenuItem<Book>>((Book value) {
+                  return DropdownMenuItem<Book>(
+                    value: value,
+                    child: Container(
+                        child: Text(
+                      value.fields.name,
+                      overflow: TextOverflow.ellipsis,
+                      maxLines: 1,
+                    )),
+                  );
+                }).toList(),
+              ),
+            ),
+            SizedBox(
+              width: 10,
+            ),
+            // Add Search Button
+          ],
         ),
         const SizedBox(height: 20),
         // TextField Message
@@ -105,6 +138,7 @@ class _RequestSwapState extends State<RequestSwap> {
           },
         ),
         const SizedBox(height: 20),
+        // Checkbox Have Book
         Row(mainAxisAlignment: MainAxisAlignment.center, children: [
           Text("Have a Book? "),
           //Checkbox
@@ -117,27 +151,84 @@ class _RequestSwapState extends State<RequestSwap> {
             },
           ),
         ]),
+        // DropdownButton Have Book
         if (checkedValue == true)
-          DropdownMenu<Book>(
-            initialSelection: books.first,
-            onSelected: (Book? value) {
-              setState(() {
-                if (value != null) {
-                  dropdownValueHave = value.fields.name;
-                }
-              });
-            },
-            dropdownMenuEntries:
-                books.map<DropdownMenuEntry<Book>>((Book value) {
-              return DropdownMenuEntry<Book>(
-                  value: value, label: value.fields.name);
-            }).toList(),
+          Row(
+            children: [
+              Container(
+                width: MediaQuery.of(context).size.width * 0.8,
+                child: DropdownButtonFormField<Book>(
+                  validator: (value) {
+                    if (value == null) {
+                      return 'Please select a book';
+                    }
+                    return null;
+                  },
+                  style: TextStyle(
+                    color: Colors.black,
+                    fontSize: 20,
+                  ),
+                  isExpanded: true,
+                  hint: Text("Select Book"),
+                  value: selectedBook2,
+                  onChanged: (value) {
+                    setState(() {
+                      if (value != null) {
+                        selectedBook2 = value;
+                      }
+                    });
+                  },
+                  items: _books.map<DropdownMenuItem<Book>>((Book value) {
+                    return DropdownMenuItem<Book>(
+                      value: value,
+                      child: Container(
+                          child: Text(
+                        value.fields.name,
+                        overflow: TextOverflow.ellipsis,
+                        maxLines: 1,
+                      )),
+                    );
+                  }).toList(),
+                ),
+              ),
+            ],
           ),
         const SizedBox(height: 20),
         BpButton(
             text: "Request Swap",
             // Send Data to API
-            onTap: () {}),
+            onTap: () async {
+              if (_fromMessage != "" && selectedBook != null) {
+                if (checkedValue == false) {
+                  await context.read<SwapProvider>().swapRequest(
+                        selectedBook!.fields.name,
+                        "",
+                        _fromMessage,
+                      );
+                  Navigator.pop(context);
+                  // Back to Swap Screen
+                } else {
+                  if (selectedBook2 != null) {
+                    await context.read<SwapProvider>().swapRequest(
+                          selectedBook!.fields.name,
+                          selectedBook2!.fields.name,
+                          _fromMessage,
+                        );
+                    Navigator.pop(context);
+                  } else {
+                    ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                      content: Text("Please fill in all fields"),
+                    ));
+                  }
+                }
+              } else {
+                ScaffoldMessenger.of(context).showSnackBar(
+                  SnackBar(
+                    content: Text("Please fill in all fields"),
+                  ),
+                );
+              }
+            }),
         const SizedBox(height: 20),
       ],
     ));
