@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
+import 'book_swap.dart';
 import '../../../core/bases/widgets/button.dart';
 import '../../../core/bases/widgets/scaffold.dart';
 import '../../../core/bases/providers/book_provider.dart';
@@ -38,9 +39,7 @@ class _RequestSwapState extends State<RequestSwap> {
 
   @override
   Widget build(BuildContext context) {
-    BookProvider bookProvider = context.watch<BookProvider>();
-    final TextEditingController _bookController = TextEditingController();
-
+    final swapProvider = context.watch<SwapProvider>();
     return BpScaffold(
         body: Column(
       children: [
@@ -198,38 +197,50 @@ class _RequestSwapState extends State<RequestSwap> {
             text: "Request Swap",
             // Send Data to API
             onTap: () async {
-              if (_fromMessage != "" && selectedBook != null) {
-                if (checkedValue == false) {
-                  await context.read<SwapProvider>().swapRequest(
-                        selectedBook!.fields.name,
-                        "",
-                        _fromMessage,
-                      );
-                  Navigator.pop(context);
-                  // Back to Swap Screen
+              if (checkedValue) {
+                final response = await swapProvider.swapRequest(
+                  selectedBook!.fields.name,
+                  selectedBook2!.fields.name,
+                  _fromMessage,
+                );
+
+                if (response["status"]) {
+                  Navigator.pushReplacement(
+                    context,
+                    MaterialPageRoute(builder: (context) => const BookSwap()),
+                  );
+                  ScaffoldMessenger.of(context)
+                    ..hideCurrentSnackBar()
+                    ..showSnackBar(
+                        SnackBar(content: Text(response['message'])));
                 } else {
-                  if (selectedBook2 != null) {
-                    await context.read<SwapProvider>().swapRequest(
-                          selectedBook!.fields.name,
-                          selectedBook2!.fields.name,
-                          _fromMessage,
-                        );
-                    Navigator.pop(context);
-                  } else {
-                    ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                      content: Text("Please fill in all fields"),
-                    ));
-                  }
+                  setState(() {
+                    print(response['message']);
+                  });
                 }
               } else {
-                ScaffoldMessenger.of(context).showSnackBar(
-                  SnackBar(
-                    content: Text("Please fill in all fields"),
-                  ),
+                final response = await swapProvider.swapRequest(
+                  selectedBook!.fields.name,
+                  selectedBook2!.fields.name,
+                  _fromMessage,
                 );
+                if (response["status"]) {
+                  Navigator.pushReplacement(
+                    context,
+                    MaterialPageRoute(builder: (context) => const BookSwap()),
+                  );
+                  ScaffoldMessenger.of(context)
+                    ..hideCurrentSnackBar()
+                    ..showSnackBar(
+                        SnackBar(content: Text(response['message'])));
+                } else {
+                  setState(() {
+                    print(response['message']);
+                  });
+                }
               }
             }),
-        const SizedBox(height: 20),
+        const SizedBox(height: 20)
       ],
     ));
   }
