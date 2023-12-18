@@ -96,9 +96,8 @@ class _ProfilePageState extends State<ProfilePage> {
                         ),
                         child: Row(
                           children: [
-                            _bookCover1(bookProvider, profileProvider),
-                            _bookCover2(bookProvider, profileProvider),
-                            _bookCover3(bookProvider, profileProvider),
+                            for (int idx = 1; idx <= 3; idx++)
+                              _bookCover(bookProvider, profileProvider, idx),
                           ],
                         )),
                   ),
@@ -124,12 +123,25 @@ class _ProfilePageState extends State<ProfilePage> {
     );
   }
 
-  Widget _bookCover1(
-      BookProvider bookProvider, ProfileProvider profileProvider) {
+  Widget _bookCover(
+      BookProvider bookProvider, ProfileProvider profileProvider, int idx) {
     int x = profileProvider.userProfile.fields.favoriteBook1;
+    switch (idx) {
+      case 1:
+        x = profileProvider.userProfile.fields.favoriteBook1;
+        break;
+      case 2:
+        x = profileProvider.userProfile.fields.favoriteBook2;
+        break;
+      case 3:
+        x = profileProvider.userProfile.fields.favoriteBook3;
+        break;
+    }
+
     if (x != 0) {
       x--;
     }
+
     return Expanded(
       child: Container(
         height: double.infinity, // Take up the entire height of the parent Row
@@ -145,106 +157,17 @@ class _ProfilePageState extends State<ProfilePage> {
         // Add some margin between rectangles
 
         child: InkWell(
-          onTap: () {
-            Navigator.push(
+          onTap: () async {
+            await Navigator.push(
               context,
               MaterialPageRoute(
                 builder: (context) => BookmarkEdit(
                   profileProvider: profileProvider,
-                  x: 1,
+                  x: idx,
                 ),
               ),
             );
-          },
-          child: ClipRRect(
-            borderRadius: BorderRadius.circular(12),
-            child: Image.network(
-              bookProvider.listBook[x].fields
-                  .coverImage, // Replace with the actual URL of your image
-              fit: BoxFit
-                  .cover, // You can adjust the fit based on your requirements
-            ),
-          ),
-        ),
-      ),
-    );
-  }
-
-  Widget _bookCover2(
-      BookProvider bookProvider, ProfileProvider profileProvider) {
-    int x = profileProvider.userProfile.fields.favoriteBook2;
-    if (x != 0) {
-      x--;
-    }
-    return Expanded(
-      child: Container(
-        height: double.infinity, // Take up the entire height of the parent Row
-        decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(12),
-          border: Border.all(
-            color: const Color.fromARGB(255, 255, 255, 255), // Set border color
-            width: 1.0, // Set border width
-            style: BorderStyle.solid, // Set border style to dotted
-          ),
-        ),
-        margin: const EdgeInsets.all(15.0),
-        // Add some margin between rectangles
-        child: InkWell(
-          onTap: () {
-            Navigator.push(
-              context,
-              MaterialPageRoute(
-                builder: (context) => BookmarkEdit(
-                  profileProvider: profileProvider,
-                  x: 2,
-                ),
-              ),
-            );
-          },
-          child: ClipRRect(
-            borderRadius: BorderRadius.circular(12),
-            child: Image.network(
-              bookProvider.listBook[x].fields
-                  .coverImage, // Replace with the actual URL of your image
-              fit: BoxFit
-                  .cover, // You can adjust the fit based on your requirements
-            ),
-          ),
-        ),
-      ),
-    );
-  }
-
-  Widget _bookCover3(
-      BookProvider bookProvider, ProfileProvider profileProvider) {
-    int x = profileProvider.userProfile.fields.favoriteBook3;
-    if (x != 0) {
-      x--;
-    }
-    return Expanded(
-      child: Container(
-        height: double.infinity, // Take up the entire height of the parent Row
-        decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(12),
-          border: Border.all(
-            color: const Color.fromARGB(255, 255, 255, 255), // Set border color
-            width: 1.0, // Set border width
-            style: BorderStyle.solid, // Set border style to dotted
-          ),
-        ),
-        margin: const EdgeInsets.all(15.0),
-        // Add some margin between rectangles
-        child: InkWell(
-          onTap: () {
-            Navigator.push(
-              context,
-              MaterialPageRoute(
-                builder: (context) => BookmarkEdit(
-                  profileProvider: profileProvider,
-                  x: 3,
-                ),
-              ),
-            );
+            await profileProvider.setUserProfile();
           },
           child: ClipRRect(
             borderRadius: BorderRadius.circular(12),
