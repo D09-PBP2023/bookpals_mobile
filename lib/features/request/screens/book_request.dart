@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
+import 'package:provider/provider.dart';
+import '../../bookrequest_provider.dart';
 
 class BookRequestScreen extends StatefulWidget {
+  const BookRequestScreen({Key? key}) : super(key: key);
   @override
   _BookRequestScreenState createState() => _BookRequestScreenState();
 }
@@ -10,49 +13,20 @@ class BookRequestScreen extends StatefulWidget {
 class _BookRequestScreenState extends State<BookRequestScreen> {
   bool _showForm = false;
   final _formKey = GlobalKey<FormState>();
-  TextEditingController nameController = TextEditingController();
-  TextEditingController authorController = TextEditingController();
-  TextEditingController originalLanguageController = TextEditingController();
-  TextEditingController yearPublishedController = TextEditingController();
-  TextEditingController salesController = TextEditingController();
-  TextEditingController genreController = TextEditingController();
+  TextEditingController _nameController = TextEditingController();
+  TextEditingController _authorController = TextEditingController();
+  TextEditingController _originalLanguageController = TextEditingController();
+  TextEditingController _yearPublishedController = TextEditingController();
+  TextEditingController _salesController = TextEditingController();
+  TextEditingController _genreController = TextEditingController();
   // TODO: ADD CONTROLLER BUAT COVER IMAGE
 
   List<Map<String, dynamic>> requestedBooks = [];
 
-  Future<void> makeBookRequest() async {
-    var apiUrl = Uri.parse('http://127.0.0.1:8000/request_book_by_ajax');
-
-    var response = await http.post(apiUrl, body: {
-      'name': nameController.text,
-      'author': authorController.text,
-      'original_language': originalLanguageController.text,
-      'year_published': yearPublishedController.text,
-      'sales': salesController.text,
-      'genre': genreController.text,
-      // TODO: ADD YG BUAT COVER IMAGE
-    });
-
-    if (response.statusCode == 200) {
-      var responseData = json.decode(response.body);
-      setState(() {
-        requestedBooks.add({
-          'name': responseData['name'],
-          'author': responseData['author'],
-          'original_language': responseData['original_language'],
-          'year_published': responseData['year_published'],
-          'sales': responseData['sales'],
-          'genre': responseData['genre'],
-          // TODO: ADD YG BUAT COVER IMAGE
-        });
-      });
-    } else {
-      print('Failed to make a book request.');
-    }
-  }
-
   @override
   Widget build(BuildContext context) {
+    final req = context.watch<BookRequestProvider>();
+
     return Scaffold(
       appBar: AppBar(
         title: Text('Book Request'),
@@ -63,10 +37,43 @@ class _BookRequestScreenState extends State<BookRequestScreen> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
             ElevatedButton(
-              onPressed: () {
-                setState(() {
-                  _showForm = true;
+              onPressed: () async{
+                _showForm = true;
+                if(_nameController.text.isEmpty || 
+                   _authorController.text.isEmpty ||
+                   _originalLanguageController.text.isEmpty ||
+                   _genreController.text.isEmpty ||
+                   _salesController.text.isEmpty ||
+                   _yearPublishedController.text.isEmpty){
+                  setState((){
+                    errorMessage = "Semua fields harus diisi!";
+                  });
+                  return;  
+                }
+                final response = await req.makeRequest(
+                  _nameController.text,
+                  _authorController.text,
+                  _originalLanguageController.text,
+                  _yearPublishedController.text,
+                  _salesController.text,
+                  _genreController.text,
+                );
+              if(response["status"]){
+                Navigator.pushReplacement(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => const BookRequestScreen()),
+                );
+                ScaffoldMessenger.of(context)
+                ..hideCurrentSnackBar()
+                ..showSnackBar(
+                  SnackBar(content: Text(response['message'])));
+              }
+              else{
+                setState((){
+                  errorMessage = response['message'];
                 });
+              }
               },
               child: Text('Add Request'),
             ),
@@ -77,20 +84,20 @@ class _BookRequestScreenState extends State<BookRequestScreen> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: <Widget>[
                     TextFormField(
-                      controller: nameController,
+                      controller: _nameController,
                       decoration: InputDecoration(labelText: 'Book Name'),
                       validator: (value) {
-                        if (value.isEmpty) {
+                        if (value!.isEmpty) {
                           return 'Please enter the book name';
                         }
                         return null;
                       },
                     ),
                     TextFormField(
-                      controller: authorController,
+                      controller: _authorController,
                       decoration: InputDecoration(labelText: 'Author'),
                       validator: (value) {
-                        if (value.isEmpty) {
+                        if (value!.isEmpty) {
                           return 'Please enter the author';
                         }
                         return null;
@@ -98,9 +105,10 @@ class _BookRequestScreenState extends State<BookRequestScreen> {
                     ),
                     TextFormField(
                       controller: originalLanguageController,
-                      decoration: InputDecoration(labelText: 'Original Language'),
+                      decoration:
+                          InputDecoration(labelText: 'Original Language'),
                       validator: (value) {
-                        if (value.isEmpty) {
+                        if (value!.isEmpty) {
                           return 'Please enter the original language';
                         }
                         return null;
@@ -110,7 +118,7 @@ class _BookRequestScreenState extends State<BookRequestScreen> {
                       controller: yearPublishedController,
                       decoration: InputDecoration(labelText: 'Year Published'),
                       validator: (value) {
-                        if (value.isEmpty) {
+                        if (value!.isEmpty) {
                           return 'Please enter the year published';
                         }
                         return null;
@@ -120,7 +128,7 @@ class _BookRequestScreenState extends State<BookRequestScreen> {
                       controller: salesController,
                       decoration: InputDecoration(labelText: 'Sales'),
                       validator: (value) {
-                        if (value.isEmpty) {
+                        if (value!.isEmpty) {
                           return 'Please enter the number of sales';
                         }
                         return null;
@@ -130,7 +138,7 @@ class _BookRequestScreenState extends State<BookRequestScreen> {
                       controller: genreController,
                       decoration: InputDecoration(labelText: 'Genre'),
                       validator: (value) {
-                        if (value.isEmpty) {
+                        if (value!.isEmpty) {
                           return 'Please enter the genre';
                         }
                         return null;
@@ -139,7 +147,9 @@ class _BookRequestScreenState extends State<BookRequestScreen> {
                     // TODO: TAMBAHIN YG BUAT COVER IMAGE
 
                     ElevatedButton(
-                      onPressed: makeBookRequest,
+                      onPressed: () {
+                        //submit request
+                      },
                       child: Text('Submit Request'),
                     ),
                   ],
@@ -151,11 +161,19 @@ class _BookRequestScreenState extends State<BookRequestScreen> {
                 itemBuilder: (BuildContext context, int index) {
                   return ListTile(
                     title: Text(requestedBooks[index]['name']),
-                    subtitle: Text(requestedBooks[index]['author']),
-                    subtitle: Text(requestedBooks[index]['original_language']),
-                    subtitle: Text(requestedBooks[index]['year_published']),
-                    subtitle: Text(requestedBooks[index]['sales']),
-                    subtitle: Text(requestedBooks[index]['genre']),
+                    subtitle: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text('Author: ${requestedBooks[index]['author']}'),
+                        Text(
+                            'Original Language: ${requestedBooks[index]['original_language']}'),
+                        Text(
+                            'Year Published: ${requestedBooks[index]['year_published']}'),
+                        Text('Sales: ${requestedBooks[index]['sales']}'),
+                        Text('Genre: ${requestedBooks[index]['genre']}'),
+                        // Add more Text widgets for additional subtitles
+                      ],
+                    ),
                     // TODO: TAMBAHIN YG BUAT COVER IMAGE
                   );
                 },
