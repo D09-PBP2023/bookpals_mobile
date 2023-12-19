@@ -6,6 +6,13 @@ import '../../../core/bases/providers/book_provider.dart';
 import '../../../core/theme/color_theme.dart';
 import '../../../core/bases/models/book.dart';
 import '../../../core/bases/providers/profile_provider.dart';
+import '../../../../core/bases/providers/review_provider.dart';
+import 'package:bookpals_mobile/core/bases/widgets/button.dart';
+import 'package:flutter_rating_bar/flutter_rating_bar.dart';
+
+import 'package:bookpals_mobile/features/review/screens/list_review.dart';
+import 'package:bookpals_mobile/features/review/screens/review_form.dart';
+
 
 class BookDetailPage extends StatefulWidget {
   final Book book;
@@ -20,6 +27,7 @@ class _BookDetailPageState extends State<BookDetailPage> {
   final Color _bookmarkColor = ColorTheme.coffeeGrounds;
   List<IconData> icons = [Icons.bookmark, Icons.bookmark_outline];
   int _icon = 1;
+  bool _isLoading = true;
   @override
   void initState() {
     ProfileProvider profileProvider = context.read<ProfileProvider>();
@@ -35,10 +43,18 @@ class _BookDetailPageState extends State<BookDetailPage> {
     } else {
       _icon = 1;
     }
+    ReviewProvider reviewProvider = context.read<ReviewProvider>();
+    reviewProvider.getAverageRating(widget.book.pk).then((value) {
+      setState(() {
+        _isLoading = false;
+      });
+    });
+
     super.initState();
   }
 
   Widget get BookProfile {
+    final reviewProvider = context.watch<ReviewProvider>();
     return Container(
       padding: const EdgeInsets.all(32.0),
       decoration: BoxDecoration(
@@ -68,10 +84,21 @@ class _BookDetailPageState extends State<BookDetailPage> {
             ),
           ),
           Center(
-            child: Row(
-              mainAxisSize: MainAxisSize.min,
-              children: List<Widget>.generate(
-                  5, (index) => const Icon(Icons.star, color: Colors.yellow)),
+            child: IgnorePointer(
+              child: RatingBar.builder(
+                initialRating: _isLoading ? 0 : reviewProvider.averageRating,
+                itemCount: 5,
+                itemSize: 20,
+                direction: Axis.horizontal,
+                allowHalfRating: false,
+                itemBuilder: (context, _) => Icon(
+                  Icons.star,
+                  color: Colors.amber,
+                ),
+                onRatingUpdate: (rating) {
+                  // Do nothing or provide a dummy function
+                },
+              ),
             ),
           ),
           Center(
@@ -111,7 +138,12 @@ class _BookDetailPageState extends State<BookDetailPage> {
                     height: 50.0, // specify the height
                     child: MaterialButton(
                       textColor: Colors.white,
-                      onPressed: () {},
+                      onPressed: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(builder: (context) => ReviewFormPage(widget.book)),
+                        );
+                      },
                       child: const Text(
                         'Review',
                         style: TextStyle(fontSize: 16.0),
@@ -165,6 +197,46 @@ class _BookDetailPageState extends State<BookDetailPage> {
             child: Text(
               'Reviews',
               style: TextStyle(fontSize: 24.0, color: Colors.black),
+            ),
+          ),
+          const SizedBox(height: 16.0),
+          Center(
+            child: SizedBox(
+              height: 60,
+              width: 200,
+              child: GestureDetector(
+                onTap: () async {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => ReviewPage(widget.book),
+                    ),
+                  );
+                },
+                child: Container(
+                  decoration: BoxDecoration(
+                    color: ColorTheme.primarySwatch,
+                    borderRadius: BorderRadius.circular(10),
+                  ),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Icon(
+                        Icons.list_alt,
+                        color: Colors.white,
+                      ),
+                      SizedBox(width: 8),
+                      Text(
+                        "See all reviews",
+                        style: TextStyle(
+                          fontSize: 16,
+                          color: Colors.white,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
             ),
           ),
           const SizedBox(height: 32.0),
