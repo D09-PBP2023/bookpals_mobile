@@ -47,6 +47,7 @@ class FieldsProfile {
   int favoriteBook2;
   int favoriteBook3;
   List<int> bookmarkedbooks;
+  bool isAdmin;
 
   FieldsProfile({
     required this.user,
@@ -59,6 +60,7 @@ class FieldsProfile {
     required this.favoriteBook2,
     required this.favoriteBook3,
     required this.bookmarkedbooks,
+    required this.isAdmin,
   });
 
   factory FieldsProfile.fromJson(Map<String, dynamic> json) {
@@ -74,6 +76,7 @@ class FieldsProfile {
       favoriteBook2: json["favoriteBook2"] ?? -1,
       favoriteBook3: json["favoriteBook3"] ?? -1,
       bookmarkedbooks: List<int>.from(json["bookmarkedbooks"] ?? []),
+      isAdmin: json["isAdmin"] ?? false,
     );
   }
 
@@ -88,5 +91,6 @@ class FieldsProfile {
         "favoriteBook2": favoriteBook2,
         "favoriteBook3": favoriteBook3,
         "bookmarkedbooks": List<dynamic>.from(bookmarkedbooks.map((x) => x)),
+        "isAdmin": isAdmin,
       };
 }

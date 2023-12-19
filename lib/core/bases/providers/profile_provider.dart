@@ -20,6 +20,7 @@ class ProfileProvider with ChangeNotifier {
         favoriteBook2: -1,
         favoriteBook3: -1,
         bookmarkedbooks: [],
+        isAdmin: false,
       ));
 
   UserProfile get userProfile => _userProfile;
