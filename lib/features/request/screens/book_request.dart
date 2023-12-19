@@ -2,7 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'package:provider/provider.dart';
-import '../../bookrequest_provider.dart';
+
+import '../providers/bookrequest_provider.dart';
 
 class BookRequestScreen extends StatefulWidget {
   const BookRequestScreen({Key? key}) : super(key: key);
@@ -37,43 +38,42 @@ class _BookRequestScreenState extends State<BookRequestScreen> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
             ElevatedButton(
-              onPressed: () async{
+              onPressed: () async {
                 _showForm = true;
-                if(_nameController.text.isEmpty || 
-                   _authorController.text.isEmpty ||
-                   _originalLanguageController.text.isEmpty ||
-                   _genreController.text.isEmpty ||
-                   _salesController.text.isEmpty ||
-                   _yearPublishedController.text.isEmpty){
-                  setState((){
-                    errorMessage = "Semua fields harus diisi!";
+                if (_nameController.text.isEmpty ||
+                    _authorController.text.isEmpty ||
+                    _originalLanguageController.text.isEmpty ||
+                    _genreController.text.isEmpty ||
+                    _salesController.text.isEmpty ||
+                    _yearPublishedController.text.isEmpty) {
+                  setState(() {
+                    var errorMessage = "Semua fields harus diisi!";
                   });
-                  return;  
+                  return;
                 }
                 final response = await req.makeRequest(
                   _nameController.text,
                   _authorController.text,
                   _originalLanguageController.text,
-                  _yearPublishedController.text,
-                  _salesController.text,
+                  _yearPublishedController.text as int,
+                  _salesController.text as int,
                   _genreController.text,
                 );
-              if(response["status"]){
-                Navigator.pushReplacement(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => const BookRequestScreen()),
-                );
-                ScaffoldMessenger.of(context)
-                ..hideCurrentSnackBar()
-                ..showSnackBar(
-                  SnackBar(content: Text(response['message'])));
-              }
-              else{
-                setState((){
-                  errorMessage = response['message'];
-                });
-              }
+                if (response["status"]) {
+                  Navigator.pushReplacement(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => const BookRequestScreen()),
+                  );
+                  ScaffoldMessenger.of(context)
+                    ..hideCurrentSnackBar()
+                    ..showSnackBar(
+                        SnackBar(content: Text(response['message'])));
+                } else {
+                  setState(() {
+                    var errorMessage = response['message'];
+                  });
+                }
               },
               child: Text('Add Request'),
             ),
@@ -104,7 +104,7 @@ class _BookRequestScreenState extends State<BookRequestScreen> {
                       },
                     ),
                     TextFormField(
-                      controller: originalLanguageController,
+                      controller: _originalLanguageController,
                       decoration:
                           InputDecoration(labelText: 'Original Language'),
                       validator: (value) {
@@ -115,7 +115,7 @@ class _BookRequestScreenState extends State<BookRequestScreen> {
                       },
                     ),
                     TextFormField(
-                      controller: yearPublishedController,
+                      controller: _yearPublishedController,
                       decoration: InputDecoration(labelText: 'Year Published'),
                       validator: (value) {
                         if (value!.isEmpty) {
@@ -125,7 +125,7 @@ class _BookRequestScreenState extends State<BookRequestScreen> {
                       },
                     ),
                     TextFormField(
-                      controller: salesController,
+                      controller: _salesController,
                       decoration: InputDecoration(labelText: 'Sales'),
                       validator: (value) {
                         if (value!.isEmpty) {
@@ -135,7 +135,7 @@ class _BookRequestScreenState extends State<BookRequestScreen> {
                       },
                     ),
                     TextFormField(
-                      controller: genreController,
+                      controller: _genreController,
                       decoration: InputDecoration(labelText: 'Genre'),
                       validator: (value) {
                         if (value!.isEmpty) {
