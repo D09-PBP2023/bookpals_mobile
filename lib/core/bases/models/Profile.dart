@@ -1,30 +1,32 @@
 // To parse this JSON data, do
 //
-//     final item = itemFromJson(jsonString);
+//     final userProfile = userProfileFromJson(jsonString);
+
+// ignore_for_file: file_names
 
 import 'dart:convert';
 
-List<Item> itemFromJson(String str) =>
-    List<Item>.from(json.decode(str).map((x) => Item.fromJson(x)));
+List<UserProfile> userProfileFromJson(String str) => List<UserProfile>.from(
+    json.decode(str).map((x) => UserProfile.fromJson(x)));
 
-String itemToJson(List<Item> data) =>
+String userProfileToJson(List<UserProfile> data) =>
     json.encode(List<dynamic>.from(data.map((x) => x.toJson())));
 
-class Item {
+class UserProfile {
   String model;
   int pk;
-  Fields fields;
+  FieldsProfile fields;
 
-  Item({
+  UserProfile({
     required this.model,
     required this.pk,
     required this.fields,
   });
 
-  factory Item.fromJson(Map<String, dynamic> json) => Item(
+  factory UserProfile.fromJson(Map<String, dynamic> json) => UserProfile(
         model: json["model"],
         pk: json["pk"],
-        fields: Fields.fromJson(json["fields"]),
+        fields: FieldsProfile.fromJson(json["fields"]),
       );
 
   Map<String, dynamic> toJson() => {
@@ -34,7 +36,7 @@ class Item {
       };
 }
 
-class Fields {
+class FieldsProfile {
   int user;
   String nickname;
   String email;
@@ -46,7 +48,7 @@ class Fields {
   int favoriteBook3;
   List<int> bookmarkedbooks;
 
-  Fields({
+  FieldsProfile({
     required this.user,
     required this.nickname,
     required this.email,
@@ -59,18 +61,21 @@ class Fields {
     required this.bookmarkedbooks,
   });
 
-  factory Fields.fromJson(Map<String, dynamic> json) => Fields(
-        user: json["user"],
-        nickname: json["nickname"],
-        email: json["email"],
-        profilePicture: json["profile_picture"],
-        bio: json["bio"],
-        timesSwapped: json["times_swapped"],
-        favoriteBook1: json["favoriteBook1"],
-        favoriteBook2: json["favoriteBook2"],
-        favoriteBook3: json["favoriteBook3"],
-        bookmarkedbooks: List<int>.from(json["bookmarkedbooks"].map((x) => x)),
-      );
+  factory FieldsProfile.fromJson(Map<String, dynamic> json) {
+    return FieldsProfile(
+      user:
+          json["user"] ?? 0, // Use a default value (e.g., 0) if "user" is null
+      nickname: json["nickname"] ?? "",
+      email: json["email"] ?? "",
+      profilePicture: json["profile_picture"] ?? "",
+      bio: json["bio"] ?? "",
+      timesSwapped: json["times_swapped"] ?? 0,
+      favoriteBook1: json["favoriteBook1"] ?? -1,
+      favoriteBook2: json["favoriteBook2"] ?? -1,
+      favoriteBook3: json["favoriteBook3"] ?? -1,
+      bookmarkedbooks: List<int>.from(json["bookmarkedbooks"] ?? []),
+    );
+  }
 
   Map<String, dynamic> toJson() => {
         "user": user,
