@@ -6,14 +6,12 @@ import '../../../core/bases/providers/book_provider.dart';
 import '../../../core/theme/color_theme.dart';
 import '../../../core/bases/models/book.dart';
 import '../../../core/bases/providers/profile_provider.dart';
+import '../../../../core/bases/providers/review_provider.dart';
+import 'package:bookpals_mobile/core/bases/widgets/button.dart';
+import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 
 import 'package:bookpals_mobile/features/review/screens/list_review.dart';
 import 'package:bookpals_mobile/features/review/screens/review_form.dart';
-import 'package:flutter_rating_bar/flutter_rating_bar.dart';
-
-import 'package:bookpals_mobile/services/api.dart';
-import '../../../../core/bases/providers/review_provider.dart';
-import 'package:bookpals_mobile/core/bases/widgets/button.dart';
 
 
 class BookDetailPage extends StatefulWidget {
@@ -27,38 +25,36 @@ class BookDetailPage extends StatefulWidget {
 
 class _BookDetailPageState extends State<BookDetailPage> {
   final Color _bookmarkColor = ColorTheme.coffeeGrounds;
-  List<IconData> icons = [ Icons.bookmark, Icons.bookmark_outline];
-  bool _isLoading = true;
+  List<IconData> icons = [Icons.bookmark, Icons.bookmark_outline];
   int _icon = 1;
-    @override
-    void initState() {
-        print(widget.book.fields.name);
-        print(widget.book.pk);
-        ProfileProvider profileProvider = context.read<ProfileProvider>();
-        profileProvider.setUserProfile();
-        BookProvider bookProvider = context.read<BookProvider>();
-        bookProvider.fetchAllBook();
-        List<Book> allBook = bookProvider.listBook;
-        profileProvider.getBookmarkedBooks(allBook);
-        if (profileProvider.bookmarked
-        .indexWhere((element) => element.pk == widget.book.pk) != -1 ) {
-          _icon = 0;
-        } 
-        else {
-          _icon = 1;
-        }
-        ReviewProvider reviewProvider = context.read<ReviewProvider>();
-        reviewProvider.getAverageRating(widget.book.pk).then((value) {
-          setState(() {
-            _isLoading = false;
-          });
-        });
-        super.initState();
-      }
+  bool _isLoading = true;
+  @override
+  void initState() {
+    ProfileProvider profileProvider = context.read<ProfileProvider>();
+    profileProvider.setUserProfile();
+    BookProvider bookProvider = context.read<BookProvider>();
+    bookProvider.fetchAllBook();
+    List<Book> allBook = bookProvider.listBook;
+    profileProvider.getBookmarkedBooks(allBook);
+    if (profileProvider.bookmarked
+            .indexWhere((element) => element.pk == widget.book.pk) !=
+        -1) {
+      _icon = 0;
+    } else {
+      _icon = 1;
+    }
+    ReviewProvider reviewProvider = context.read<ReviewProvider>();
+    reviewProvider.getAverageRating(widget.book.pk).then((value) {
+      setState(() {
+        _isLoading = false;
+      });
+    });
 
+    super.initState();
+  }
 
   Widget get BookProfile {
-  final reviewProvider = context.watch<ReviewProvider>();
+    final reviewProvider = context.watch<ReviewProvider>();
     return Container(
       padding: const EdgeInsets.all(32.0),
       decoration: BoxDecoration(
@@ -164,7 +160,12 @@ class _BookDetailPageState extends State<BookDetailPage> {
                     width: 50.0, // specify the width
                     height: 50.0, // specify the height
                     child: MaterialButton(
-                      child: Icon(icons[_icon], color: _bookmarkColor, weight:50.0, size: 35,),
+                      child: Icon(
+                        icons[_icon],
+                        color: _bookmarkColor,
+                        weight: 50.0,
+                        size: 35,
+                      ),
                       onPressed: () async {
                         var profileProvider = Provider.of<ProfileProvider>(
                             context,
@@ -173,18 +174,16 @@ class _BookDetailPageState extends State<BookDetailPage> {
                         BookProvider bookProvider =
                             context.read<BookProvider>();
                         bookProvider.fetchAllBook();
-                        profileProvider.getBookmarkedBooks(bookProvider.listBook);
+                        profileProvider
+                            .getBookmarkedBooks(bookProvider.listBook);
                         setState(() {
                           if (_icon == 1) {
                             _icon = 0;
-                          } 
-                          else {
+                          } else {
                             _icon = 1;
                           }
-
                         });
                       },
-                      
                     ),
                   ),
                 ),
@@ -240,7 +239,6 @@ class _BookDetailPageState extends State<BookDetailPage> {
               ),
             ),
           ),
-
           const SizedBox(height: 32.0),
           const Divider(color: Colors.grey),
           const Text(
@@ -260,11 +258,16 @@ class _BookDetailPageState extends State<BookDetailPage> {
       backgroundColor: Colors.white,
       appBar: AppBar(
         backgroundColor: ColorTheme.almondDust,
-        title: Text('Bookpals'), 
-        titleTextStyle: TextStyle(color: ColorTheme.black, fontWeight: FontWeight.w700, fontSize: 24),
+        title: const Text('Book Details'),
+        titleTextStyle: const TextStyle(
+            color: ColorTheme.black, fontWeight: FontWeight.w400, fontSize: 24),
+        centerTitle: true,
+        leading: IconButton(
+          icon: const Icon(Icons.arrow_back_ios),
+          onPressed: () => Navigator.pop(context),
+        ),
       ),
-      body:
-          SingleChildScrollView(child: BookProfile),
+      body: SingleChildScrollView(child: BookProfile),
     );
   }
 }

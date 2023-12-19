@@ -35,6 +35,7 @@ class _SignUpPageState extends State<SignUpPage> {
 
     return BpScaffold(
       resizeToAvoidBottomInset: true,
+      padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 20),
       body: SingleChildScrollView(
         child: ConstrainedBox(
           constraints: BoxConstraints(

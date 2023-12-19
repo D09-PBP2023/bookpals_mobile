@@ -1,7 +1,4 @@
-import 'dart:math';
-
 import 'package:flutter/material.dart';
-import 'package:lazy_load_scrollview/lazy_load_scrollview.dart';
 import 'package:provider/provider.dart';
 import '../../../core/bases/models/book.dart';
 import '../../../core/bases/providers/book_provider.dart';
@@ -18,18 +15,18 @@ class BookmarkPage extends StatefulWidget {
   State<BookmarkPage> createState() => _BookmarkPageState();
 }
 
-
-
 class _BookmarkPageState extends State<BookmarkPage> {
   bool _isLoading = true;
-  List<Book> exploreBooks = [];
-  
+  List<Book> featuredBooks = [];
+
   @override
   void initState() {
-    
+    ProfileProvider profileProvider = context.read<ProfileProvider>();
     BookProvider bookProvider = context.read<BookProvider>();
-    bookProvider.fetchAllBook().then((value) {
+
+    profileProvider.setUserProfile().then((value) {
       setState(() {
+        featuredBooks = bookProvider.getRandomBooks(10);
         _isLoading = false;
       });
     });
@@ -37,148 +34,130 @@ class _BookmarkPageState extends State<BookmarkPage> {
     super.initState();
   }
 
-  
-  Future<void> loadMoreBooks() async {
-    BookProvider bookProvider = context.read<BookProvider>();
-    setState(() {
-      _isLoading = true;
-    });
-    await Future.delayed(const Duration(seconds: 1));
-    setState(() {
-      _isLoading = false;
-    });
-  }
-
   @override
   Widget build(BuildContext context) {
     final profileProvider = context.watch<ProfileProvider>();
-    final bookProvider = context.watch<BookProvider>();
     int sumBookmarked = profileProvider.bookmarked.length;
-    // profileProvider.getBookmarkedBooks(bookProvider.listBook);
 
-    List<Book> featuredBooks = bookProvider.getRandomBooks(10);
-    final bookColumn = ((MediaQuery.of(context).size.width - 100) ~/ 150);
+    final bookColumn = ((MediaQuery.of(context).size.width - 100) ~/ 130);
 
     return BpScaffold(
-      body: LazyLoadScrollView(
-        onEndOfPage: loadMoreBooks,
-        child: SingleChildScrollView(
-          child: Column(
-            children: [
-              SizedBox(
-                height: 40,
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    const Row(
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      children: [
-                        Icon(
-                          CustomIcon.book_open,
-                        ),
-                        SizedBox(
-                          width: 10,
-                        ),
-                        Text(
-                          "Bookpals",
-                          style: TextStyle(
-                            fontWeight: FontWeight.w700,
-                            fontSize: 24,
-                          ),
-                        ),
-                      ],
-                    ),
-                    GestureDetector(
-                      child: const Icon(
-                        Icons.search,
-                        size: 30,
+      padding: const EdgeInsets.only(left: 24, right: 24, top: 20),
+      body: SingleChildScrollView(
+        child: Column(
+          children: [
+            SizedBox(
+              height: 40,
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  const Row(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      Icon(
+                        CustomIcon.book_open,
                       ),
-                      onTap: () {
-                        Navigator.push(context, MaterialPageRoute(builder: (_) {
-                          return const SearchPage();
-                        }));
-                      },
+                      SizedBox(
+                        width: 10,
+                      ),
+                      Text(
+                        "Bookpals",
+                        style: TextStyle(
+                          fontWeight: FontWeight.w700,
+                          fontSize: 24,
+                        ),
+                      ),
+                    ],
+                  ),
+                  GestureDetector(
+                    child: const Icon(
+                      Icons.search,
+                      size: 30,
                     ),
-                  ],
+                    onTap: () {
+                      Navigator.push(context, MaterialPageRoute(builder: (_) {
+                        return const SearchPage();
+                      }));
+                    },
+                  ),
+                ],
+              ),
+            ),
+            const SizedBox(height: 30),
+            const Align(
+              alignment: Alignment.centerLeft,
+              child: Text(
+                "Find More Books!",
+                style: TextStyle(
+                  fontWeight: FontWeight.w800,
+                  fontSize: 20,
                 ),
               ),
-              const SizedBox(height: 10),
+            ),
+            const SizedBox(height: 10),
+            SizedBox(
+              height: 300,
+              child: ListView.builder(
+                shrinkWrap: true,
+                itemCount: featuredBooks.length,
+                scrollDirection: Axis.horizontal,
+                itemBuilder: (context, index) {
+                  return Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: BookDisplay(book: featuredBooks[index]),
+                  );
+                },
+              ),
+            ),
+            Align(
+              alignment: Alignment.centerLeft,
+              child: Text(
+                "Bookmarked $sumBookmarked books:",
+                style: const TextStyle(
+                  fontWeight: FontWeight.w800,
+                  fontSize: 20,
+                ),
+              ),
+            ),
+            const Padding(padding: EdgeInsets.all(8.0)),
+            if (profileProvider.bookmarked.isEmpty)
               const Align(
-                alignment: Alignment.centerLeft,
+                alignment: Alignment.center,
                 child: Text(
-                  "Find More Books!",
+                  "No Books Here Yet...\nLet's Find More Books!",
                   style: TextStyle(
-                    fontWeight: FontWeight.w800,
-                    fontSize: 20,
+                    fontWeight: FontWeight.w400,
+                    fontSize: 18,
                   ),
                 ),
-              ),
-              const SizedBox(height: 10),
-              
-              SizedBox(
-                height: 300,
-                child: ListView.builder(
+              )
+            else
+              ListView.builder(
                   shrinkWrap: true,
-                  itemCount: featuredBooks.length,
-                  scrollDirection: Axis.horizontal,
-                  itemBuilder: (context, index) {
-                    return Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: BookDisplay(book: featuredBooks[index]),
-                    );
-                  },
-                ),
-              ),
-              Align(
-                  alignment: Alignment.centerLeft,
-                  child: Text(
-                    "Bookmarked: $sumBookmarked",
-                    style: const TextStyle(
-                      fontWeight: FontWeight.w800,
-                      fontSize: 20,
-                    ),
-                  ),
-                ),
-              const Padding(padding: EdgeInsets.all(8.0) ),
-
-              if (profileProvider.bookmarked.isEmpty) 
-                const Align(
-                  alignment: Alignment.center,
-                  child: Text(
-                    "No Books Here Yet...\nLet's Find More Books!",
-                    style: TextStyle(
-                      fontWeight: FontWeight.w400,
-                      fontSize: 18,
-                    ),
-                  ),
-                )
-              else  
-                ListView.builder(
-                  shrinkWrap: true,
-                  itemCount: (profileProvider.bookmarked.length + bookColumn - 1) ~/ bookColumn,
+                  itemCount:
+                      (profileProvider.bookmarked.length + bookColumn - 1) ~/
+                          bookColumn,
                   physics: const NeverScrollableScrollPhysics(),
                   itemBuilder: (context, index) {
-                    return Row( mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                        children: [                      
-                            for (int i = 0; i < bookColumn; i++)
-                              if (index * bookColumn + i < profileProvider.bookmarked.length)
-                                BookDisplay(
-                                    book: profileProvider.bookmarked[index * bookColumn + i]), 
-                                
-                          ],
-                      );
-                    }
-                  
-                ),
-              Offstage(
-                offstage: !_isLoading,
-                child: const Center(child: CircularProgressIndicator()),
-              ),
-            ],
-          ),
+                    return Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                      children: [
+                        for (int i = 0; i < bookColumn; i++)
+                          if (index * bookColumn + i <
+                              profileProvider.bookmarked.length)
+                            BookDisplay(
+                                book: profileProvider
+                                    .bookmarked[index * bookColumn + i]),
+                      ],
+                    );
+                  }),
+            Offstage(
+              offstage: !_isLoading,
+              child: const Center(child: CircularProgressIndicator()),
+            ),
+          ],
         ),
       ),
     );
-  
   }
 }

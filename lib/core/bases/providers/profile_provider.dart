@@ -4,8 +4,6 @@ import '../../environments/endpoints.dart';
 import '../models/book.dart';
 import '../models/profile.dart';
 
-import 'book_provider.dart';
-
 class ProfileProvider with ChangeNotifier {
   UserProfile _userProfile = UserProfile(
       model: "",
@@ -31,7 +29,13 @@ class ProfileProvider with ChangeNotifier {
     notifyListeners();
   }
 
-  List<Book> allBook = BookProvider().listBook;
+  // Future<List<Book>> getBookmarkedBooks(List<Book> allBook) async {
+  //   List<Book> tmp = [];
+  //   for (int i in _userProfile.fields.bookmarkedbooks) {
+  //     tmp.add(allBook[i]);
+  //   }
+  //   return tmp;
+  // }
 
   List<Book> bookmarked = [];
 

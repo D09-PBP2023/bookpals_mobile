@@ -12,13 +12,12 @@ class BookDisplay extends StatelessWidget {
     return GestureDetector(
       onTap: () {
         Navigator.push(
-              context,
-              MaterialPageRoute(builder: (context) => BookDetailPage(book)),
-            );
-          }, 
-        
+          context,
+          MaterialPageRoute(builder: (context) => BookDetailPage(book)),
+        );
+      },
       child: SizedBox(
-        width: 130,
+        width: 150,
         height: 300,
         child: Column(
           children: [
@@ -41,11 +40,10 @@ class BookDisplay extends StatelessWidget {
                 fontWeight: FontWeight.bold,
               ),
             ),
-
-          // child: Text('Go to book detail page'
-        ]),
-      ));
-    
+          ],
+        ),
+      ),
+    );
   }
 }
 
