@@ -2,9 +2,9 @@ import '../../../core/environments/endpoints.dart';
 import '../../../services/api.dart';
 import 'package:flutter/material.dart';
 
-class BookRequestProvider with ChangeNotifier {
+class SubmitBookRequestProvider with ChangeNotifier {
   // TODO: tambahin field coverImage di parameter
-  Future<dynamic> makeRequest(
+  Future<dynamic> submitRequest(
       String bookName,
       String author,
       String originalLanguage,
@@ -22,7 +22,3 @@ class BookRequestProvider with ChangeNotifier {
     });
   }
 }
-
-// Harus sinkron, kalo string string, tadi kalo dibikin as int di provider juga int
-// Kalau di python waktu itu saya int sihh pak, kirain bisaa string as int gituu
-// Kalo di backend biasanya bakal otomatis convert tapi coba aja dulu

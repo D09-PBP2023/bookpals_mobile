@@ -4,6 +4,7 @@ import 'dart:convert';
 import 'package:provider/provider.dart';
 
 import '../providers/bookrequest_provider.dart';
+import '../providers/submitrequest_provider.dart';
 
 class BookRequestScreen extends StatefulWidget {
   const BookRequestScreen({Key? key}) : super(key: key);
@@ -55,8 +56,8 @@ class _BookRequestScreenState extends State<BookRequestScreen> {
                   _nameController.text,
                   _authorController.text,
                   _originalLanguageController.text,
-                  _yearPublishedController.text as int,
-                  _salesController.text as int,
+                  _yearPublishedController.text,
+                  _salesController.text,
                   _genreController.text,
                 );
                 if (response["status"]) {
@@ -147,9 +148,42 @@ class _BookRequestScreenState extends State<BookRequestScreen> {
                     // TODO: TAMBAHIN YG BUAT COVER IMAGE
 
                     ElevatedButton(
-                      onPressed: () {
-                        //submit request
-                      },
+                      onPressed: () async {
+                      if (_nameController.text.isEmpty ||
+                          _authorController.text.isEmpty ||
+                          _originalLanguageController.text.isEmpty ||
+                          _genreController.text.isEmpty ||
+                          _salesController.text.isEmpty ||
+                          _yearPublishedController.text.isEmpty) {
+                        setState(() {
+                          var errorMessage = "Semua fields harus diisi!";
+                        });
+                        return;
+                      }
+                      final response = await req.makeRequest(
+                        _nameController.text,
+                        _authorController.text,
+                        _originalLanguageController.text,
+                        _yearPublishedController.text,
+                        _salesController.text,
+                        _genreController.text,
+                      );
+                      if (response["status"]) {
+                        Navigator.pushReplacement(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => const BookRequestScreen()),
+                        );
+                        ScaffoldMessenger.of(context)
+                          ..hideCurrentSnackBar()
+                          ..showSnackBar(
+                              SnackBar(content: Text(response['message'])));
+                      } else {
+                        setState(() {
+                          var errorMessage = response['message'];
+                        });
+                      }
+                    },
                       child: Text('Submit Request'),
                     ),
                   ],
