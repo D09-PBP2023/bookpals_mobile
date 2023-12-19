@@ -3,58 +3,76 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 
-import 'package:bookpals_mobile/core/bases/models/Book.dart';
+import 'package:bookpals_mobile/core/bases/models/book.dart';
+import 'package:bookpals_mobile/core/theme/color_theme.dart';
 import 'package:bookpals_mobile/core/theme/font_theme.dart';
 import 'package:bookpals_mobile/features/review/models/review.dart';
 import 'package:bookpals_mobile/services/api.dart';
 
+import 'package:provider/provider.dart';
+import '../../../../core/bases/providers/review_provider.dart';
+
 class ReviewPage extends StatefulWidget {
     final Book book; // Accept Book as a parameter
 
-    const ReviewPage(this.book);
+    const ReviewPage(this.book, {super.key});
 
     @override
     State<ReviewPage> createState() => _ReviewPageState();
 }
 
 class _ReviewPageState extends State<ReviewPage> {
-  Future<List<Review>> fetchReview() async {
-    final response = await APIHelper.get(
-      'http://127.0.0.1:8000/get_review/${widget.book.pk}/',
-    );
+  bool _isLoading = true;
 
-    List<Review> list_review = [];
-    for (var d in response) {
-        if (d != null) {
-            list_review.add(Review.fromJson(d));
-        }
-    }
-    return list_review;
+  @override
+  void initState() {
+    ReviewProvider reviewProvider = context.read<ReviewProvider>();
+    reviewProvider.fetchReview(widget.book.pk).then((value) {
+      setState(() {
+        _isLoading = false;
+      });
+    });
+
+    super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
+    final reviewProvider = context.watch<ReviewProvider>();
+
     return Scaffold(
       appBar: AppBar(
         title: Text('${widget.book.fields.name}'),
+        backgroundColor: ColorTheme.tanParchment,
       ),
-      body: FutureBuilder(
-        future: fetchReview(),
-        builder: (context, AsyncSnapshot snapshot) {
-          if (snapshot.data == null) {
-            return const Center(child: CircularProgressIndicator());
-          } else {
-            if (!snapshot.hasData || snapshot.data.isEmpty) {
-              return Center(
-                child: Text(
-                  "No reviews yet.",
-                  style: TextStyle(color: Color(0xff59A5D8), fontSize: 20),
-                ),
-              );
-            } else {
-              return ListView.builder(
-                itemCount: snapshot.data!.length,
-                itemBuilder: (_, index) => 
+      body: _isLoading
+        ? const Center(child: CircularProgressIndicator())
+        : reviewProvider.listReview.isEmpty
+          ? Center(
+              child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Text(
+                        "No reviews yet.",
+                        style: TextStyle(
+                          color: ColorTheme.coffeeGrounds,
+                          fontSize: 20,
+                        ),
+                      ),
+                      SizedBox(height: 8),
+                      Text(
+                        "Share your insights and light up the page!",
+                        style: TextStyle(
+                          color: ColorTheme.coffeeGrounds,
+                          fontSize: 14,
+                        ),
+                      ),
+                    ],
+                  ),
+            )
+            : ListView.builder(
+                itemCount: reviewProvider.listReview.length,
+                itemBuilder: (context, index) => 
                 Container(
                   margin: EdgeInsets.all(8),
                   padding: EdgeInsets.all(16),
@@ -65,30 +83,32 @@ class _ReviewPageState extends State<ReviewPage> {
                   child: Row(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      // Profile Picture
                       CircleAvatar(
-                      // Ganti dengan gambar profil
-                        backgroundImage: AssetImage('assets/profile_picture.png'),
+                        child: Icon(
+                          Icons.person,
+                          size: 30,
+                          color: Colors.white,
+                        ),
+                        backgroundColor: ColorTheme.almondDust,
                         radius: 30,
                       ),
                       SizedBox(width: 16),
-                      // Informasi Review
                       Expanded(
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            // Text "Review by username"
                             Text(
-                              'Review by ${snapshot.data![index].user}',
+                              'Review by ${reviewProvider.listReview[index].user}',
                               style: FontTheme.blackCaptionBold(),
                             ),
                             SizedBox(height: 8),
-                            // Rating Bar
                             IgnorePointer(
                               child: RatingBar.builder(
-                                initialRating: snapshot.data![index].rating,
+                                initialRating: reviewProvider.listReview[index].rating.toDouble(),
                                 itemCount: 5,
                                 itemSize: 20,
+                                direction: Axis.horizontal,
+                                allowHalfRating: false,
                                 itemBuilder: (context, _) => Icon(
                                   Icons.star,
                                   color: Colors.amber,
@@ -99,15 +119,13 @@ class _ReviewPageState extends State<ReviewPage> {
                               ),
                             ),
                             SizedBox(height: 8),
-                            // Tanggal
                             Text(
-                              DateFormat('yyyy-MM-dd').format(snapshot.data![index].created_at),
+                              DateFormat('yyyy-MM-dd').format(reviewProvider.listReview[index].created_at),
                               style: FontTheme.blackCaption(),
-                            ),       
+                            ),
                             SizedBox(height: 8),
-                            // Review Text
                             Text(
-                              '${snapshot.data![index].review}',
+                              '${reviewProvider.listReview[index].review}',
                               style: FontTheme.blackCaption(),
                             ),
                           ],
@@ -115,12 +133,8 @@ class _ReviewPageState extends State<ReviewPage> {
                       ),
                     ],
                   ),
-                )
-              );      
-            }
-          }
-        }        
-      )
-    );  
+                ),
+              ),
+    );
   }
 }

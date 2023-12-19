@@ -1,19 +1,20 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 
-import 'package:bookpals_mobile/core/bases/models/Book.dart';
+import 'package:bookpals_mobile/core/bases/models/book.dart';
 import 'package:bookpals_mobile/core/bases/widgets/button.dart';
-import 'package:bookpals_mobile/core/bases/widgets/scaffold.dart';
 import 'package:bookpals_mobile/core/bases/widgets/text_field.dart';
+import 'package:bookpals_mobile/core/theme/color_theme.dart';
 import 'package:bookpals_mobile/core/theme/font_theme.dart';
 
-import 'package:bookpals_mobile/services/api.dart';
+import '../../../core/bases/providers/review_provider.dart';
 
 class ReviewFormPage extends StatefulWidget {
-  final Book book; // Accept Book as a parameter
+  final Book book;
 
-  const ReviewFormPage(this.book);
+  const ReviewFormPage(this.book, {super.key});
 
   @override
   State<ReviewFormPage> createState() => _ReviewFormPageState();
@@ -26,9 +27,11 @@ class _ReviewFormPageState extends State<ReviewFormPage> {
 
   @override
   Widget build(BuildContext context) {
+    final reviewProvider = context.watch<ReviewProvider>();
     return Scaffold(
       appBar: AppBar(
         title: Text('${widget.book.fields.name}'),
+        backgroundColor: ColorTheme.tanParchment,
       ),
       resizeToAvoidBottomInset: true,
       body: SingleChildScrollView(
@@ -76,7 +79,7 @@ class _ReviewFormPageState extends State<ReviewFormPage> {
               const SizedBox(height: 8),
               BookpalsTextField(
                 title: "Review",
-                hint: "Enter your review",
+                hint: "Share your thoughts!",
                 controller: _reviewController,
               ),
               const SizedBox(height: 32),
@@ -91,29 +94,27 @@ class _ReviewFormPageState extends State<ReviewFormPage> {
                       onTap: () async {
                         if (_rating == 0) {
                           setState(() {
-                            errorMessage = "Please give a rate";
+                            errorMessage = "Rating missing!";
                           });
                           return;
                         }
-                        final response = await APIHelper.post(
-                          "http://127.0.0.1:8000/create-flutter/",
-                          jsonEncode(<String, String>{
-                            'review': _reviewController.text,
-                            'rating': _rating.toString(),
-                            'book_id': widget.book.pk.toString(),
-                          })
-                        );
+
+                        final response = await reviewProvider.addReview(
+                            _reviewController.text, _rating.toString(), widget.book.pk.toString());
+                        
                         if (response['status'] == 'success') {
                             ScaffoldMessenger.of(context)
                                 .showSnackBar(const SnackBar(
-                            content: Text("Thank you for the review"),
+                            content: 
+                                Text("Guide others to great reads. Share more reviews!"),
                             ));
+                            reviewProvider.getAverageRating(widget.book.pk);
                             Navigator.pop(context);
                         } else {
                             ScaffoldMessenger.of(context)
                                 .showSnackBar(const SnackBar(
-                                content:
-                                    Text("Terdapat kesalahan, silakan coba lagi."),
+                            content:
+                                Text("There is an error, please try again."),
                             ));
                         }
                       },
