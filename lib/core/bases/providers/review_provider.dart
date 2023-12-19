@@ -1,10 +1,9 @@
 import 'package:flutter/material.dart';
-import 'dart:convert';
 
 import '../../../services/api.dart';
 import '../../environments/endpoints.dart';
 
-import 'package:bookpals_mobile/features/review/models/review.dart';
+import '../../../features/review/models/review.dart';
 
 class ReviewProvider with ChangeNotifier {
   List<Review> listReview = [];
@@ -19,8 +18,7 @@ class ReviewProvider with ChangeNotifier {
     notifyListeners();
   }
 
-  Future<dynamic> addReview(
-      String review, String rating, String bookId) async {
+  Future<dynamic> addReview(String review, String rating, String bookId) async {
     return await APIHelper.post(Endpoints.addReview, {
       'review': review,
       'rating': rating,

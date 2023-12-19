@@ -1,13 +1,12 @@
-import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 
-import 'package:bookpals_mobile/core/bases/models/book.dart';
-import 'package:bookpals_mobile/core/bases/widgets/button.dart';
-import 'package:bookpals_mobile/core/bases/widgets/text_field.dart';
-import 'package:bookpals_mobile/core/theme/color_theme.dart';
-import 'package:bookpals_mobile/core/theme/font_theme.dart';
+import '../../../core/bases/models/book.dart';
+import '../../../core/bases/widgets/button.dart';
+import '../../../core/bases/widgets/text_field.dart';
+import '../../../core/theme/color_theme.dart';
+import '../../../core/theme/font_theme.dart';
 
 import '../../../core/bases/providers/review_provider.dart';
 
@@ -30,13 +29,13 @@ class _ReviewFormPageState extends State<ReviewFormPage> {
     final reviewProvider = context.watch<ReviewProvider>();
     return Scaffold(
       appBar: AppBar(
-        title: Text('${widget.book.fields.name}'),
+        title: Text(widget.book.fields.name),
         backgroundColor: ColorTheme.tanParchment,
       ),
       resizeToAvoidBottomInset: true,
       body: SingleChildScrollView(
         child: Padding(
-          padding: EdgeInsets.all(32.0),
+          padding: const EdgeInsets.all(32.0),
           child: Column(
             // mainAxisAlignment: MainAxisAlignment.center,
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -54,7 +53,7 @@ class _ReviewFormPageState extends State<ReviewFormPage> {
                 allowHalfRating: false,
                 itemCount: 5,
                 itemSize: 40,
-                itemBuilder: (context, _) => Icon(
+                itemBuilder: (context, _) => const Icon(
                   Icons.star,
                   color: Colors.amber,
                 ),
@@ -100,22 +99,24 @@ class _ReviewFormPageState extends State<ReviewFormPage> {
                         }
 
                         final response = await reviewProvider.addReview(
-                            _reviewController.text, _rating.toString(), widget.book.pk.toString());
-                        
+                            _reviewController.text,
+                            _rating.toString(),
+                            widget.book.pk.toString());
+
                         if (response['status'] == 'success') {
-                            ScaffoldMessenger.of(context)
-                                .showSnackBar(const SnackBar(
-                            content: 
-                                Text("Guide others to great reads. Share more reviews!"),
-                            ));
-                            reviewProvider.getAverageRating(widget.book.pk);
-                            Navigator.pop(context);
+                          ScaffoldMessenger.of(context)
+                              .showSnackBar(const SnackBar(
+                            content: Text(
+                                "Guide others to great reads. Share more reviews!"),
+                          ));
+                          reviewProvider.getAverageRating(widget.book.pk);
+                          Navigator.pop(context);
                         } else {
-                            ScaffoldMessenger.of(context)
-                                .showSnackBar(const SnackBar(
+                          ScaffoldMessenger.of(context)
+                              .showSnackBar(const SnackBar(
                             content:
                                 Text("There is an error, please try again."),
-                            ));
+                          ));
                         }
                       },
                     ),

@@ -1,5 +1,7 @@
 // Book_detail_page.dart
 
+// ignore_for_file: non_constant_identifier_names
+
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../../../core/bases/providers/book_provider.dart';
@@ -7,12 +9,10 @@ import '../../../core/theme/color_theme.dart';
 import '../../../core/bases/models/book.dart';
 import '../../../core/bases/providers/profile_provider.dart';
 import '../../../../core/bases/providers/review_provider.dart';
-import 'package:bookpals_mobile/core/bases/widgets/button.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 
-import 'package:bookpals_mobile/features/review/screens/list_review.dart';
-import 'package:bookpals_mobile/features/review/screens/review_form.dart';
-
+import '../../review/screens/list_review.dart';
+import '../../review/screens/review_form.dart';
 
 class BookDetailPage extends StatefulWidget {
   final Book book;
@@ -78,7 +78,7 @@ class _BookDetailPageState extends State<BookDetailPage> {
           const Padding(padding: EdgeInsets.all(10.0)),
           Center(
             child: Text(
-              '${widget.book.fields.name}',
+              widget.book.fields.name,
               textAlign: TextAlign.center,
               style: const TextStyle(fontSize: 32.0, color: Colors.black),
             ),
@@ -91,7 +91,7 @@ class _BookDetailPageState extends State<BookDetailPage> {
                 itemSize: 20,
                 direction: Axis.horizontal,
                 allowHalfRating: false,
-                itemBuilder: (context, _) => Icon(
+                itemBuilder: (context, _) => const Icon(
                   Icons.star,
                   color: Colors.amber,
                 ),
@@ -141,7 +141,9 @@ class _BookDetailPageState extends State<BookDetailPage> {
                       onPressed: () {
                         Navigator.push(
                           context,
-                          MaterialPageRoute(builder: (context) => ReviewFormPage(widget.book)),
+                          MaterialPageRoute(
+                              builder: (context) =>
+                                  ReviewFormPage(widget.book)),
                         );
                       },
                       child: const Text(
@@ -218,7 +220,7 @@ class _BookDetailPageState extends State<BookDetailPage> {
                     color: ColorTheme.primarySwatch,
                     borderRadius: BorderRadius.circular(10),
                   ),
-                  child: Row(
+                  child: const Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       Icon(
