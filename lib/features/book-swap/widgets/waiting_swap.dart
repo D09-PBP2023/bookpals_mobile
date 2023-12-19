@@ -1,12 +1,9 @@
 import 'package:flutter/material.dart';
 
 import '../../../core/bases/widgets/scaffold.dart';
-import '../../../core/bases/widgets/search_field.dart';
-import '../../main/screens/home_page.dart';
 import '../providers/swap_provider.dart';
 import 'package:provider/provider.dart';
 import '../models/swap.dart';
-import '../screens/book_swap.dart';
 
 class WaitingSwapWidget extends StatefulWidget {
   //Override Key
@@ -19,14 +16,16 @@ class WaitingSwapWidget extends StatefulWidget {
 class _WaitingSwapWidgetState extends State<WaitingSwapWidget> {
   @override
   List<Swap> _listSwaps = [];
-  String _searchController = "";
   String to_message = "";
 
+  @override
   void initState() {
     super.initState();
-    SwapProvider swapProvider = context.read<SwapProvider>();
-    swapProvider.fetchWaitingSwap();
-    _listSwaps = swapProvider.getWaitingSwap();
+    setState(() {
+      SwapProvider swapProvider = context.read<SwapProvider>();
+      swapProvider.fetchWaitingSwap();
+      _listSwaps = swapProvider.getWaitingSwap();
+    });
   }
 
   @override
@@ -46,30 +45,19 @@ class _WaitingSwapWidgetState extends State<WaitingSwapWidget> {
                   },
                   icon: const Icon(Icons.arrow_back),
                 ),
-                const Text("Permintaan Tukar Buku"),
+                const Align(
+                  alignment: Alignment.centerLeft,
+                  child: Text(
+                    "Waiting Book Swap",
+                    style: TextStyle(
+                      fontWeight: FontWeight.w800,
+                      fontSize: 20,
+                    ),
+                  ),
+                ),
               ],
             ),
             //Search Filed
-            TextFormField(
-              decoration: const InputDecoration(
-                hintText: 'Search',
-                prefixIcon: Icon(Icons.search),
-                border: OutlineInputBorder(
-                  borderRadius: BorderRadius.all(Radius.circular(10)),
-                ),
-              ),
-              validator: (value) {
-                if (value == null || value.isEmpty) {
-                  return 'Please enter some text';
-                }
-                return null;
-              },
-              onChanged: (value) {
-                setState(() {
-                  _searchController = value;
-                });
-              },
-            ),
             const SizedBox(height: 20),
             // If _listSwaps is empty, show no data
             if (_listSwaps.isEmpty)
@@ -88,9 +76,33 @@ class _WaitingSwapWidgetState extends State<WaitingSwapWidget> {
                     child: Column(
                       children: [
                         ListTile(
-                          title: Text(_listSwaps[index].fields.wantBook),
-                          subtitle: Text(_listSwaps[index].fields.haveBook),
-                          trailing: Text(_listSwaps[index].fields.fromUser),
+                          title: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              const Text(
+                                "Wanted Book: ",
+                                style: TextStyle(fontWeight: FontWeight.bold),
+                              ),
+                              Text(_listSwaps[index].fields.wantBook),
+                              const Text(
+                                "Sender Book: ",
+                                style: TextStyle(fontWeight: FontWeight.bold),
+                              ),
+                              if (_listSwaps[index].fields.haveBook == "")
+                                Text("-")
+                              else
+                                Text(_listSwaps[index].fields.haveBook),
+                            ],
+                          ),
+                          trailing: Column(
+                            children: [
+                              const Text(
+                                "From: ",
+                                style: TextStyle(fontWeight: FontWeight.bold),
+                              ),
+                              Text(_listSwaps[index].fields.fromUser),
+                            ],
+                          ),
                         ),
                         // Delete Button
                         Row(
@@ -138,9 +150,9 @@ class _WaitingSwapWidgetState extends State<WaitingSwapWidget> {
                                                 _listSwaps.removeAt(index);
                                               });
                                             }).whenComplete(() {
-                                              Navigator.pop(context);
-                                            }).whenComplete(() {
-                                              setState(() {});
+                                              setState(() {
+                                                swapProvider.fetchWaitingSwap();
+                                              });
                                             });
                                           },
                                           child: const Text("Kirim"),

@@ -7,6 +7,8 @@ import '../providers/swap_provider.dart';
 import 'package:provider/provider.dart';
 import '../models/swap.dart';
 import '../screens/book_swap.dart';
+import '../../main/screens/search_page.dart';
+import 'card/processed_swap_card.dart';
 
 class ProcessedSwapWidget extends StatefulWidget {
   //Override Key
@@ -19,10 +21,10 @@ class ProcessedSwapWidget extends StatefulWidget {
 class _ProcessedSwapWidgetState extends State<ProcessedSwapWidget> {
   @override
   List<Swap> _listSwaps = [];
-  String _searchController = "";
-
+  @override
   void initState() {
     super.initState();
+
     setState(() {
       SwapProvider swapProvider = context.read<SwapProvider>();
       swapProvider.fetchProcessedSwap();
@@ -48,29 +50,17 @@ class _ProcessedSwapWidgetState extends State<ProcessedSwapWidget> {
                   },
                   icon: const Icon(Icons.arrow_back),
                 ),
-                const Text("Permintaan Tukar Buku"),
-              ],
-            ),
-            //Search Filed
-            TextFormField(
-              decoration: const InputDecoration(
-                hintText: 'Search',
-                prefixIcon: Icon(Icons.search),
-                border: OutlineInputBorder(
-                  borderRadius: BorderRadius.all(Radius.circular(10)),
+                const Align(
+                  alignment: Alignment.centerLeft,
+                  child: Text(
+                    "Processed Book Swap",
+                    style: TextStyle(
+                      fontWeight: FontWeight.w800,
+                      fontSize: 20,
+                    ),
+                  ),
                 ),
-              ),
-              validator: (value) {
-                if (value == null || value.isEmpty) {
-                  return 'Please enter some text';
-                }
-                return null;
-              },
-              onChanged: (value) {
-                setState(() {
-                  _searchController = value;
-                });
-              },
+              ],
             ),
             const SizedBox(height: 20),
             // If _listSwaps is empty, show no data
@@ -78,7 +68,7 @@ class _ProcessedSwapWidgetState extends State<ProcessedSwapWidget> {
               const Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  const Text("Kamu Belum Meminta Permintaan Tukar Buku"),
+                  const Text("No Data"),
                 ],
               )
             else // If _listSwaps is not empty, show the data
@@ -89,29 +79,78 @@ class _ProcessedSwapWidgetState extends State<ProcessedSwapWidget> {
                   return Card(
                     child: Column(
                       children: [
+                        // Detail Data
                         ListTile(
-                          title: Text(_listSwaps[index].fields.wantBook),
-                          subtitle: Text(_listSwaps[index].fields.haveBook),
-                          trailing: Text(_listSwaps[index].fields.fromUser),
+                          title: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              const Text(
+                                "Wanted Book: ",
+                                style: TextStyle(fontWeight: FontWeight.bold),
+                              ),
+                              Text(_listSwaps[index].fields.wantBook),
+                              const Text(
+                                "Sender Book: ",
+                                style: TextStyle(fontWeight: FontWeight.bold),
+                              ),
+                              if (_listSwaps[index].fields.haveBook == "")
+                                Text("-")
+                              else
+                                Text(_listSwaps[index].fields.haveBook),
+                            ],
+                          ),
+                          trailing: Column(
+                            children: [
+                              const Text(
+                                "From: ",
+                                style: TextStyle(fontWeight: FontWeight.bold),
+                              ),
+                              Text(_listSwaps[index].fields.fromUser),
+                            ],
+                          ),
                         ),
+
                         // Delete Button
                         Row(
-                          mainAxisAlignment: MainAxisAlignment.end,
+                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                           children: [
-                            TextButton(
-                              onPressed: () {
-                                swapProvider
-                                    .swapCancel(_listSwaps[index].pk.toString())
-                                    .whenComplete(() {
-                                  setState(() {
-                                    _listSwaps.removeAt(index);
-                                  });
-                                }).whenComplete(() => setState(() {
-                                          swapProvider.fetchProcessedSwap();
-                                        }));
-                              },
-                              child: const Text("Batalkan"),
-                            ),
+                            ElevatedButton(
+                                onPressed: () {
+                                  // Navigate to ProcessedCard
+                                  Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                          builder: (context) => ProcessedCard(
+                                              swap: _listSwaps[index])));
+                                },
+                                child: Icon(Icons.info)),
+                            if (_listSwaps[index].fields.processed == true)
+                              const Align(
+                                alignment: Alignment.centerLeft,
+                                child: Text(
+                                  "Processed",
+                                  style: TextStyle(
+                                    fontWeight: FontWeight.w800,
+                                    fontSize: 16,
+                                  ),
+                                ),
+                              )
+                            else
+                              TextButton(
+                                onPressed: () {
+                                  swapProvider
+                                      .swapCancel(
+                                          _listSwaps[index].pk.toString())
+                                      .whenComplete(() {
+                                    setState(() {
+                                      _listSwaps.removeAt(index);
+                                    });
+                                  }).whenComplete(() => setState(() {
+                                            swapProvider.fetchProcessedSwap();
+                                          }));
+                                },
+                                child: const Text("Batalkan"),
+                              ),
                           ],
                         ),
                       ],
@@ -119,7 +158,6 @@ class _ProcessedSwapWidgetState extends State<ProcessedSwapWidget> {
                   );
                 },
               ),
-
             // Show Data
           ],
         ),

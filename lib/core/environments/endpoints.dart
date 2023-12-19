@@ -17,4 +17,12 @@ class Endpoints {
       '$baseUrl/get-books-by-name/$name';
   static String searchBookByGenresUrl(String genre) =>
       '$baseUrl/get-books-by-genre/$genre';
+  static String searchProcessedSwapUrl(String name) =>
+      '$baseUrl/get_processed_book_search/$name';
+  static String searchWaitingSwapUrl(String name) =>
+      '$baseUrl/get_waiting_accept_book_search/$name';
+  static String searchAcceptedSwapUrl(String name) =>
+      '$baseUrl/get_accepted_book_search/$name';
+  static String searchFinishedSwapUrl(String name) =>
+      '$baseUrl/get_finished_book_search/$name';
 }

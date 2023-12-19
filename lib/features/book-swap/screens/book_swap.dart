@@ -100,7 +100,8 @@ class _BookSwapState extends State<BookSwap> {
               onTap: () {
                 Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => const AcceptedSwapWidget()),
+                  MaterialPageRoute(
+                      builder: (context) => const AcceptedSwapWidget()),
                 );
               },
             ),
@@ -113,7 +114,8 @@ class _BookSwapState extends State<BookSwap> {
               onTap: () {
                 Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => const FinishedSwapWidget()),
+                  MaterialPageRoute(
+                      builder: (context) => const FinishedSwapWidget()),
                 );
               },
             ),

@@ -8,6 +8,7 @@ import '../providers/swap_provider.dart';
 import 'package:provider/provider.dart';
 import '../models/swap.dart';
 import '../screens/book_swap.dart';
+import '../../../features/book-swap/widgets/card/processed_swap_card.dart';
 
 class AcceptedSwapWidget extends StatefulWidget {
   //Override Key
@@ -24,9 +25,11 @@ class _AcceptedSwapWidgetState extends State<AcceptedSwapWidget> {
 
   void initState() {
     super.initState();
-    SwapProvider swapProvider = context.read<SwapProvider>();
-    swapProvider.fetchAcceptedSwap();
-    _listSwaps = swapProvider.getAcceptedSwap();
+    setState(() {
+      SwapProvider swapProvider = context.read<SwapProvider>();
+      swapProvider.fetchAcceptedSwap();
+      _listSwaps = swapProvider.getAcceptedSwap();
+    });
   }
 
   @override
@@ -43,41 +46,31 @@ class _AcceptedSwapWidgetState extends State<AcceptedSwapWidget> {
                   onPressed: () {
                     // Pop to Home Page
                     Navigator.pop(context);
-                    setState(() {});
+                    setState(() {
+                      swapProvider.fetchAcceptedSwap();
+                    });
                   },
                   icon: const Icon(Icons.arrow_back),
                 ),
-                const Text("Permintaan Tukar Buku"),
+                const Align(
+                  alignment: Alignment.centerLeft,
+                  child: Text(
+                    "Accepted Book Swap",
+                    style: TextStyle(
+                      fontWeight: FontWeight.w800,
+                      fontSize: 20,
+                    ),
+                  ),
+                ),
               ],
             ),
-            //Search Filed
-            TextFormField(
-              decoration: const InputDecoration(
-                hintText: 'Search',
-                prefixIcon: Icon(Icons.search),
-                border: OutlineInputBorder(
-                  borderRadius: BorderRadius.all(Radius.circular(10)),
-                ),
-              ),
-              validator: (value) {
-                if (value == null || value.isEmpty) {
-                  return 'Please enter some text';
-                }
-                return null;
-              },
-              onChanged: (value) {
-                setState(() {
-                  _searchController = value;
-                });
-              },
-            ),
             const SizedBox(height: 20),
-            // If _listSwaps is empty, show no data
+            // If _listSwaps is empty, reload data
             if (_listSwaps.isEmpty)
               const Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  const Text("Tidak ada Buku yang Ditukar"),
+                  Text("Tidak ada data"),
                 ],
               )
             else // If _listSwaps is not empty, show the data
@@ -89,15 +82,50 @@ class _AcceptedSwapWidgetState extends State<AcceptedSwapWidget> {
                     child: Column(
                       children: [
                         ListTile(
-                          title: Text(_listSwaps[index].fields.wantBook),
-                          subtitle: Text(_listSwaps[index].fields.haveBook),
-                          trailing: Text(_listSwaps[index].fields.fromUser),
+                          title: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              const Text(
+                                "Wanted Book: ",
+                                style: TextStyle(fontWeight: FontWeight.bold),
+                              ),
+                              Text(_listSwaps[index].fields.wantBook),
+                              const Text(
+                                "Sender Book: ",
+                                style: TextStyle(fontWeight: FontWeight.bold),
+                              ),
+                              if (_listSwaps[index].fields.haveBook == "")
+                                Text("-")
+                              else
+                                Text(_listSwaps[index].fields.haveBook),
+                            ],
+                          ),
+                          trailing: Column(
+                            children: [
+                              const Text(
+                                "Accepter: ",
+                                style: TextStyle(fontWeight: FontWeight.bold),
+                              ),
+                              Text(_listSwaps[index].fields.toUser),
+                            ],
+                          ),
                         ),
                         // Delete Button
                         Row(
-                          mainAxisAlignment: MainAxisAlignment.end,
+                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                           children: [
-                            TextButton(
+                            // Show Message Dialog
+                            ElevatedButton(
+                                onPressed: () {
+                                  // Navigate to ProcessedCard
+                                  Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                          builder: (context) => ProcessedCard(
+                                              swap: _listSwaps[index])));
+                                },
+                                child: Icon(Icons.info)),
+                            ElevatedButton(
                               onPressed: () {
                                 swapProvider
                                     .swapFinished(

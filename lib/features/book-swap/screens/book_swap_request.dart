@@ -45,7 +45,9 @@ class _RequestSwapState extends State<RequestSwap> {
           alignment: Alignment.topLeft,
           child: IconButton(
             icon: const Icon(Icons.arrow_back),
-            onPressed: () => Navigator.pop(context),
+            onPressed: () {
+              Navigator.pop(context);
+            },
           ),
         ),
         const Align(

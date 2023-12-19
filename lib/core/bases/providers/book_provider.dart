@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 
 import '../../../services/api.dart';
@@ -56,5 +58,20 @@ class BookProvider with ChangeNotifier {
 
   List<Book> getAllBooks() {
     return _listBook;
+  }
+
+  Book getSpecifedBook(String title) {
+    // If Not Found, return Null
+    Fields fields = new Fields(
+        name: "",
+        author: "",
+        originalLanguage: "",
+        yearPublished: 0,
+        sales: 0,
+        genre: "",
+        coverImage: "");
+    Book empty = new Book(model: Model.MAIN_BOOK, pk: 0, fields: fields);
+    return _listBook.firstWhere((element) => element.fields.name == title,
+        orElse: () => empty);
   }
 }

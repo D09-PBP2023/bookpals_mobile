@@ -55,8 +55,8 @@ class SwapProvider with ChangeNotifier {
   Future<dynamic> swapRequest(
       String bookId, String bookId2, String message) async {
     return await APIHelper.post(Endpoints.requestSwap, {
-      'bookid': bookId,
-      'bookid2': bookId2,
+      'bookid': bookId2,
+      'bookid2': bookId,
       'message': message,
     });
   }

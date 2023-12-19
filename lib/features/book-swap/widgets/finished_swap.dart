@@ -7,6 +7,7 @@ import '../providers/swap_provider.dart';
 import 'package:provider/provider.dart';
 import '../models/swap.dart';
 import '../screens/book_swap.dart';
+import '../../../features/book-swap/widgets/card/processed_swap_card.dart';
 
 class FinishedSwapWidget extends StatefulWidget {
   //Override Key
@@ -23,9 +24,11 @@ class _FinishedSwapWidgetState extends State<FinishedSwapWidget> {
 
   void initState() {
     super.initState();
-    SwapProvider swapProvider = context.read<SwapProvider>();
-    swapProvider.fetchFinishedSwap();
-    _listSwaps = swapProvider.getFinishedSwap();
+    setState(() {
+      SwapProvider swapProvider = context.read<SwapProvider>();
+      swapProvider.fetchFinishedSwap();
+      _listSwaps = swapProvider.getFinishedSwap();
+    });
   }
 
   @override
@@ -45,29 +48,17 @@ class _FinishedSwapWidgetState extends State<FinishedSwapWidget> {
                   },
                   icon: const Icon(Icons.arrow_back),
                 ),
-                const Text("Permintaan Tukar Buku"),
-              ],
-            ),
-            //Search Filed
-            TextFormField(
-              decoration: const InputDecoration(
-                hintText: 'Search',
-                prefixIcon: Icon(Icons.search),
-                border: OutlineInputBorder(
-                  borderRadius: BorderRadius.all(Radius.circular(10)),
+                const Align(
+                  alignment: Alignment.centerLeft,
+                  child: Text(
+                    "Finished Book Swap",
+                    style: TextStyle(
+                      fontWeight: FontWeight.w800,
+                      fontSize: 20,
+                    ),
+                  ),
                 ),
-              ),
-              validator: (value) {
-                if (value == null || value.isEmpty) {
-                  return 'Please enter some text';
-                }
-                return null;
-              },
-              onChanged: (value) {
-                setState(() {
-                  _searchController = value;
-                });
-              },
+              ],
             ),
             const SizedBox(height: 20),
             // If _listSwaps is empty, show no data
@@ -87,12 +78,45 @@ class _FinishedSwapWidgetState extends State<FinishedSwapWidget> {
                     child: Column(
                       children: [
                         ListTile(
-                          title: Text(_listSwaps[index].fields.wantBook),
-                          subtitle: Text(_listSwaps[index].fields.haveBook),
-                          trailing: Text(_listSwaps[index].fields.fromUser),
+                          title: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              const Text(
+                                "Wanted Book: ",
+                                style: TextStyle(fontWeight: FontWeight.bold),
+                              ),
+                              Text(_listSwaps[index].fields.wantBook),
+                              const Text(
+                                "Sender Book: ",
+                                style: TextStyle(fontWeight: FontWeight.bold),
+                              ),
+                              if (_listSwaps[index].fields.haveBook == "")
+                                Text("-")
+                              else
+                                Text(_listSwaps[index].fields.haveBook),
+                            ],
+                          ),
+                          trailing: Column(
+                            children: [
+                              const Text(
+                                "Accepter: ",
+                                style: TextStyle(fontWeight: FontWeight.bold),
+                              ),
+                              Text(_listSwaps[index].fields.toUser),
+                            ],
+                          ),
                         ),
                         // Finished Text
-                        const Text("Finished"),
+                        ElevatedButton(
+                            onPressed: () {
+                              // Navigate to ProcessedCard
+                              Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) => ProcessedCard(
+                                          swap: _listSwaps[index])));
+                            },
+                            child: Icon(Icons.info)),
                       ],
                     ),
                   );
