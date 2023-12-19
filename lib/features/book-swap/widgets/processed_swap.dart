@@ -1,13 +1,9 @@
 import 'package:flutter/material.dart';
 
 import '../../../core/bases/widgets/scaffold.dart';
-import '../../../core/bases/widgets/search_field.dart';
-import '../../main/screens/home_page.dart';
 import '../providers/swap_provider.dart';
 import 'package:provider/provider.dart';
 import '../models/swap.dart';
-import '../screens/book_swap.dart';
-import '../../main/screens/search_page.dart';
 import 'card/processed_swap_card.dart';
 
 class ProcessedSwapWidget extends StatefulWidget {
@@ -38,6 +34,7 @@ class _ProcessedSwapWidgetState extends State<ProcessedSwapWidget> {
 
     return BpScaffold(
       body: SingleChildScrollView(
+        physics: ScrollPhysics(),
         child: Column(
           children: [
             //Back Button
@@ -73,6 +70,7 @@ class _ProcessedSwapWidgetState extends State<ProcessedSwapWidget> {
               )
             else // If _listSwaps is not empty, show the data
               ListView.builder(
+                physics: NeverScrollableScrollPhysics(),
                 shrinkWrap: true,
                 itemCount: _listSwaps.length,
                 itemBuilder: (context, index) {
@@ -101,11 +99,20 @@ class _ProcessedSwapWidgetState extends State<ProcessedSwapWidget> {
                           ),
                           trailing: Column(
                             children: [
-                              const Text(
-                                "From: ",
-                                style: TextStyle(fontWeight: FontWeight.bold),
-                              ),
-                              Text(_listSwaps[index].fields.fromUser),
+                              if (_listSwaps[index].fields.toUser == "")
+                                const Text(
+                                  "From: ",
+                                  style: TextStyle(fontWeight: FontWeight.bold),
+                                )
+                              else
+                                const Text(
+                                  "Acceptor: ",
+                                  style: TextStyle(fontWeight: FontWeight.bold),
+                                ),
+                              if (_listSwaps[index].fields.toUser == "")
+                                Text("You")
+                              else
+                                Text(_listSwaps[index].fields.toUser),
                             ],
                           ),
                         ),
@@ -146,7 +153,7 @@ class _ProcessedSwapWidgetState extends State<ProcessedSwapWidget> {
                                       _listSwaps.removeAt(index);
                                     });
                                   }).whenComplete(() => setState(() {
-                                            swapProvider.fetchProcessedSwap();
+                                            swapProvider.logIn();
                                           }));
                                 },
                                 child: const Text("Batalkan"),

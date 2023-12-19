@@ -64,7 +64,7 @@ class _RequestSwapState extends State<RequestSwap> {
         const Align(
           alignment: Alignment.topLeft,
           child: Text(
-            "Select a book you want to swap",
+            "Select a book you that want to swap",
             style: TextStyle(
               fontWeight: FontWeight.w400,
               fontSize: 15,
@@ -197,41 +197,99 @@ class _RequestSwapState extends State<RequestSwap> {
             text: "Request Swap",
             // Send Data to API
             onTap: () async {
-              if (checkedValue) {
-                final response = await swapProvider
-                    .swapRequest(
-                      selectedBook!.fields.name,
-                      selectedBook2!.fields.name,
-                      _fromMessage,
-                    )
-                    .whenComplete(() => setState(
-                          () {
-                            swapProvider.fetchProcessedSwap();
-                          },
-                        ))
-                    .whenComplete(() {
-                  setState(() {});
-                  // Back to SwapPage
-                  Navigator.pop(context);
-                });
-                // Navigate to SwapPage
+              if (_fromMessage == "") {
+                showDialog(
+                    context: context,
+                    builder: (BuildContext context) {
+                      return AlertDialog(
+                        title: const Text("Your message is empty"),
+                        content: const Text("Please enter a message"),
+                        actions: [
+                          TextButton(
+                              onPressed: () {
+                                Navigator.pop(context);
+                              },
+                              child: const Text("OK"))
+                        ],
+                      );
+                    });
+                return;
               } else {
-                final response = await swapProvider
-                    .swapRequest(
-                      selectedBook!.fields.name,
-                      "",
-                      _fromMessage,
-                    )
-                    .whenComplete(() => setState(
-                          () {
-                            swapProvider.fetchProcessedSwap();
-                          },
-                        ))
-                    .whenComplete(() {
-                  setState(() {});
-                  Navigator.pop(context);
-                });
-                // Navigate to SwapPage
+                if (selectedBook == null) {
+                  showDialog(
+                      context: context,
+                      builder: (BuildContext context) {
+                        return AlertDialog(
+                          title: const Text("You have not selected a book"),
+                          content: const Text("Please select a book"),
+                          actions: [
+                            TextButton(
+                                onPressed: () {
+                                  Navigator.pop(context);
+                                },
+                                child: const Text("OK"))
+                          ],
+                        );
+                      });
+                  return;
+                } else {
+                  if (checkedValue) {
+                    if (selectedBook2 == null) {
+                      showDialog(
+                          context: context,
+                          builder: (BuildContext context) {
+                            return AlertDialog(
+                              title: const Text(
+                                  "You have not selected a book you have"),
+                              content: const Text("Please select a book"),
+                              actions: [
+                                TextButton(
+                                    onPressed: () {
+                                      Navigator.pop(context);
+                                    },
+                                    child: const Text("OK"))
+                              ],
+                            );
+                          });
+                      return;
+                    } else {
+                      final response = await swapProvider
+                          .swapRequest(
+                            selectedBook!.fields.name,
+                            selectedBook2!.fields.name,
+                            _fromMessage,
+                          )
+                          .whenComplete(() => setState(
+                                () {
+                                  swapProvider.fetchProcessedSwap();
+                                },
+                              ))
+                          .whenComplete(() {
+                        setState(() {});
+                        // Back to SwapPage
+                        Navigator.pop(context);
+                      });
+                    }
+                    // Navigate to SwapPage
+                  } else {
+                    final response = await swapProvider
+                        .swapRequest(
+                          selectedBook!.fields.name,
+                          "",
+                          _fromMessage,
+                        )
+                        .whenComplete(() => setState(
+                              () {
+                                swapProvider.fetchProcessedSwap();
+                              },
+                            ))
+                        .whenComplete(() {
+                      setState(() {});
+                      Navigator.pop(context);
+                    });
+                    // Navigate to SwapPage
+                  }
+                }
               }
             }),
         const SizedBox(height: 20)

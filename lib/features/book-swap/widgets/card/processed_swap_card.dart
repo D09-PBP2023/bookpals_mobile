@@ -141,7 +141,7 @@ class ProcessedCard extends StatelessWidget {
             Column(
               children: [
                 const Text(
-                  "Accepter Request",
+                  "Acceptor Request",
                   style: TextStyle(
                     fontWeight: FontWeight.w800,
                     fontSize: 18,
@@ -174,7 +174,7 @@ class ProcessedCard extends StatelessWidget {
             Column(
               children: [
                 const Text(
-                  "Receiver Message:",
+                  "Acceptor Message:",
                   style: TextStyle(
                     fontWeight: FontWeight.w800,
                     fontSize: 18,

@@ -106,4 +106,20 @@ class SwapProvider with ChangeNotifier {
   List<Swap> getFinishedSwap() {
     return _listFinishedSwaps;
   }
+
+  void logOut() {
+    // Clear all list
+    _listProcessedSwaps = [];
+    _listWaitingSwaps = [];
+    _listAcceptedSwaps = [];
+    _listFinishedSwaps = [];
+    notifyListeners();
+  }
+
+  void logIn() {
+    fetchProcessedSwap();
+    fetchWaitingSwap();
+    fetchAcceptedSwap();
+    fetchFinishedSwap();
+  }
 }

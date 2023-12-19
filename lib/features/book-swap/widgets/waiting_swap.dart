@@ -4,6 +4,7 @@ import '../../../core/bases/widgets/scaffold.dart';
 import '../providers/swap_provider.dart';
 import 'package:provider/provider.dart';
 import '../models/swap.dart';
+import 'card/processed_swap_card.dart';
 
 class WaitingSwapWidget extends StatefulWidget {
   //Override Key
@@ -34,6 +35,7 @@ class _WaitingSwapWidgetState extends State<WaitingSwapWidget> {
 
     return BpScaffold(
       body: SingleChildScrollView(
+        physics: ScrollPhysics(),
         child: Column(
           children: [
             Row(
@@ -64,11 +66,12 @@ class _WaitingSwapWidgetState extends State<WaitingSwapWidget> {
               const Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  const Text("Tidak ada Buku Yang Diminta"),
+                  const Text("No Waiting Swap Data"),
                 ],
               )
             else // If _listSwaps is not empty, show the data
               ListView.builder(
+                physics: NeverScrollableScrollPhysics(),
                 shrinkWrap: true,
                 itemCount: _listSwaps.length,
                 itemBuilder: (context, index) {
@@ -108,54 +111,77 @@ class _WaitingSwapWidgetState extends State<WaitingSwapWidget> {
                         Row(
                           mainAxisAlignment: MainAxisAlignment.end,
                           children: [
+                            ElevatedButton(
+                                onPressed: () {
+                                  // Navigate to ProcessedCard
+                                  Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                          builder: (context) => ProcessedCard(
+                                              swap: _listSwaps[index])));
+                                },
+                                child: Icon(Icons.info)),
                             TextButton(
                               onPressed: () {
-                                // Message Box to Send Message
+                                // Show TextBox Dialog
                                 showDialog(
                                   context: context,
                                   builder: (context) {
                                     return AlertDialog(
-                                      title: const Text("Kirim Pesan"),
-                                      content: TextFormField(
-                                        decoration: const InputDecoration(
-                                          hintText: 'Pesan',
-                                          border: OutlineInputBorder(
-                                            borderRadius: BorderRadius.all(
-                                                Radius.circular(10)),
-                                          ),
-                                        ),
-                                        validator: (value) {
-                                          if (value == null || value.isEmpty) {
-                                            return 'Please enter some text';
-                                          }
-                                          return null;
-                                        },
+                                      title: const Text(
+                                          "Accept Book Swap Request"),
+                                      content: TextField(
                                         onChanged: (value) {
                                           setState(() {
                                             to_message = value;
                                           });
                                         },
+                                        decoration: const InputDecoration(
+                                          hintText: "Message",
+                                        ),
                                       ),
                                       actions: [
+                                        // Cancel Button
                                         TextButton(
                                           onPressed: () {
-                                            swapProvider
-                                                .swapAccept(
-                                                    _listSwaps[index]
-                                                        .pk
-                                                        .toString(),
-                                                    to_message)
-                                                .whenComplete(() {
-                                              setState(() {
-                                                _listSwaps.removeAt(index);
-                                              });
-                                            }).whenComplete(() {
-                                              setState(() {
-                                                swapProvider.fetchWaitingSwap();
-                                              });
-                                            });
+                                            to_message = "";
+                                            Navigator.pop(context);
                                           },
-                                          child: const Text("Kirim"),
+                                          child: const Text("Cancel"),
+                                        ),
+                                        TextButton(
+                                          onPressed: () {
+                                            if (to_message == "") {
+                                              ScaffoldMessenger.of(context)
+                                                  .showSnackBar(
+                                                const SnackBar(
+                                                  content: Text(
+                                                      "Pesan tidak boleh kosong"),
+                                                ),
+                                              );
+                                              return;
+                                            } else {
+                                              swapProvider
+                                                  .swapAccept(
+                                                      _listSwaps[index]
+                                                          .pk
+                                                          .toString(),
+                                                      to_message)
+                                                  .whenComplete(() {
+                                                setState(() {
+                                                  _listSwaps.removeAt(index);
+                                                });
+                                              }).whenComplete(() {
+                                                setState(() {
+                                                  swapProvider.logIn();
+                                                });
+                                              });
+                                              Navigator.pop(context);
+                                            }
+                                            // Accept Swap
+                                            //Navigator.pop(context);
+                                          },
+                                          child: const Text("Terima"),
                                         ),
                                       ],
                                     );

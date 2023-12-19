@@ -5,6 +5,7 @@ import '../../../core/bases/widgets/button.dart';
 import '../../../core/bases/widgets/scaffold.dart';
 import '../../authentication/providers/auth_provider.dart';
 import '../../authentication/screens/login_page.dart';
+import '../../book-swap/providers/swap_provider.dart';
 
 class ProfilePage extends StatefulWidget {
   const ProfilePage({super.key});
@@ -17,6 +18,7 @@ class _ProfilePageState extends State<ProfilePage> {
   @override
   Widget build(BuildContext context) {
     final auth = context.watch<AuthProvider>();
+    final swapProvider = context.watch<SwapProvider>();
 
     return BpScaffold(
       body: SingleChildScrollView(
@@ -28,6 +30,8 @@ class _ProfilePageState extends State<ProfilePage> {
               child: BpButton(
                 text: "Logout",
                 onTap: () async {
+                  // Clear Swap Provider Cache
+                  swapProvider.logOut();
                   await auth.logout();
                   Navigator.pushReplacement(
                     context,

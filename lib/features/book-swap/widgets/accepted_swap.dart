@@ -38,6 +38,7 @@ class _AcceptedSwapWidgetState extends State<AcceptedSwapWidget> {
 
     return BpScaffold(
       body: SingleChildScrollView(
+        physics: ScrollPhysics(),
         child: Column(
           children: [
             Row(
@@ -75,6 +76,7 @@ class _AcceptedSwapWidgetState extends State<AcceptedSwapWidget> {
               )
             else // If _listSwaps is not empty, show the data
               ListView.builder(
+                physics: NeverScrollableScrollPhysics(),
                 shrinkWrap: true,
                 itemCount: _listSwaps.length,
                 itemBuilder: (context, index) {
@@ -135,7 +137,7 @@ class _AcceptedSwapWidgetState extends State<AcceptedSwapWidget> {
                                     _listSwaps.removeAt(index);
                                   });
                                 }).whenComplete(() => setState(() {
-                                          swapProvider.fetchAcceptedSwap();
+                                          swapProvider.logIn();
                                         }));
                               },
                               child: const Text("Selesaikan"),

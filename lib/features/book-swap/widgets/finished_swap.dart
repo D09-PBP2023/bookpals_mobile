@@ -37,6 +37,7 @@ class _FinishedSwapWidgetState extends State<FinishedSwapWidget> {
 
     return BpScaffold(
       body: SingleChildScrollView(
+        physics: ScrollPhysics(),
         child: Column(
           children: [
             Row(
@@ -71,6 +72,7 @@ class _FinishedSwapWidgetState extends State<FinishedSwapWidget> {
               )
             else // If _listSwaps is not empty, show the data
               ListView.builder(
+                physics: NeverScrollableScrollPhysics(),
                 shrinkWrap: true,
                 itemCount: _listSwaps.length,
                 itemBuilder: (context, index) {
