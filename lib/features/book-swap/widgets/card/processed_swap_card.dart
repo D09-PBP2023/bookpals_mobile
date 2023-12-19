@@ -183,7 +183,7 @@ class ProcessedCard extends StatelessWidget {
                 if (swap.fields.toMessage == "")
                   const Text("-")
                 else
-                  Text(swap.fields.fromMessage)
+                  Text(swap.fields.toMessage)
               ],
             )
           ],

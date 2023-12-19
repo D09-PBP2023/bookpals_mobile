@@ -119,6 +119,28 @@ class _RequestSwapState extends State<RequestSwap> {
         ),
         const SizedBox(height: 20),
         // TextField Message
+        const Align(
+          alignment: Alignment.topLeft,
+          child: Text(
+            "Message. Ex: address,numberphone,etc",
+            style: TextStyle(
+              fontWeight: FontWeight.w400,
+              fontSize: 15,
+            ),
+          ),
+        ),
+        const Align(
+          alignment: Alignment.topLeft,
+          child: Text(
+            "Don't send sensitive data, Ex: identityCard number, bank account, credit card, etc",
+            style: TextStyle(
+              color: Colors.red,
+              fontWeight: FontWeight.w400,
+              fontSize: 12,
+            ),
+          ),
+        ),
+        const SizedBox(height: 20),
         TextFormField(
           validator: (value) {
             if (value == null || value.isEmpty) {
