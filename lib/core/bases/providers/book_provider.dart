@@ -53,11 +53,22 @@ class BookProvider with ChangeNotifier {
     return tmp.take(count).toList();
   }
 
-  // List<Book> getBookmarkedBooks() {
-  //   // User user = Item.user;
-  //   List<int> bookmarkedBooks.add();
-  //   List<Book> tmp = List.from(_listBook);
-  //   // tmp.shuffle();
-  //   return tmp ;
-  // }
+  List<Book> getAllBooks() {
+    return _listBook;
+  }
+
+  Book getSpecifedBook(String title) {
+    // If Not Found, return Null
+    Fields fields = Fields(
+        name: "",
+        author: "",
+        originalLanguage: "",
+        yearPublished: 0,
+        sales: 0,
+        genre: "",
+        coverImage: "");
+    Book empty = Book(model: Model.MAIN_BOOK, pk: 0, fields: fields);
+    return _listBook.firstWhere((element) => element.fields.name == title,
+        orElse: () => empty);
+  }
 }
