@@ -1,5 +1,6 @@
 import 'core/theme/color_theme.dart';
 import 'features/authentication/screens/login_page.dart';
+import 'features/book-swap/providers/swap_provider.dart';
 import 'features/main/screens/home_page.dart';
 import 'services/api.dart';
 import 'package:flutter/material.dart';
@@ -26,6 +27,7 @@ class MyApp extends StatelessWidget {
         // Provider<CookieRequest>(create: (context) => CookieRequest()),
         ChangeNotifierProvider(create: (_) => AuthProvider()),
         ChangeNotifierProvider(create: (_) => BookProvider()),
+        ChangeNotifierProvider(create: (_) => SwapProvider()),
         ChangeNotifierProvider(create: (_) => ProfileProvider()),
         ChangeNotifierProvider(create: (_) => ReviewProvider()),
       ],

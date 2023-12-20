@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 import '../../../core/bases/widgets/scaffold.dart';
 import '../../../core/theme/color_theme.dart';
+import '../../book-swap/screens/book_swap.dart';
 import '../../book_details/screens/bookmark_page.dart';
 import '../../profile/screens/profile_page.dart';
 import 'catalog_page.dart';
@@ -17,6 +18,7 @@ class _HomePageState extends State<HomePage> {
   int _selectedIndex = 0;
   final pages = [
     const CatalogPage(),
+    const BookSwap(),
     const BookmarkPage(),
     const ProfilePage(),
   ];
@@ -49,6 +51,10 @@ class _HomePageState extends State<HomePage> {
                   weight: 100,
                 ),
                 label: 'Home',
+              ),
+              NavigationDestination(
+                icon: Icon(Icons.swap_horiz),
+                label: 'Book Swap',
               ),
               NavigationDestination(
                 icon: Icon(Icons.bookmark),
