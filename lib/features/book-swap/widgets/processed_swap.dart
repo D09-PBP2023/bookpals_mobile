@@ -15,8 +15,8 @@ class ProcessedSwapWidget extends StatefulWidget {
 }
 
 class _ProcessedSwapWidgetState extends State<ProcessedSwapWidget> {
-  @override
   List<Swap> _listSwaps = [];
+
   @override
   void initState() {
     super.initState();
@@ -33,8 +33,9 @@ class _ProcessedSwapWidgetState extends State<ProcessedSwapWidget> {
     final swapProvider = context.watch<SwapProvider>();
 
     return BpScaffold(
+      padding: const EdgeInsets.only(left: 24, right: 24, top: 20),
       body: SingleChildScrollView(
-        physics: ScrollPhysics(),
+        physics: const ScrollPhysics(),
         child: Column(
           children: [
             //Back Button
@@ -45,7 +46,7 @@ class _ProcessedSwapWidgetState extends State<ProcessedSwapWidget> {
                     // Pop to Home Page
                     Navigator.pop(context);
                   },
-                  icon: const Icon(Icons.arrow_back),
+                  icon: const Icon(Icons.arrow_back_ios),
                 ),
                 const Align(
                   alignment: Alignment.centerLeft,
@@ -65,12 +66,12 @@ class _ProcessedSwapWidgetState extends State<ProcessedSwapWidget> {
               const Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  const Text("No Data"),
+                  Text("No Data"),
                 ],
               )
             else // If _listSwaps is not empty, show the data
               ListView.builder(
-                physics: NeverScrollableScrollPhysics(),
+                physics: const NeverScrollableScrollPhysics(),
                 shrinkWrap: true,
                 itemCount: _listSwaps.length,
                 itemBuilder: (context, index) {
@@ -92,7 +93,7 @@ class _ProcessedSwapWidgetState extends State<ProcessedSwapWidget> {
                                 style: TextStyle(fontWeight: FontWeight.bold),
                               ),
                               if (_listSwaps[index].fields.haveBook == "")
-                                Text("-")
+                                const Text("-")
                               else
                                 Text(_listSwaps[index].fields.haveBook),
                             ],
@@ -110,7 +111,7 @@ class _ProcessedSwapWidgetState extends State<ProcessedSwapWidget> {
                                   style: TextStyle(fontWeight: FontWeight.bold),
                                 ),
                               if (_listSwaps[index].fields.toUser == "")
-                                Text("You")
+                                const Text("You")
                               else
                                 Text(_listSwaps[index].fields.toUser),
                             ],
@@ -130,7 +131,7 @@ class _ProcessedSwapWidgetState extends State<ProcessedSwapWidget> {
                                           builder: (context) => ProcessedCard(
                                               swap: _listSwaps[index])));
                                 },
-                                child: Icon(Icons.info)),
+                                child: const Icon(Icons.info)),
                             if (_listSwaps[index].fields.processed == true)
                               const Align(
                                 alignment: Alignment.centerLeft,

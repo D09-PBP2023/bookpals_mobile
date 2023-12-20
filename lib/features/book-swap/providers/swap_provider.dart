@@ -1,12 +1,10 @@
-import 'package:http/http.dart';
-
 import '../../../core/environments/endpoints.dart';
 import '../../../services/api.dart';
 import 'package:flutter/material.dart';
 import '../../book-swap/models/swap.dart';
 
 class SwapProvider with ChangeNotifier {
-  List<Swap> _listSwaps = [];
+  final List<Swap> _listSwaps = [];
   List<Swap> _listProcessedSwaps = [];
   List<Swap> _listWaitingSwaps = [];
   List<Swap> _listAcceptedSwaps = [];
@@ -81,14 +79,14 @@ class SwapProvider with ChangeNotifier {
   }
 
   List<Swap> getProcessedSwapByKey(String search) {
-    List<Swap> _listProcessedSwaps = [];
+    List<Swap> listProcessedSwaps = [];
     for (var item in _listSwaps) {
       if (item.fields.wantBook.toLowerCase().contains(search.toLowerCase()) ||
           item.fields.wantBook.toLowerCase().contains(search.toLowerCase())) {
-        _listProcessedSwaps.add(item);
+        listProcessedSwaps.add(item);
       }
     }
-    return _listProcessedSwaps;
+    return listProcessedSwaps;
   }
 
   List<Swap> getProcessedSwap() {
@@ -116,10 +114,10 @@ class SwapProvider with ChangeNotifier {
     notifyListeners();
   }
 
-  void logIn() {
-    fetchProcessedSwap();
-    fetchWaitingSwap();
-    fetchAcceptedSwap();
-    fetchFinishedSwap();
+  Future<void> logIn() async {
+    await fetchProcessedSwap();
+    await fetchWaitingSwap();
+    await fetchAcceptedSwap();
+    await fetchFinishedSwap();
   }
 }

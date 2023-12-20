@@ -1,6 +1,6 @@
 import 'dart:math';
 
-import 'package:bookpals_mobile/features/main/screens/search_page.dart';
+import 'search_page.dart';
 import 'package:flutter/material.dart';
 import 'package:lazy_load_scrollview/lazy_load_scrollview.dart';
 import 'package:provider/provider.dart';

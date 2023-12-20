@@ -12,7 +12,7 @@ class SearchBook extends StatefulWidget {
 class _SearchBookState extends State<SearchBook> {
   @override
   Widget build(BuildContext context) {
-    return BpScaffold(
+    return const BpScaffold(
         body: Center(
       child: Text('Search Book'),
     ));

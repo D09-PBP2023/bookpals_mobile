@@ -1,13 +1,9 @@
 import 'package:flutter/material.dart';
 
-import '../../../core/bases/widgets/button.dart';
 import '../../../core/bases/widgets/scaffold.dart';
-import '../../../core/bases/widgets/search_field.dart';
-import '../../main/screens/home_page.dart';
 import '../providers/swap_provider.dart';
 import 'package:provider/provider.dart';
 import '../models/swap.dart';
-import '../screens/book_swap.dart';
 import '../../../features/book-swap/widgets/card/processed_swap_card.dart';
 
 class AcceptedSwapWidget extends StatefulWidget {
@@ -19,10 +15,9 @@ class AcceptedSwapWidget extends StatefulWidget {
 }
 
 class _AcceptedSwapWidgetState extends State<AcceptedSwapWidget> {
-  @override
   List<Swap> _listSwaps = [];
-  String _searchController = "";
 
+  @override
   void initState() {
     super.initState();
     setState(() {
@@ -37,8 +32,9 @@ class _AcceptedSwapWidgetState extends State<AcceptedSwapWidget> {
     final swapProvider = context.watch<SwapProvider>();
 
     return BpScaffold(
+      padding: const EdgeInsets.only(left: 24, right: 24, top: 20),
       body: SingleChildScrollView(
-        physics: ScrollPhysics(),
+        physics: const ScrollPhysics(),
         child: Column(
           children: [
             Row(
@@ -51,7 +47,7 @@ class _AcceptedSwapWidgetState extends State<AcceptedSwapWidget> {
                       swapProvider.fetchAcceptedSwap();
                     });
                   },
-                  icon: const Icon(Icons.arrow_back),
+                  icon: const Icon(Icons.arrow_back_ios),
                 ),
                 const Align(
                   alignment: Alignment.centerLeft,
@@ -76,7 +72,7 @@ class _AcceptedSwapWidgetState extends State<AcceptedSwapWidget> {
               )
             else // If _listSwaps is not empty, show the data
               ListView.builder(
-                physics: NeverScrollableScrollPhysics(),
+                physics: const NeverScrollableScrollPhysics(),
                 shrinkWrap: true,
                 itemCount: _listSwaps.length,
                 itemBuilder: (context, index) {
@@ -97,7 +93,7 @@ class _AcceptedSwapWidgetState extends State<AcceptedSwapWidget> {
                                 style: TextStyle(fontWeight: FontWeight.bold),
                               ),
                               if (_listSwaps[index].fields.haveBook == "")
-                                Text("-")
+                                const Text("-")
                               else
                                 Text(_listSwaps[index].fields.haveBook),
                             ],
@@ -126,7 +122,7 @@ class _AcceptedSwapWidgetState extends State<AcceptedSwapWidget> {
                                           builder: (context) => ProcessedCard(
                                               swap: _listSwaps[index])));
                                 },
-                                child: Icon(Icons.info)),
+                                child: const Icon(Icons.info)),
                             ElevatedButton(
                               onPressed: () {
                                 swapProvider

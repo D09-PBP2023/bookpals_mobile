@@ -2,6 +2,8 @@
 //
 //     final swap = swapFromJson(jsonString);
 
+// ignore_for_file: file_names
+
 import 'dart:convert';
 
 List<Swap> swapFromJson(String str) =>

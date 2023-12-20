@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:bookpals_mobile/features/book-swap/models/swap.dart';
+import '../../models/swap.dart';
 
 import '../../../../core/bases/providers/book_provider.dart';
 import '../../../../core/bases/widgets/scaffold.dart';
 import 'package:provider/provider.dart';
-import 'package:bookpals_mobile/core/bases/models/Book.dart';
+import '../../../../core/bases/models/book.dart';
 
 class ProcessedCard extends StatelessWidget {
   const ProcessedCard({super.key, required this.swap});
@@ -26,7 +26,7 @@ class ProcessedCard extends StatelessWidget {
                 // Pop to Home Page
                 Navigator.pop(context);
               },
-              icon: const Icon(Icons.arrow_back),
+              icon: const Icon(Icons.arrow_back_ios),
             ),
             const Align(
               alignment: Alignment.centerLeft,

@@ -1,3 +1,5 @@
+// ignore_for_file: non_constant_identifier_names
+
 import 'package:flutter/material.dart';
 
 import '../../../core/bases/widgets/scaffold.dart';
@@ -15,7 +17,6 @@ class WaitingSwapWidget extends StatefulWidget {
 }
 
 class _WaitingSwapWidgetState extends State<WaitingSwapWidget> {
-  @override
   List<Swap> _listSwaps = [];
   String to_message = "";
 
@@ -34,8 +35,9 @@ class _WaitingSwapWidgetState extends State<WaitingSwapWidget> {
     final swapProvider = context.watch<SwapProvider>();
 
     return BpScaffold(
+      padding: const EdgeInsets.only(left: 24, right: 24, top: 20),
       body: SingleChildScrollView(
-        physics: ScrollPhysics(),
+        physics: const ScrollPhysics(),
         child: Column(
           children: [
             Row(
@@ -45,7 +47,7 @@ class _WaitingSwapWidgetState extends State<WaitingSwapWidget> {
                     // Pop to Home Page
                     Navigator.pop(context);
                   },
-                  icon: const Icon(Icons.arrow_back),
+                  icon: const Icon(Icons.arrow_back_ios),
                 ),
                 const Align(
                   alignment: Alignment.centerLeft,
@@ -66,12 +68,12 @@ class _WaitingSwapWidgetState extends State<WaitingSwapWidget> {
               const Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  const Text("No Waiting Swap Data"),
+                  Text("No Waiting Swap Data"),
                 ],
               )
             else // If _listSwaps is not empty, show the data
               ListView.builder(
-                physics: NeverScrollableScrollPhysics(),
+                physics: const NeverScrollableScrollPhysics(),
                 shrinkWrap: true,
                 itemCount: _listSwaps.length,
                 itemBuilder: (context, index) {
@@ -92,7 +94,7 @@ class _WaitingSwapWidgetState extends State<WaitingSwapWidget> {
                                 style: TextStyle(fontWeight: FontWeight.bold),
                               ),
                               if (_listSwaps[index].fields.haveBook == "")
-                                Text("-")
+                                const Text("-")
                               else
                                 Text(_listSwaps[index].fields.haveBook),
                             ],
@@ -120,7 +122,7 @@ class _WaitingSwapWidgetState extends State<WaitingSwapWidget> {
                                           builder: (context) => ProcessedCard(
                                               swap: _listSwaps[index])));
                                 },
-                                child: Icon(Icons.info)),
+                                child: const Icon(Icons.info)),
                             TextButton(
                               onPressed: () {
                                 // Show TextBox Dialog
