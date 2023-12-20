@@ -15,4 +15,7 @@ class Endpoints {
       '$baseUrl/get-books-by-name/$name';
   static String searchBookByGenresUrl(String genre) =>
       '$baseUrl/get-books-by-genre/$genre';
+  static const addReview = '$baseUrl/add-review-flutter/';
+  static String getReview(int id) => '$baseUrl/get_review/$id';
+  static String getAverageRating(int id) => '$baseUrl/get_average_rating/$id';
 }

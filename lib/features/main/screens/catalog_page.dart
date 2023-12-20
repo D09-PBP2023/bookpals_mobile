@@ -6,6 +6,7 @@ import 'package:provider/provider.dart';
 
 import '../../../core/bases/models/book.dart';
 import '../../../core/bases/providers/book_provider.dart';
+import '../../../core/bases/providers/profile_provider.dart';
 import '../../../core/bases/widgets/custom_icon_icons.dart';
 import '../../../core/bases/widgets/scaffold.dart';
 import 'search_page.dart';
@@ -22,6 +23,7 @@ class CatalogPage extends StatefulWidget {
 class _CatalogPageState extends State<CatalogPage> {
   bool _isLoading = true;
   List<Book> exploreBooks = [];
+  List<Book> featuredBooks = [];
   List<CategoryDisplay> categories = const [
     CategoryDisplay(
       icon: Icon(
@@ -93,7 +95,9 @@ class _CatalogPageState extends State<CatalogPage> {
     BookProvider bookProvider = context.read<BookProvider>();
     bookProvider.fetchAllBook().then((value) {
       setState(() {
-        exploreBooks = bookProvider.listBook.sublist(0, 20);
+        exploreBooks = bookProvider.listBook
+            .sublist(0, min(bookProvider.listBook.length, 20));
+        featuredBooks = bookProvider.getRandomBooks(20);
         _isLoading = false;
       });
     });
@@ -119,8 +123,10 @@ class _CatalogPageState extends State<CatalogPage> {
   @override
   Widget build(BuildContext context) {
     final bookProvider = context.watch<BookProvider>();
-    List<Book> featuredBooks = bookProvider.getRandomBooks(20);
     final bookColumn = ((MediaQuery.of(context).size.width - 100) ~/ 130);
+
+    final profileProvider = context.read<ProfileProvider>();
+    profileProvider.getBookmarkedBooks(bookProvider.listBook);
 
     return BpScaffold(
       padding: const EdgeInsets.only(left: 24, right: 24, top: 20),
