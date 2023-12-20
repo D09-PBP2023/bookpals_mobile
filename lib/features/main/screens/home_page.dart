@@ -2,11 +2,10 @@ import 'package:flutter/material.dart';
 
 import '../../../core/bases/widgets/scaffold.dart';
 import '../../../core/theme/color_theme.dart';
-import '../../book-swap/providers/swap_provider.dart';
 import '../../book-swap/screens/book_swap.dart';
+import '../../book_details/screens/bookmark_page.dart';
 import '../../profile/screens/profile_page.dart';
 import 'catalog_page.dart';
-import 'package:provider/provider.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -17,17 +16,17 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   int _selectedIndex = 0;
+  final pages = [
+    const CatalogPage(),
+    const BookSwap(),
+    const BookmarkPage(),
+    const ProfilePage(),
+  ];
 
   @override
   Widget build(BuildContext context) {
-    final SwapProvider swapProvider = context.watch<SwapProvider>();
     return BpScaffold(
-      usePadding: false,
-      body: const [
-        CatalogPage(), // index 0
-        BookSwap(),
-        ProfilePage(),
-      ][_selectedIndex],
+      body: pages[_selectedIndex],
       navigationBar: Container(
         decoration: const BoxDecoration(
           borderRadius: BorderRadius.only(
@@ -58,6 +57,10 @@ class _HomePageState extends State<HomePage> {
                 label: 'Book Swap',
               ),
               NavigationDestination(
+                icon: Icon(Icons.bookmark),
+                label: 'Bookmark',
+              ),
+              NavigationDestination(
                 icon: Icon(Icons.person),
                 label: 'Profile',
               ),
@@ -68,9 +71,6 @@ class _HomePageState extends State<HomePage> {
             onDestinationSelected: (index) {
               setState(() {
                 _selectedIndex = index;
-                if (index == 1) {
-                  swapProvider.logIn();
-                }
               });
             },
           ),

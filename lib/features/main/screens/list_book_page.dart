@@ -3,7 +3,7 @@ import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-import '../../../core/bases/models/Book.dart';
+import '../../../core/bases/models/book.dart';
 import '../../../core/bases/providers/book_provider.dart';
 import '../../../core/bases/widgets/scaffold.dart';
 import '../../../core/theme/color_theme.dart';
@@ -53,15 +53,13 @@ class _ListBookPageState extends State<ListBookPage> {
 
   @override
   Widget build(BuildContext context) {
-    final BookProvider bookProvider = context.watch<BookProvider>();
     final bookColumn = ((MediaQuery.of(context).size.width - 100) ~/ 130);
     return BpScaffold(
-      usePadding: false,
       body: SafeArea(
         child: SingleChildScrollView(
           child: Column(
             children: [
-              Container(
+              SizedBox(
                 height: 240,
                 child: Stack(
                   children: [

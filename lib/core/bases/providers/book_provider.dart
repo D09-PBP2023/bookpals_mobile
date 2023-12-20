@@ -1,10 +1,8 @@
-import 'dart:io';
-
 import 'package:flutter/material.dart';
 
 import '../../../services/api.dart';
 import '../../environments/endpoints.dart';
-import '../models/Book.dart';
+import '../models/book.dart';
 
 class BookProvider with ChangeNotifier {
   List<Book> _listBook = [];
@@ -15,7 +13,6 @@ class BookProvider with ChangeNotifier {
     for (var item in response) {
       _listBook.add(Book.fromJson(item));
     }
-    debugPrint(_listBook[0].fields.coverImage);
     notifyListeners();
   }
 
@@ -62,7 +59,7 @@ class BookProvider with ChangeNotifier {
 
   Book getSpecifedBook(String title) {
     // If Not Found, return Null
-    Fields fields = new Fields(
+    Fields fields = Fields(
         name: "",
         author: "",
         originalLanguage: "",
@@ -70,7 +67,7 @@ class BookProvider with ChangeNotifier {
         sales: 0,
         genre: "",
         coverImage: "");
-    Book empty = new Book(model: Model.MAIN_BOOK, pk: 0, fields: fields);
+    Book empty = Book(model: Model.MAIN_BOOK, pk: 0, fields: fields);
     return _listBook.firstWhere((element) => element.fields.name == title,
         orElse: () => empty);
   }
