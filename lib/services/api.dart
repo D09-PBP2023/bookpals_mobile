@@ -1,3 +1,5 @@
+import 'package:http/http.dart';
+
 import 'cookie_request.dart';
 
 class APIHelper {
@@ -25,5 +27,10 @@ class APIHelper {
 
   static Future<dynamic> post(String url, dynamic data) async {
     return await cookieRequest.post(url, data);
+  }
+
+  static Future<dynamic> postWithFiles(
+      String url, dynamic data, List<MultipartFile> files) async {
+    return await cookieRequest.postWithFiles(url, data, files);
   }
 }

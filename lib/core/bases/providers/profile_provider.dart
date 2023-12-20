@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+
 import '../../../services/api.dart';
 import '../../environments/endpoints.dart';
 import '../models/book.dart';
@@ -19,6 +20,7 @@ class ProfileProvider with ChangeNotifier {
         favoriteBook2: -1,
         favoriteBook3: -1,
         bookmarkedbooks: [],
+        isAdmin: false,
       ));
 
   UserProfile get userProfile => _userProfile;

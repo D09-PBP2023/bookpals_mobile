@@ -1,6 +1,6 @@
 class Endpoints {
-  static const baseUrl =
-      'https://bookpals-d09-tk.pbp.cs.ui.ac.id'; // Or change to 'https://bookpals-d09-tk.pbp.cs.ui.ac.id' for production
+  static const baseUrl = 'https://bookpals-d09-tk.pbp.cs.ui.ac.id';
+  // 'http://10.0.2.2:8000'; // Or change to 'https://bookpals-d09-tk.pbp.cs.ui.ac.id' for production
   static const loginUrl = '$baseUrl/login-mobile/';
   static const registerUrl = '$baseUrl/register-mobile/';
   static const logoutUrl = '$baseUrl/logout-mobile/';
@@ -14,7 +14,10 @@ class Endpoints {
   static const getAcceptedSwap = '$baseUrl/get_accepted_book_json/';
   static const getFinishedSwap = '$baseUrl/get_finished_book_json/';
   static const getProfile = '$baseUrl/profileflutter/';
+  // static const getBookRequest = '$baseUrl/request-book-mobile/';
+  static const addBookRequestUrl = '$baseUrl/request-book-mobile/';
   static String editFav(int id) => '$baseUrl/fav-mobile/$id';
+  static const getRequest = '$baseUrl/get-requested-book/';
   static String bookmarkUrl(int id) => '$baseUrl/bookmarkflutter/$id';
   static const editProfile = '$baseUrl/editprofile-mobile/';
   static String searchBooksUrl(String name) =>

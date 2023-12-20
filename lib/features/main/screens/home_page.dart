@@ -5,6 +5,7 @@ import '../../../core/theme/color_theme.dart';
 import '../../book-swap/screens/book_swap.dart';
 import '../../book_details/screens/bookmark_page.dart';
 import '../../profile/screens/profile_page.dart';
+import '../../request/screens/book_request.dart';
 import 'catalog_page.dart';
 
 class HomePage extends StatefulWidget {
@@ -19,6 +20,7 @@ class _HomePageState extends State<HomePage> {
   final pages = [
     const CatalogPage(),
     const BookSwap(),
+    const BookRequestScreen(),
     const BookmarkPage(),
     const ProfilePage(),
   ];
@@ -55,6 +57,10 @@ class _HomePageState extends State<HomePage> {
               NavigationDestination(
                 icon: Icon(Icons.swap_horiz),
                 label: 'Book Swap',
+              ),
+              NavigationDestination(
+                icon: Icon(Icons.add_box),
+                label: 'Request',
               ),
               NavigationDestination(
                 icon: Icon(Icons.bookmark),

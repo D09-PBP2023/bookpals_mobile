@@ -9,6 +9,8 @@ import 'package:provider/provider.dart';
 import 'core/bases/providers/book_provider.dart';
 import 'core/bases/providers/profile_provider.dart';
 import 'features/authentication/providers/auth_provider.dart';
+import 'features/request/providers/bookrequest_provider.dart';
+import 'features/request/providers/submitrequest_provider.dart';
 import 'core/bases/providers/review_provider.dart';
 
 Future<void> main() async {
@@ -29,6 +31,8 @@ class MyApp extends StatelessWidget {
         ChangeNotifierProvider(create: (_) => BookProvider()),
         ChangeNotifierProvider(create: (_) => SwapProvider()),
         ChangeNotifierProvider(create: (_) => ProfileProvider()),
+        ChangeNotifierProvider(create: (_) => BookRequestProvider()),
+        ChangeNotifierProvider(create: (_) => SubmitBookRequestProvider()),
         ChangeNotifierProvider(create: (_) => ReviewProvider()),
       ],
       child: MaterialApp(

@@ -7,7 +7,14 @@ import '../../../core/theme/color_theme.dart';
 
 class EditProfile extends StatefulWidget {
   final ProfileProvider profileProvider;
-  const EditProfile({super.key, required this.profileProvider});
+  final String? name, email, bio;
+
+  const EditProfile(
+      {super.key,
+      required this.profileProvider,
+      this.name,
+      this.email,
+      this.bio});
   @override
   State<EditProfile> createState() => _EditProfileState();
 }
@@ -17,6 +24,14 @@ class _EditProfileState extends State<EditProfile> {
   String _name = "";
   String _email = "";
   String _bio = "";
+
+  @override
+  void initState() {
+    _name = widget.name ?? "";
+    _email = widget.email ?? "";
+    _bio = widget.bio ?? "";
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -50,6 +65,7 @@ class _EditProfileState extends State<EditProfile> {
                     borderRadius: BorderRadius.circular(5.0),
                   ),
                 ),
+                initialValue: _name,
                 onChanged: (String? value) {
                   setState(() {
                     _name = value!;
@@ -73,6 +89,7 @@ class _EditProfileState extends State<EditProfile> {
                     borderRadius: BorderRadius.circular(5.0),
                   ),
                 ),
+                initialValue: _email,
                 onChanged: (String? value) {
                   setState(() {
                     // TODO: Tambahkan variabel yang sesuai
@@ -94,6 +111,7 @@ class _EditProfileState extends State<EditProfile> {
                     borderRadius: BorderRadius.circular(5.0),
                   ),
                 ),
+                initialValue: _bio,
                 onChanged: (String? value) {
                   setState(() {
                     // TODO: Tambahkan variabel yang sesuai

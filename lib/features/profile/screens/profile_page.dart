@@ -56,6 +56,9 @@ class _ProfilePageState extends State<ProfilePage> {
                       MaterialPageRoute(
                         builder: (context) => EditProfile(
                           profileProvider: profileProvider,
+                          name: profileProvider.userProfile.fields.nickname,
+                          email: profileProvider.userProfile.fields.email,
+                          bio: profileProvider.userProfile.fields.bio,
                         ),
                       ),
                     );
