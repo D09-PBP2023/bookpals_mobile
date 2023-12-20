@@ -74,6 +74,7 @@ class FieldsProfile {
       favoriteBook2: json["favoriteBook2"] ?? -1,
       favoriteBook3: json["favoriteBook3"] ?? -1,
       bookmarkedbooks: List<int>.from(json["bookmarkedbooks"] ?? []),
+      isAdmin: json["isAdmin"] ?? false,
     );
   }
 
