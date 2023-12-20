@@ -77,26 +77,26 @@ class _ProfilePageState extends State<ProfilePage> {
                     height: 210,
                     width: 1000,
                     child: Container(
-                        decoration: BoxDecoration(
-                          gradient: const LinearGradient(
-                            colors: [
-                              Color.fromARGB(255, 151, 67, 41),
-                              Color.fromARGB(255, 119, 40, 27)
-                            ],
-                            begin: Alignment.topLeft,
-                            end: Alignment.bottomRight,
-                          ),
-                          borderRadius: BorderRadius.circular(12.0),
-                          border: Border.all(
-                              color: const Color.fromARGB(255, 67, 36, 25),
-                              width: 1.0),
-                        ),
-                        child: Row(
-                          children: [
-                            for (int idx = 1; idx <= 3; idx++)
-                              _bookCover(bookProvider, profileProvider, idx),
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(12.0),
+                        gradient: const LinearGradient(
+                          colors: [
+                            Color.fromARGB(
+                                255, 13, 82, 91), // Fully opaque at the bottom
+                            Color.fromARGB(255, 95, 205,
+                                184), // Fully transparent at the top
                           ],
-                        )),
+                          begin: Alignment.topLeft,
+                          end: Alignment.bottomRight,
+                        ),
+                      ),
+                      child: Row(
+                        children: [
+                          for (int idx = 1; idx <= 3; idx++)
+                            _bookCover(bookProvider, profileProvider, idx),
+                        ],
+                      ),
+                    ),
                   ),
                   const SizedBox(height: 50),
                   BpButton(
@@ -210,11 +210,31 @@ class _ProfilePageState extends State<ProfilePage> {
       padding: const EdgeInsets.only(
           bottom: 50.0, top: 20.0), // Adjust the top padding as needed
       child: Container(
-        width: MediaQuery.of(context).size.width * (0.3),
-        height: MediaQuery.of(context).size.width * (0.3),
-        decoration: const BoxDecoration(
+        width: MediaQuery.of(context).size.width * 0.3,
+        height: MediaQuery.of(context).size.width * 0.3,
+        decoration: BoxDecoration(
           shape: BoxShape.circle,
-          color: Colors.blue, // Set your desired color
+          gradient: const LinearGradient(
+            colors: [
+              Color.fromARGB(255, 16, 73, 80), // Fully opaque at the bottom
+              Color.fromARGB(
+                  255, 103, 167, 151), // Fully transparent at the top
+            ],
+            begin: Alignment.topCenter,
+            end: Alignment.bottomCenter,
+          ),
+          border: Border.all(
+            color: const Color.fromARGB(255, 255, 255, 255),
+            width: 5.0,
+          ),
+          boxShadow: [
+            BoxShadow(
+              color: Colors.black.withOpacity(0.3), // Shadow color and opacity
+              spreadRadius: 2, // Spread radius
+              blurRadius: 5, // Blur radius
+              offset: const Offset(0, 3), // Offset from the top-left corner
+            ),
+          ],
         ),
         child: const Icon(
           Icons.person,
@@ -226,30 +246,50 @@ class _ProfilePageState extends State<ProfilePage> {
   }
 
   Widget _buildName(ProfileProvider profileProvider) {
-    return SizedBox(
+    return Container(
       width: MediaQuery.of(context).size.width * 0.4,
-      child: Text(
-        profileProvider.userProfile.fields.nickname,
-        style: const TextStyle(
-          fontWeight: FontWeight.bold,
-          fontSize: 18.0,
+      decoration: const BoxDecoration(
+        border: Border(
+          bottom: BorderSide(
+            color: Colors.black, // Set your right border color
+            width: 2.0, // Set your right border width
+          ),
         ),
-        overflow: TextOverflow.ellipsis,
-        maxLines: 2,
+      ),
+      child: SizedBox(
+        width: double.infinity,
+        child: Text(
+          profileProvider.userProfile.fields.nickname,
+          style: const TextStyle(
+            fontWeight: FontWeight.bold,
+            fontSize: 18.0,
+          ),
+          overflow: TextOverflow.ellipsis,
+          maxLines: 2,
+        ),
       ),
     );
   }
 
   Widget _buildEmail(ProfileProvider profileProvider) {
-    return SizedBox(
+    return Container(
       width: MediaQuery.of(context).size.width * 0.4,
-      child: Text(
-        profileProvider.userProfile.fields.email,
-        style: const TextStyle(
-            color: Color.fromARGB(255, 84, 84, 84),
-            backgroundColor: Color.fromARGB(255, 131, 197, 0)),
-        overflow: TextOverflow.ellipsis,
-        maxLines: 2,
+      padding: const EdgeInsets.all(2.0), // Adjust the padding as needed
+      decoration: BoxDecoration(
+        color: const Color.fromARGB(255, 53, 47, 45),
+        borderRadius:
+            BorderRadius.circular(8.0), // Optional: Add rounded corners
+      ),
+      child: SizedBox(
+        width: double.infinity,
+        child: Text(
+          profileProvider.userProfile.fields.email,
+          style: const TextStyle(
+            color: Color.fromARGB(255, 249, 249, 249),
+          ),
+          overflow: TextOverflow.ellipsis,
+          maxLines: 2,
+        ),
       ),
     );
   }
@@ -281,16 +321,28 @@ class _ProfilePageState extends State<ProfilePage> {
   }
 
   Widget _buildComplete(ProfileProvider profileProvider) {
-    return Padding(
-      padding: const EdgeInsets.only(bottom: 60.0),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          _buildProfilePicture(),
-          const SizedBox(
-              width: 10.0), // Adjust the space between profile picture and name
-          _buildNameEmailBio(profileProvider),
-        ],
+    return Container(
+      margin: const EdgeInsets.only(bottom: 10.0),
+      decoration: const BoxDecoration(
+        border: Border(
+          bottom: BorderSide(
+            color: Colors.black, // Set your border color
+            width: 2.0, // Set your border width
+          ),
+        ),
+      ),
+      child: Padding(
+        padding: const EdgeInsets.only(bottom: 60.0),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            _buildProfilePicture(),
+            const SizedBox(
+              width: 10.0,
+            ), // Adjust the space between profile picture and name
+            _buildNameEmailBio(profileProvider),
+          ],
+        ),
       ),
     );
   }
