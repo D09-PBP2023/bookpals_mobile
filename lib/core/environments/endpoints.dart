@@ -1,7 +1,6 @@
 class Endpoints {
-  static const baseUrl =
-    'http://127.0.0.1:8000';
-      // 'http://10.0.2.2:8000'; // Or change to 'https://bookpals-d09-tk.pbp.cs.ui.ac.id' for production
+  static const baseUrl = 'http://127.0.0.1:8000';
+  // 'http://10.0.2.2:8000'; // Or change to 'https://bookpals-d09-tk.pbp.cs.ui.ac.id' for production
   static const loginUrl = '$baseUrl/login-mobile/';
   static const registerUrl = '$baseUrl/register-mobile/';
   static const logoutUrl = '$baseUrl/logout-mobile/';
@@ -10,7 +9,7 @@ class Endpoints {
   // static const getBookRequest = '$baseUrl/request-book-mobile/';
   static const addBookRequestUrl = '$baseUrl/request-book-mobile/';
   static String editFav(int id) => '$baseUrl/fav-mobile/$id';
-  static const getRequest => '$baseUrl/get-requested-book/';
+  static const getRequest = '$baseUrl/get-requested-book/';
 
   // static bookmarkUrl = '$baseUrl/bookmarkflutter/';
   static String bookmarkUrl(int id) => '$baseUrl/bookmarkflutter/$id';
