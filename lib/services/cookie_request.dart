@@ -128,7 +128,7 @@ class CookieRequest {
     return json.decode(utf8.decode(response.bodyBytes));
   }
 
-  Future<dynamic> postWithImage(
+  Future<dynamic> postWithFiles(
       String url, dynamic data, List<MultipartFile> files) async {
     await init();
     if (kIsWeb) {
@@ -141,10 +141,10 @@ class CookieRequest {
     request.fields.addAll(data);
     request.files.addAll(files);
 
-    var response = await request.send();
+    var response = await http.Response.fromStream(await request.send());
     // await _updateCookie(response.headers);
 
-    return json.decode(utf8.decode(await response.stream.toBytes()));
+    return json.decode(utf8.decode(response.bodyBytes));
   }
 
   Future<dynamic> postJson(String url, dynamic data) async {

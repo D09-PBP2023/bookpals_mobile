@@ -1,10 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:http/http.dart' as http;
-import 'dart:convert';
+import 'package:image_cropper/image_cropper.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';
 
 import '../providers/bookrequest_provider.dart';
-import '../providers/submitrequest_provider.dart';
 
 class BookRequestScreen extends StatefulWidget {
   const BookRequestScreen({Key? key}) : super(key: key);
@@ -15,13 +14,15 @@ class BookRequestScreen extends StatefulWidget {
 class _BookRequestScreenState extends State<BookRequestScreen> {
   bool _showForm = false;
   final _formKey = GlobalKey<FormState>();
-  TextEditingController _nameController = TextEditingController();
-  TextEditingController _authorController = TextEditingController();
-  TextEditingController _originalLanguageController = TextEditingController();
-  TextEditingController _yearPublishedController = TextEditingController();
-  TextEditingController _salesController = TextEditingController();
-  TextEditingController _genreController = TextEditingController();
-  // TODO: ADD CONTROLLER BUAT COVER IMAGE
+  final TextEditingController _nameController = TextEditingController();
+  final TextEditingController _authorController = TextEditingController();
+  final TextEditingController _originalLanguageController =
+      TextEditingController();
+  final TextEditingController _yearPublishedController =
+      TextEditingController();
+  final TextEditingController _salesController = TextEditingController();
+  final TextEditingController _genreController = TextEditingController();
+  CroppedFile? coverFile;
 
   List<Map<String, dynamic>> requestedBooks = [];
 
@@ -31,52 +32,20 @@ class _BookRequestScreenState extends State<BookRequestScreen> {
 
     return Scaffold(
       appBar: AppBar(
-        title: Text('Book Request'),
+        title: const Text('Book Request'),
       ),
       body: Padding(
-        padding: EdgeInsets.all(16.0),
+        padding: const EdgeInsets.all(16.0),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
             ElevatedButton(
               onPressed: () async {
-                _showForm = true;
-                if (_nameController.text.isEmpty ||
-                    _authorController.text.isEmpty ||
-                    _originalLanguageController.text.isEmpty ||
-                    _genreController.text.isEmpty ||
-                    _salesController.text.isEmpty ||
-                    _yearPublishedController.text.isEmpty) {
-                  setState(() {
-                    var errorMessage = "Semua fields harus diisi!";
-                  });
-                  return;
-                }
-                final response = await req.makeRequest(
-                  _nameController.text,
-                  _authorController.text,
-                  _originalLanguageController.text,
-                  _yearPublishedController.text,
-                  _salesController.text,
-                  _genreController.text,
-                );
-                if (response["status"]?? false) {
-                  Navigator.pushReplacement(
-                    context,
-                    MaterialPageRoute(
-                        builder: (context) => const BookRequestScreen()),
-                  );
-                  ScaffoldMessenger.of(context)
-                    ..hideCurrentSnackBar()
-                    ..showSnackBar(
-                        SnackBar(content: Text(response['message'])));
-                } else {
-                  setState(() {
-                    var errorMessage = response['message'];
-                  });
-                }
+                setState(() {
+                  _showForm = true;
+                });
               },
-              child: Text('Add Request'),
+              child: const Text('Add Request'),
             ),
             if (_showForm)
               Form(
@@ -86,7 +55,7 @@ class _BookRequestScreenState extends State<BookRequestScreen> {
                   children: <Widget>[
                     TextFormField(
                       controller: _nameController,
-                      decoration: InputDecoration(labelText: 'Book Name'),
+                      decoration: const InputDecoration(labelText: 'Book Name'),
                       validator: (value) {
                         if (value!.isEmpty) {
                           return 'Please enter the book name';
@@ -96,7 +65,7 @@ class _BookRequestScreenState extends State<BookRequestScreen> {
                     ),
                     TextFormField(
                       controller: _authorController,
-                      decoration: InputDecoration(labelText: 'Author'),
+                      decoration: const InputDecoration(labelText: 'Author'),
                       validator: (value) {
                         if (value!.isEmpty) {
                           return 'Please enter the author';
@@ -107,7 +76,7 @@ class _BookRequestScreenState extends State<BookRequestScreen> {
                     TextFormField(
                       controller: _originalLanguageController,
                       decoration:
-                          InputDecoration(labelText: 'Original Language'),
+                          const InputDecoration(labelText: 'Original Language'),
                       validator: (value) {
                         if (value!.isEmpty) {
                           return 'Please enter the original language';
@@ -117,7 +86,8 @@ class _BookRequestScreenState extends State<BookRequestScreen> {
                     ),
                     TextFormField(
                       controller: _yearPublishedController,
-                      decoration: InputDecoration(labelText: 'Year Published'),
+                      decoration:
+                          const InputDecoration(labelText: 'Year Published'),
                       validator: (value) {
                         if (value!.isEmpty) {
                           return 'Please enter the year published';
@@ -127,7 +97,7 @@ class _BookRequestScreenState extends State<BookRequestScreen> {
                     ),
                     TextFormField(
                       controller: _salesController,
-                      decoration: InputDecoration(labelText: 'Sales'),
+                      decoration: const InputDecoration(labelText: 'Sales'),
                       validator: (value) {
                         if (value!.isEmpty) {
                           return 'Please enter the number of sales';
@@ -137,7 +107,7 @@ class _BookRequestScreenState extends State<BookRequestScreen> {
                     ),
                     TextFormField(
                       controller: _genreController,
-                      decoration: InputDecoration(labelText: 'Genre'),
+                      decoration: const InputDecoration(labelText: 'Genre'),
                       validator: (value) {
                         if (value!.isEmpty) {
                           return 'Please enter the genre';
@@ -145,46 +115,86 @@ class _BookRequestScreenState extends State<BookRequestScreen> {
                         return null;
                       },
                     ),
-                    // TODO: TAMBAHIN YG BUAT COVER IMAGE
-
                     ElevatedButton(
                       onPressed: () async {
-                      if (_nameController.text.isEmpty ||
-                          _authorController.text.isEmpty ||
-                          _originalLanguageController.text.isEmpty ||
-                          _genreController.text.isEmpty ||
-                          _salesController.text.isEmpty ||
-                          _yearPublishedController.text.isEmpty) {
-                        setState(() {
-                          var errorMessage = "Semua fields harus diisi!";
-                        });
-                        return;
-                      }
-                      final response = await req.makeRequest(
-                        _nameController.text,
-                        _authorController.text,
-                        _originalLanguageController.text,
-                        _yearPublishedController.text,
-                        _salesController.text,
-                        _genreController.text,
-                      );
-                      if (response["status"]?? false) {
-                        Navigator.pushReplacement(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => const BookRequestScreen()),
+                        final ImagePicker picker = ImagePicker();
+                        // Pick an image.
+                        final XFile? image =
+                            await picker.pickImage(source: ImageSource.gallery);
+                        if (image != null) {
+                          CroppedFile? croppedFile =
+                              await ImageCropper().cropImage(
+                            sourcePath: image.path,
+                            aspectRatio:
+                                const CropAspectRatio(ratioX: 9, ratioY: 16),
+                            uiSettings: [
+                              AndroidUiSettings(
+                                  toolbarTitle: 'Cropper',
+                                  toolbarColor: Colors.deepOrange,
+                                  toolbarWidgetColor: Colors.white,
+                                  initAspectRatio:
+                                      CropAspectRatioPreset.original,
+                                  lockAspectRatio: true),
+                              IOSUiSettings(
+                                title: 'Cropper',
+                              ),
+                              WebUiSettings(
+                                context: context,
+                              ),
+                            ],
+                          );
+                          if (croppedFile != null) {
+                            setState(() {
+                              coverFile = croppedFile;
+                            });
+                          }
+                        }
+                      },
+                      child: const Text(
+                        "Upload Cover",
+                      ),
+                    ),
+                    ElevatedButton(
+                      onPressed: () async {
+                        if (_nameController.text.isEmpty ||
+                            _authorController.text.isEmpty ||
+                            _originalLanguageController.text.isEmpty ||
+                            _genreController.text.isEmpty ||
+                            _salesController.text.isEmpty ||
+                            _yearPublishedController.text.isEmpty ||
+                            coverFile == null) {
+                          setState(() {
+                            var errorMessage = "Semua fields harus diisi!";
+                          });
+                          return;
+                        }
+                        final response = await req.makeRequest(
+                          _nameController.text,
+                          _authorController.text,
+                          _originalLanguageController.text,
+                          _yearPublishedController.text,
+                          _salesController.text,
+                          _genreController.text,
+                          coverFile!,
                         );
-                        ScaffoldMessenger.of(context)
-                          ..hideCurrentSnackBar()
-                          ..showSnackBar(
-                              SnackBar(content: Text(response['message'])));
-                      } else {
-                        setState(() {
-                          var errorMessage = response['message'];
-                        });
-                      }
-                    },
-                      child: Text('Submit Request'),
+                        if (response["status"]) {
+                          // Navigator.pushReplacement(
+                          //   context,
+                          //   MaterialPageRoute(
+                          //       builder: (context) =>
+                          //           const BookRequestScreen()),
+                          // );
+                          ScaffoldMessenger.of(context)
+                            ..hideCurrentSnackBar()
+                            ..showSnackBar(
+                                SnackBar(content: Text(response['message'])));
+                        } else {
+                          setState(() {
+                            var errorMessage = response['message'];
+                          });
+                        }
+                      },
+                      child: const Text('Submit Request'),
                     ),
                   ],
                 ),

@@ -29,12 +29,9 @@ class MyApp extends StatelessWidget {
         ChangeNotifierProvider(create: (_) => AuthProvider()),
         ChangeNotifierProvider(create: (_) => BookProvider()),
         ChangeNotifierProvider(create: (_) => ProfileProvider()),
-<<<<<<< HEAD
         ChangeNotifierProvider(create: (_) => BookRequestProvider()),
         ChangeNotifierProvider(create: (_) => SubmitBookRequestProvider()),
-=======
         ChangeNotifierProvider(create: (_) => ReviewProvider()),
->>>>>>> main
       ],
       child: MaterialApp(
         title: 'BookPals',
