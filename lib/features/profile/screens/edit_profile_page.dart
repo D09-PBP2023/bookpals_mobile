@@ -114,8 +114,9 @@ class _EditProfileState extends State<EditProfile> {
                   padding: const EdgeInsets.all(8.0),
                   child: ElevatedButton(
                     onPressed: () async {
-                      profileProvider.editUserProfile(_name, _email, _bio);
-                      profileProvider.setUserProfile();
+                      await profileProvider.editUserProfile(
+                          _name, _email, _bio);
+                      await profileProvider.setUserProfile();
                       Navigator.pop(context);
                     },
                     child: const Text("Submit"),

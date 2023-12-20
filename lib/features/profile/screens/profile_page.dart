@@ -59,9 +59,6 @@ class _ProfilePageState extends State<ProfilePage> {
                         ),
                       ),
                     );
-                    setState(() {
-                      profileProvider.setUserProfile();
-                    });
                   },
                   child: const Text("Edit"),
                 ),
@@ -139,7 +136,6 @@ class _ProfilePageState extends State<ProfilePage> {
     }
 
     if (x > 0) {
-      print(x);
       x--;
     }
 
@@ -168,7 +164,6 @@ class _ProfilePageState extends State<ProfilePage> {
                 ),
               ),
             );
-            await profileProvider.setUserProfile();
           },
           child: ClipRRect(
             borderRadius: BorderRadius.circular(12),
@@ -178,7 +173,7 @@ class _ProfilePageState extends State<ProfilePage> {
                     fit: BoxFit.cover,
                   )
                 : Container(
-                    color: Color.fromARGB(
+                    color: const Color.fromARGB(
                       255,
                       206,
                       181,
@@ -193,7 +188,7 @@ class _ProfilePageState extends State<ProfilePage> {
 
   Widget _buildNameEmailBio(ProfileProvider profileProvider) {
     return Padding(
-      padding: const EdgeInsets.only(top: 35.0),
+      padding: const EdgeInsets.only(top: 35.0, left: 10.0),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -213,7 +208,7 @@ class _ProfilePageState extends State<ProfilePage> {
   Widget _buildProfilePicture() {
     return Padding(
       padding: const EdgeInsets.only(
-          bottom: 60.0), // Adjust the top padding as needed
+          bottom: 50.0, top: 20.0), // Adjust the top padding as needed
       child: Container(
         width: MediaQuery.of(context).size.width * (0.3),
         height: MediaQuery.of(context).size.width * (0.3),
@@ -224,6 +219,148 @@ class _ProfilePageState extends State<ProfilePage> {
         child: const Icon(
           Icons.person,
           color: Colors.white,
+          size: 80.0, // Adjust the size as needed
+        ),
+      ),
+    );
+  }
+
+  Widget _buildName(ProfileProvider profileProvider) {
+    return SizedBox(
+      width: MediaQuery.of(context).size.width * 0.4,
+      child: Text(
+        profileProvider.userProfile.fields.nickname,
+        style: const TextStyle(
+          fontWeight: FontWeight.bold,
+          fontSize: 18.0,
+        ),
+      ),
+    );
+  }
+
+  Widget _bookCover(
+      BookProvider bookProvider, ProfileProvider profileProvider, int idx) {
+    int x = profileProvider.userProfile.fields.favoriteBook1;
+    switch (idx) {
+      case 1:
+        x = profileProvider.userProfile.fields.favoriteBook1;
+        break;
+      case 2:
+        x = profileProvider.userProfile.fields.favoriteBook2;
+        break;
+      case 3:
+        x = profileProvider.userProfile.fields.favoriteBook3;
+        break;
+    }
+
+    if (x > 0) {
+<<<<<<< HEAD
+      print(x);
+=======
+>>>>>>> main
+      x--;
+    }
+
+    return Expanded(
+      child: Container(
+        height: double.infinity, // Take up the entire height of the parent Row
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(12),
+          border: Border.all(
+            color: const Color.fromARGB(255, 255, 255, 255), // Set border color
+            width: 1.0, // Set border width
+            style: BorderStyle.solid, // Set border style to dotted
+          ),
+        ),
+        margin: const EdgeInsets.all(15.0),
+        // Add some margin between rectangles
+
+        child: InkWell(
+          onTap: () async {
+            await Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => BookmarkEdit(
+                  profileProvider: profileProvider,
+                  x: idx,
+                ),
+              ),
+            );
+<<<<<<< HEAD
+            await profileProvider.setUserProfile();
+=======
+>>>>>>> main
+          },
+          child: ClipRRect(
+            borderRadius: BorderRadius.circular(12),
+            child: (x >= 0 && x < bookProvider.listBook.length)
+                ? Image.network(
+                    bookProvider.listBook[x].fields.coverImage,
+                    fit: BoxFit.cover,
+                  )
+                : Container(
+<<<<<<< HEAD
+                    color: Color.fromARGB(
+=======
+                    color: const Color.fromARGB(
+>>>>>>> main
+                      255,
+                      206,
+                      181,
+                      159,
+                    ), // Set the color to white
+                  ),
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget _buildNameEmailBio(ProfileProvider profileProvider) {
+    return Padding(
+<<<<<<< HEAD
+      padding: const EdgeInsets.only(top: 35.0),
+=======
+      padding: const EdgeInsets.only(top: 35.0, left: 10.0),
+>>>>>>> main
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          _buildName(profileProvider),
+          const SizedBox(
+              height: 10.0), // Adjust the space between email and bio
+          _buildEmail(profileProvider),
+          const SizedBox(
+            height: 20.0,
+          ),
+          _buildBio(profileProvider)
+        ],
+      ),
+    );
+  }
+
+  Widget _buildProfilePicture() {
+    return Padding(
+      padding: const EdgeInsets.only(
+<<<<<<< HEAD
+          bottom: 60.0), // Adjust the top padding as needed
+=======
+          bottom: 50.0, top: 20.0), // Adjust the top padding as needed
+>>>>>>> main
+      child: Container(
+        width: MediaQuery.of(context).size.width * (0.3),
+        height: MediaQuery.of(context).size.width * (0.3),
+        decoration: const BoxDecoration(
+          shape: BoxShape.circle,
+          color: Colors.blue, // Set your desired color
+        ),
+        child: const Icon(
+          Icons.person,
+          color: Colors.white,
+<<<<<<< HEAD
+=======
+          size: 80.0, // Adjust the size as needed
+>>>>>>> main
         ),
       ),
     );
