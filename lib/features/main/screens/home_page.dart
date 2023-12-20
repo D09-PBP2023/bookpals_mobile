@@ -20,21 +20,15 @@ class _HomePageState extends State<HomePage> {
   final pages = [
     const CatalogPage(),
     const BookSwap(),
-    const BookmarkPage(),
     const BookRequestScreen(),
+    const BookmarkPage(),
     const ProfilePage(),
   ];
 
   @override
   Widget build(BuildContext context) {
     return BpScaffold(
-      body: const [
-        CatalogPage(), // index 0
-        BookmarkPage(),
-        BookRequestScreen(),
-        ProfilePage(),
-        
-      ][_selectedIndex],
+      body: pages[_selectedIndex],
       navigationBar: Container(
         decoration: const BoxDecoration(
           borderRadius: BorderRadius.only(
@@ -65,12 +59,12 @@ class _HomePageState extends State<HomePage> {
                 label: 'Book Swap',
               ),
               NavigationDestination(
-                icon: Icon(Icons.bookmark),
-                label: 'Bookmark',
-              ),
-              NavigationDestination(
                 icon: Icon(Icons.add_box),
                 label: 'Request',
+              ),
+              NavigationDestination(
+                icon: Icon(Icons.bookmark),
+                label: 'Bookmark',
               ),
               NavigationDestination(
                 icon: Icon(Icons.person),

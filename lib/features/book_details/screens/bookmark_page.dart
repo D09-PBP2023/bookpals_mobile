@@ -5,7 +5,6 @@ import '../../../core/bases/providers/book_provider.dart';
 import '../../../core/bases/providers/profile_provider.dart';
 import '../../../core/bases/widgets/custom_icon_icons.dart';
 import '../../../core/bases/widgets/scaffold.dart';
-import '../../main/screens/search_page.dart';
 import '../../main/screens/widgets/book_display.dart';
 
 class BookmarkPage extends StatefulWidget {
@@ -46,12 +45,12 @@ class _BookmarkPageState extends State<BookmarkPage> {
       body: SingleChildScrollView(
         child: Column(
           children: [
-            SizedBox(
+            const SizedBox(
               height: 40,
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  const Row(
+                  Row(
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
                       Icon(
@@ -68,17 +67,6 @@ class _BookmarkPageState extends State<BookmarkPage> {
                         ),
                       ),
                     ],
-                  ),
-                  GestureDetector(
-                    child: const Icon(
-                      Icons.search,
-                      size: 30,
-                    ),
-                    onTap: () {
-                      Navigator.push(context, MaterialPageRoute(builder: (_) {
-                        return const SearchPage();
-                      }));
-                    },
                   ),
                 ],
               ),

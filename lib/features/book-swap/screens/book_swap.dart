@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../../../core/bases/widgets/button.dart';
+import '../../../core/bases/widgets/custom_icon_icons.dart';
 import '../../../core/bases/widgets/scaffold.dart';
 import '../widgets/accepted_swap.dart';
 import '../widgets/processed_swap.dart';
@@ -40,6 +41,33 @@ class _BookSwapState extends State<BookSwap> {
                 )
               : Column(
                   children: [
+                    const SizedBox(
+                      height: 40,
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Row(
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            children: [
+                              Icon(
+                                CustomIcon.book_open,
+                              ),
+                              SizedBox(
+                                width: 10,
+                              ),
+                              Text(
+                                "Bookpals",
+                                style: TextStyle(
+                                  fontWeight: FontWeight.w700,
+                                  fontSize: 24,
+                                ),
+                              ),
+                            ],
+                          ),
+                        ],
+                      ),
+                    ),
+                    const SizedBox(height: 30),
                     const Align(
                       alignment: Alignment.centerLeft,
                       child: Text(
