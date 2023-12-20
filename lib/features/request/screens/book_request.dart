@@ -60,7 +60,7 @@ class _BookRequestScreenState extends State<BookRequestScreen> {
                   _salesController.text,
                   _genreController.text,
                 );
-                if (response["status"]) {
+                if (response["status"]?? false) {
                   Navigator.pushReplacement(
                     context,
                     MaterialPageRoute(
@@ -168,7 +168,7 @@ class _BookRequestScreenState extends State<BookRequestScreen> {
                         _salesController.text,
                         _genreController.text,
                       );
-                      if (response["status"]) {
+                      if (response["status"]?? false) {
                         Navigator.pushReplacement(
                           context,
                           MaterialPageRoute(
