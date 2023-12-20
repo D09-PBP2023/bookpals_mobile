@@ -3,7 +3,6 @@ import '../../../services/api.dart';
 import 'package:flutter/material.dart';
 
 class SubmitBookRequestProvider with ChangeNotifier {
-  // TODO: tambahin field coverImage di parameter
   Future<dynamic> submitRequest(
       String bookName,
       String author,
@@ -18,7 +17,6 @@ class SubmitBookRequestProvider with ChangeNotifier {
       'year_published': yearPublished,
       'sales': sales,
       'genre': genre,
-      // TODO: 'cover_image': coverImage
     });
   }
 }

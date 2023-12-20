@@ -4,6 +4,9 @@ import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';
 
 import '../providers/bookrequest_provider.dart';
+import '../providers/submitrequest_provider.dart';
+import '../getrequest_provider.dart';
+
 
 class BookRequestScreen extends StatefulWidget {
   const BookRequestScreen({Key? key}) : super(key: key);
@@ -215,7 +218,6 @@ class _BookRequestScreenState extends State<BookRequestScreen> {
                             'Year Published: ${requestedBooks[index]['year_published']}'),
                         Text('Sales: ${requestedBooks[index]['sales']}'),
                         Text('Genre: ${requestedBooks[index]['genre']}'),
-                        // Add more Text widgets for additional subtitles
                       ],
                     ),
                     // TODO: TAMBAHIN YG BUAT COVER IMAGE
